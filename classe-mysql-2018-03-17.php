@@ -25,7 +25,7 @@
           $this->nomBD = $strNomBD;
           $this->nomFichierInfosSensibles = $strNomFichierInfosSensibles;
            
-		  //Cedric a des problemes .  
+		  //Cedric a des problemes .  1
 		   
           $this->connexion();
           $this->selectionneBD();
