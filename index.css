@@ -1,0 +1,8 @@
+BODY, INPUT { font-family:Verdana; font-size:16px; }
+.sTitreApplication { font-size:32px; line-height:26px; font-weight:bold; margin-top:0px; }
+.sTitreSection { font-size:24px; line-height:18px; }
+.sGras { font-weight:bold; }
+.sBleu { color:blue; }
+.sDroits { font-size:12px; } 
+.sNonGras { font-weight:normal; }
+.sRouge { color:red; }
