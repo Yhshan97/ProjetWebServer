@@ -24,7 +24,9 @@
       function __construct($strNomBD, $strNomFichierInfosSensibles) {
           $this->nomBD = $strNomBD;
           $this->nomFichierInfosSensibles = $strNomFichierInfosSensibles;
-      
+           
+		  //Cedric a des problemes .  
+		   
           $this->connexion();
           $this->selectionneBD();
       }
