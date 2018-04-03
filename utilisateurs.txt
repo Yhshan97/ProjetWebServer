@@ -1,4 +1,0 @@
-admin;admin;A
-yh.shan;Secret12;U
-c.kouma;Secret23;U
-a.gariepy;Secret34;U
