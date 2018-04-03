@@ -305,18 +305,18 @@ function get($strNomParametre){
  * retourne la valeur du parametre si valide sinon null
  */
 function post($strNomParametre){
-    return isset($_POST["$strNomParametre"]) ? $_POST["$strNomParametre"] : null;
+    return isset($_POST["$strNomParametre"]) ? $_POST["$strNomParametre"] : isset($_POST["$strNomParametre"]);
 }
 
 
 /*
- * function input($strID, $strCLASS, $strMAXLENGTH, $strVALUE, $binECHO=false)
+ * function input($strID, $strCLASS, $strType, $strMAXLENGTH, $strVALUE, $binECHO=false)
  * 
  * Genere une balise <input type="text" /> avec ou sans la commande echo ($binEcho)
  */
-function input($strID, $strCLASS, $strMAXLENGTH, $strVALUE, $binECHO=false){
+function input($strID, $strCLASS, $strType, $strMAXLENGTH, $strVALUE, $binECHO=false){
     
-    $strResultat = "<input id=\"$strID\" name=\"$strID\" class=\"$strCLASS\" type=\"text\" maxlength=\"$strMAXLENGTH\" value=\"$strVALUE\" />";
+    $strResultat = "<input id=\"$strID\" name=\"$strID\" class=\"$strCLASS\" type=\"$strType\" maxlength=\"$strMAXLENGTH\" value=\"$strVALUE\" />";
     
     if ($binECHO)
         echo $strResultat;

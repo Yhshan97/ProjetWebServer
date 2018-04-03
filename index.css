@@ -1,8 +1,23 @@
-BODY, INPUT { font-family:Verdana; font-size:16px; }
+BODY { padding-left:15px; padding-top:15px; }
+BODY, INPUT, SELECT { font-family:arial; font-size:16px; }
+TABLE { border-collapse: collapse; }
+TD { padding:5px; }
+P { font-size: 20px; }
+
 .sTitreApplication { font-size:32px; line-height:26px; font-weight:bold; margin-top:0px; }
-.sTitreSection { font-size:24px; line-height:18px; }
-.sGras { font-weight:bold; }
+.sTitreSection { font-size:24px; line-height:20px; font-weight:bold; }
+
 .sBleu { color:blue; }
-.sDroits { font-size:12px; } 
-.sNonGras { font-weight:normal; }
+.sDate { width:90px; }
+.sDroite { text-align:right; }
+.sDroits { font-size:12px; }
+.sGauche { text-align:left; }
+.sEntete { background-color:#cccccc; }
+.sGras { font-weight:bold; }
+.sTableau { font-family:consolas; }
 .sRouge { color:red; }
+.sVert { color:darkgreen; }
+.sBleuFond { background-color:blue; color:white; }
+.sNonSouligne { text-decoration:none; }
+.sPaiement { color:blue; width:80px; font-weight:bold; text-align:right; vertical-align:middle; height:22px; padding:1px; }
+.sSansStyle { border:none; background-color:white; }
