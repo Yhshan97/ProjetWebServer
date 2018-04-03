@@ -73,11 +73,6 @@
 
 </div>
 
-
-
-
-
-
 <?php
    require_once("pied-page.php");
 ?>
