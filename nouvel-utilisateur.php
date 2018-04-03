@@ -1,9 +1,8 @@
 <?php
-
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
-$strTitreApplication = "Gestion des documents (Administrateur)";
+$strTitreApplication = "Creation d'un nouvel utilisateur (Administrateur)";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
@@ -13,8 +12,13 @@ require_once("classe-mysql-2018-03-17.php");
 require_once("librairies-communes-2018-03-17.php");
 require_once("librairies-projetFinal-2018-03-24.php");
 
-require_once("en-tete.php");
+$strMonIP = "";
+$strIPServeur = "";
+$strNomServeur = "";
+$strInfosSensibles = "";
+detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
+require_once("en-tete.php");
 ?>
 
 <table class="sTableau">
@@ -22,29 +26,73 @@ require_once("en-tete.php");
         <td>
             Nom d'utilisateur :
         </td><td>
-            <?php input("nomUtilisateur","","text", 15,"",true); ?>
+            <?php input("nomUtilisateur", "", "text", 25, post("nomUtilisateur"), true); ?>
         </td>
         <td>
             <?php
             if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
-                echo "<div class=\"sRouge\"> Entrez un nom d'utilisateur! </div>"?>
+                echo "<div class=\"sRouge\"> Entrez un nom d'utilisateur! </div>"
+                ?>
         </td>
     </tr>
     <tr>
         <td>
             Mot de passe :
         </td><td>
-            <?php input("motDePasse","","password", 15,"",true); ?>
+            <?php input("motDePasse","", "password", 15, "", true); ?>
         </td>
         <td>
-            <?php if(empty(post("motDePasse")) && isset($_POST["motDePasse"]))
-                echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"?>
+            <?php
+            if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
+                echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"
+                ?>
         </td>
     </tr>
     <tr>
-        <td></td>
+        <td>
+            Statut admin :
+        </td><td>
+            <select name="StatutAdmin">
+                <option value="0">Utilisateur</option>
+                <option value="1" selected>Administrateur</option>
+            </select>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Nom complet :
+        </td><td>
+<?php input("NomComplet", "", "text", 30, post("NomComplet"), true); ?>
+        </td>
+        <td>
+            <?php
+            if (empty(post("NomComplet")) && isset($_POST["NomComplet"]))
+                echo "<div class=\"sRouge\"> Entrez un nom complet! </div>"
+                ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Courriel :
+        </td><td>
+            <?php input("Courriel", "", "text", 30, post("Courriel"), true); ?>
+        </td>
+        <td>
+            <?php
+            if (empty(post("Courriel")) && isset($_POST["Courriel"]))
+                echo "<div class=\"sRouge\"> Entrez un courriel! </div>"
+                ?>
+        </td>
+    </tr>
+    <tr>
         <td align="right">
-            <input id="btnCreer" name="btnCreer" type="submit" value="Creer Utilisateur" onclick="">
+            
+        </td>
+        <td align="right">
+            <input type="button" value="Retour" onclick="window.location.href='gestion-documents-administrateur.php'">
+            <input id="btnCreer" name="btnCreer" type="submit" value="Créer Utilisateur">
         </td>
     </tr>
 </table>
@@ -52,5 +100,29 @@ require_once("en-tete.php");
 
 
 <?php
+if (post("nomUtilisateur") && post("motDePasse") && post("StatutAdmin") && post("NomComplet") && post("Courriel")) {
+    $mySqli = new mysql("bdh18_Shan", $strInfosSensibles);
+
+    $nbAdmins = mysqli_query($mySqli->cBD, "SELECT count(statutAdmin) FROM Utilisateur where StatutAdmin = 1");
+    $count = $nbAdmins->fetch_row();
+    
+    if (($count[0] < 9 && $count[0] > 0) || ($count[0] == 0 && post("StatutAdmin") == 1)) {
+        $mySqli->insereEnregistrement("utilisateur", post("nomUtilisateur"), post("motDePasse"), post("StatutAdmin"), post("NomComplet"), post("Courriel"));
+        
+        $mySqli->OK ? ecrit("<p class=\"sVert\"> Nouvel utilisateur cr&eacute&eacute</p>") :
+                        ecrit("<p class=\"sRouge\"> Cr&eacuteation nouvel utilisateur &eacutechou&eacute </p>");
+        if($mySqli->OK){
+            header("location: gestion-documents-administrateur.php");
+        }
+    } 
+    else if ($count[0] > 9) {
+        ecrit("<p class=\"sRouge\"> Cr&eacuteation nouvel utilisateur &eacutechou&eacute, plus que 9 administrateur. </p>");
+    } 
+    else {
+        ecrit("<p class=\"sRouge\"> Cr&eacuteation nouvel utilisateur &eacutechou&eacute, il doit avoir au moin 1 administrateur. </p>");
+    }
+    
+    $mySqli->deconnexion();
+}
+
 require_once("pied-page.php");
-?>

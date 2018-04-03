@@ -13,7 +13,7 @@
    require_once("librairies-projetFinal-2018-03-24.php");
 
    require_once("en-tete.php");
-
+   
    $strMonIP = "";
    $strIPServeur = "";
    $strNomServeur = "";
@@ -38,7 +38,7 @@
       <td>
          Nom d'utilisateur :
       </td><td>
-         <?php input("nomUtilisateur","","text", 15,"",true); ?>
+         <?php input("nomUtilisateur","","text", 15, post("nomUtilisateur"),true); ?>
       </td>
        <td>
            <?php
