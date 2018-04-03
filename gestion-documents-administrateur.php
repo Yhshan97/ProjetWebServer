@@ -68,7 +68,7 @@
 
 <div <?php echo !$booConnexion  ? "style=\"display:none\"": "" ?> >
 
-
+<!--  ici   -->
 
 
 </div>

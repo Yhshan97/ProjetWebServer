@@ -30,3 +30,17 @@ function connexion($strNomUtil,$strMotPasse,$objSQL){
     }
     return $booTrouve;
 }
+ 
+function ajoutSession($mode, $session, $dateDebut, $dateFin, $objSQL){
+    switch($mode){
+        case "ajouter":
+            $objSQL->insereEnregistrement("Session",$session,$dateDebut,$dateFin);
+            
+            break;
+        case "modifier":
+            break;
+        case "retirer":
+            break;
+    }
+    
+}
