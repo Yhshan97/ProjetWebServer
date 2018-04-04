@@ -31,16 +31,30 @@ function connexion($strNomUtil,$strMotPasse,$objSQL){
     return $booTrouve;
 }
  
-function ajoutSession($mode, $session, $dateDebut, $dateFin, $objSQL){
-    switch($mode){
-        case "ajouter":
-            $objSQL->insereEnregistrement("Session",$session,$dateDebut,$dateFin);
-            
-            break;
-        case "modifier":
-            break;
-        case "retirer":
-            break;
+function ajoutSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
+    $booOK = false;
+    if (preg_match("^[HEAhea]-20((1[89])|(2[01]))$", $session))
+        if (preg_match("^20((1[89])|(2[01]))-(0[1-9]|1[0-2])-(([012][0-9])|(3[01]))$", $dateDebut) 
+                && preg_match("^20((1[89])|(2[01]))-(0[1-9]|1[0-2])-(([012][0-9])|(3[01]))$", $dateFin))
+                $booOK = true;
+
+    if ($booOK) {
+        switch ($mode) {
+            case "ajouter":
+                $objSQL->insereEnregistrement("Session", $session, $dateDebut, $dateFin);
+                return $objSQL->OK;
+                break;
+            case "modifier":
+                $objSQL->modifieChamp("Session", "Description", $session);
+                if ($objSQL->OK)
+                    $objSQL->modifieChamp("Session", "DateDebut", $dateDebut);
+                if ($objSQL->OK)
+                    $objSQL->modifieChamp("Session", "DateFin", $dateFin);
+                return $objSQL->OK;
+                break;
+            case "retirer":
+                //if(session a un cours/cours-session ou document associé then vag)
+                break;
+        }
     }
-    
 }
