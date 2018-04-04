@@ -67,9 +67,9 @@ $objMySqli->creeTableGenerique("Categorie", "V15,Description", "Description");
 ecrit("Creation table 'Categorie' :" . ($objMySqli->OK ? " Succ&egraves" : " &EACUTEchec"), 2);
 
 
-$objMySqli->creeTableGenerique("Cours", "V7,Sigle;
-                                        V50,Titre;
-                                        V30,NomProf", "Sigle");
+$objMySqli->creeTableGenerique("Cours", "V7,Sigle;" .
+                                        "V50,Titre;" .
+                                        "V30,NomProf", "Sigle");
 ecrit("Creation table 'Cours' :" . ($objMySqli->OK ? " Succ&egraves" : " &EACUTEchec"), 2);
 
 
