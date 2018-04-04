@@ -104,6 +104,16 @@ $objMySqli->creeTableGenerique("Utilisateur", "V25,NomUtilisateur;".
 ecrit("Creation table 'Utilisateur' :" . ($objMySqli->OK ? " Succ&egraves" : " &EACUTEchec"), 2);
 
 
+$objMySqli->etablitRelation("Categorie", "Description", "Document", "Categorie","FK_Categorie_Document");
+ecrit("Etablit relation entre categorie et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+
+$objMySqli->etablitRelation("Session", "Description", "Document", "Session","FK_Session_Document");
+ecrit("Etablit relation entre session et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+
+$objMySqli->etablitRelation("Cours", "Sigle", "Document", "Sigle","FK_Cours_Document");
+ecrit("Etablit relation entre cours et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 
 $objMySqli->afficheInformationsSurBD();
