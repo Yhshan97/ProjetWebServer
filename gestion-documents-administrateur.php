@@ -20,7 +20,7 @@
    $strInfosSensibles = "";
    detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
-   $mySqli = new mysql("bdh18_Shan", $strInfosSensibles);
+   $mySqli = new mysql("", $strInfosSensibles);
 
    $booConnexion = false;
 
@@ -74,9 +74,9 @@
     <option value="1">1. Mettre à jour la liste des documents</option>
     <option value="2">2. Mettre à jour les tables de référence </option>
     <option value="3">3. Assigner les privilèges d'accès aux documents </option>
-    <option value="4">4. Assigner un groupe d'utilisateurs à un cours-seesion</option>
-    <option value="5">5. Reconstruire l'arborescence des documents</option>
-    <option value="6">6. Terminer l'application</option>
+    <option value="4">4. Assigner un groupe d'utilisateurs à un cours-session </option>
+    <option value="5">5. Reconstruire l'arborescence des documents </option>
+    <option value="6">6. Terminer l'application </option>
 </select>               
 <p><input type="submit" value="Valider le choix"></p>
              
