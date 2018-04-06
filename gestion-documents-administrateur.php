@@ -11,7 +11,7 @@
    require_once("classe-mysql-2018-03-17.php");
    require_once("librairies-communes-2018-03-17.php");
    require_once("librairies-projetFinal-2018-03-24.php");
-
+   require_once("background.php");
    require_once("en-tete.php");
    
    $strMonIP = "";
@@ -33,40 +33,53 @@
 
 <!-- A changer bien sur -->
 <div <?php echo $booConnexion  ? "style=\"display:none\"": "" ?> >
-<table class="sTableau">
+    <table class="sTableau sMilieu" style="top: 30%">
    <tr>
       <td>
          Nom d'utilisateur :
       </td><td>
-         <?php input("nomUtilisateur","","text", 15, post("nomUtilisateur"),true); ?>
+         <?php input("nomUtilisateur","sButton sCentrer","text", 15, post("nomUtilisateur"),true); ?>
       </td>
        <td>
            <?php
            if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
-               echo "<div class=\"sRouge\"> Entrez un nom d'utilisateur! </div>"?>
+               echo "<span class=\"sErreur sUtilisateur\"> Entrez un nom d'utilisateur! </span>"?>
        </td>
    </tr>
+    </table>
+    <table class="sTableau sMilieu" style="top: 37%; left: 51.1%">
    <tr>
       <td>
          Mot de passe :
       </td><td>
-         <?php input("motDePasse","","password", 15,"",true); ?>
+         <?php input("motDePasse","sButton sCentrer","password", 15,"",true); ?>
        </td>
        <td>
            <?php if(empty(post("motDePasse")) && isset($_POST["motDePasse"]))
-               echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"?>
+               echo "<div class=\"sErreur sMotDePasse\"> Entrez un mot de passe! </div>"?>
        </td>
    </tr>
+    </table>
+    <table class="sTableau sMilieu" style="top: 44%; left: 54.2%">
    <tr>
       <td></td>
-      <td align="right">
-         <input id="btnConnexion" name="btnConnexion" type="submit" value="Se connecter" onclick="">
+      <td>
+         <input id="btnConnexion" name="btnConnexion" type="submit" value="Connexion" onclick="" class="sButton">
       </td>
+   </tr>
+    </table>
+    <table  class="sTableau sMilieu" style="top: 49.5%; left: 54.2%">
+   <tr>
+       <td></td>
+       <td>
+   <input id="btnActualiser" name="btnActualiser" type="button" value="Actualiser" class="sButton"onclick="window.location = document.location.href;" />
+       </td>
    </tr>
 </table>
 </div>
 
 <div <?php echo !$booConnexion  ? "style=\"display:none\"": "" ?> >
+
 
 <!--  ici   -->
 <label for="Jour">Bienvenue <?php echo post("nomUtilisateur") ?> :) Vous désirez ...</label><br/>
