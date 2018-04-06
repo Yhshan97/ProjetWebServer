@@ -22,7 +22,7 @@
       |----------------------------------------------------------------------------------|
       */
       function __construct($strNomBD, $strNomFichierInfosSensibles) {
-          $this->nomBD = $strNomBD;
+          $this->nomBD = "prj_immigrants";
           $this->nomFichierInfosSensibles = $strNomFichierInfosSensibles;
 
           $this->connexion();
@@ -35,8 +35,8 @@
       */
       function connexion() {
         $servername = "localhost";
-        $username = "yh.shan";
-        $password = "Secret13941";
+        $username = "immigrants";
+        $password = "Secret14738";
 
         $this->cBD = new mysqli($servername, $username, $password)
                 or die("Problème de connexion... Message d'erreur retourné par PHP");
@@ -321,5 +321,120 @@
       if (!$binTablePresente)
          echo "<p $sMessage>Aucune table !</p>";
    }
+         
+   /*
+   |-------------------------------------------------------------------------------------|
+   | ContenuChamp($intNo, $strNomChamp)
+    * 
+    * Retourne la valeur du champ $strNomChamp de l'enregistrement numéro $intNo 
+    * de la listeEnregistrements
+   |-------------------------------------------------------------------------------------|
+   */
+   
+    /*
+   |-------------------------------------------------------------------------------------|
+   | mysqli_result
+   | Réf.: http://php.net/manual/fr/class.mysqli-result.php User Contributed Notes (Marc17)
+   |
+   | Exemple d'appel : echo mysqli_result($ListeEnregistrements, 0, "TotalVentes");
+   |                   Affiche le champ "TotalVentes" du 1er enregistrement de la liste
+   |                   d'enregistrements.
+   |-------------------------------------------------------------------------------------|
+   */
+   function contenuChamp($intNo,$strNomChamp) {
+      if ($this->listeEnregistrements === false) return false;
+      if ($intNo >= mysqli_num_rows($this->listeEnregistrements)) return false;
+      if (is_string($strNomChamp) && !(strpos($strNomChamp, ".")===false)) {
+         $t_field = explode(".", $strNomChamp);
+         $strNomChamp = -1;
+         $t_fields = mysqli_fetch_fields($this->listeEnregistrements);
+         for ($id=0; $id < mysqli_num_fields($this->listeEnregistrements); $id++) {
+            if ($t_fields[$id]->table == $t_field[0] && $t_fields[$id]->name == $t_field[1]) {
+               $strNomChamp=$id;
+               break;
+            }
+         }
+         if ($strNomChamp == -1) return false;
+      }
+      mysqli_data_seek($this->listeEnregistrements,$intNo);
+      $line = mysqli_fetch_array($this->listeEnregistrements);
+      
+      return isset($line[$strNomChamp]) ? $line[$strNomChamp] : false;
+   }
+   
+   
+   /*
+   |-------------------------------------------------------------------------------------|
+   | etablitRelation($strNomTablePrimaire, $strClePrimaire, $strNomTableEtrangere, $strCleEtrangere, $strNomRelation="")
+    * 
+    * Établit une relation entre deux tables
+   |-------------------------------------------------------------------------------------|
+   */
+   function etablitRelation($strNomTablePrimaire, $strClePrimaire, $strNomTableEtrangere, $strCleEtrangere, $strNomRelation=""){
+       
+       $this->requete = "ALTER TABLE $strNomTableEtrangere";
+       if(!empty($strNomRelation))
+           $this->requete .= " ADD CONSTRAINT $strNomRelation";
+       
+       $this->requete .= " FOREIGN KEY ($strCleEtrangere) REFERENCES $strNomTablePrimaire($strClePrimaire);";
+       
+       $this->OK = mysqli_query($this->cBD, $this->requete);
+       return $this->OK;
+   }
+   /*
+   |-------------------------------------------------------------------------------------|
+   | metAJourEnregistrements($strNomTable,$strListeChangements,$strListeConditions="")
+    * 
+    * Met à jour les données composant un ou plusieurs enregistrements selon une ou plusieurs conditions
+   |-------------------------------------------------------------------------------------|
+   */
+   function metAJourEnregistrements($strNomTable,$strListeChangements,$strListeConditions=""){
+       
+       $this->requete = "UPDATE $strNomTable SET $strListeChangements";
+       if(!empty($strListeConditions)) 
+           $this->requete .= " WHERE $strListeConditions";
+       
+       $this->OK = mysqli_query($this->cBD, $this->requete);
+       return $this->OK;
+   }
+   
+   /*
+   |-------------------------------------------------------------------------------------|
+   | selectionneEnregistrements($strNomTable)
+    * 
+    * Par défaut, selectionne tous les enregistrements de la table $strNomTable. En fonction
+    * des paramètres spécifiés, il est possible de sélectionner certains enregistrements
+    * (C=), de les regrouper (D=), et ou de les trier(T=).
+   |-------------------------------------------------------------------------------------|
+   */
+   function selectionneEnregistrements($strNomTable){
+       $this->requete = "SELECT * FROM $strNomTable";
+       
+       for($i=1; $i < func_num_args();$i++){
+           $tableau = explode("=",func_get_arg($i));
+           switch($tableau[0]){
+               case "C": $this->requete .= " WHERE $tableau[1]=$tableau[2]";
+                   break;
+               case "D": $this->requete .= " GROUP BY $tableau[1]";
+                   break;
+               case "T": $this->requete .= " ORDER BY $tableau[1]";
+                   break;
+           }
+       }
+       
+       $this->listeEnregistrements = mysqli_query($this->cBD, $this->requete);
+       
+       if($this->listeEnregistrements)
+          $this->nbEnregistrements = mysqli_num_rows($this->listeEnregistrements);
+       
+       return $this->listeEnregistrements ? mysqli_num_rows($this->listeEnregistrements) : -1;
+   }
+   
+   function tableExiste($strNomTable){
+       $result = mysqli_query($this->cBD,"SHOW TABLES LIKE '".$strNomTable."'");
+   
+       return $result->num_rows == 1;
+   }
+   
    }
 ?>
