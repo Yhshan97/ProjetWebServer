@@ -12,10 +12,6 @@ require_once("classe-mysql-2018-03-17.php");
 require_once("librairies-communes-2018-03-17.php");
 require_once("librairies-projetFinal-2018-03-24.php");
 
-$strMonIP = "";
-$strIPServeur = "";
-$strNomServeur = "";
-$strInfosSensibles = "";
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 require_once("en-tete.php");
@@ -101,7 +97,7 @@ require_once("en-tete.php");
 
 <?php
 if (post("nomUtilisateur") && post("motDePasse") && post("StatutAdmin") && post("NomComplet") && post("Courriel")) {
-    $mySqli = new mysql("bdh18_Shan", $strInfosSensibles);
+    $mySqli = new mysql("", $strInfosSensibles);
 
     $nbAdmins = mysqli_query($mySqli->cBD, "SELECT count(statutAdmin) FROM Utilisateur where StatutAdmin = 1");
     $count = $nbAdmins->fetch_row();
