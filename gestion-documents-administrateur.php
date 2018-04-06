@@ -69,8 +69,17 @@
 <div <?php echo !$booConnexion  ? "style=\"display:none\"": "" ?> >
 
 <!--  ici   -->
-
-
+<label for="Jour">Bienvenue <?php echo post("nomUtilisateur") ?> :) Vous désirez ...</label><br/>
+<select name="Jour" id="Jour"  />
+    <option value="1">1. Mettre à jour la liste des documents</option>
+    <option value="2">2. Mettre à jour les tables de référence </option>
+    <option value="3">3. Assigner les privilèges d'accès aux documents </option>
+    <option value="4">4. Assigner un groupe d'utilisateurs à un cours-seesion</option>
+    <option value="5">5. Reconstruire l'arborescence des documents</option>
+    <option value="6">6. Terminer l'application</option>
+</select>               
+<p><input type="submit" value="Valider le choix"></p>
+             
 </div>
 
 <?php
