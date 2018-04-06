@@ -22,7 +22,7 @@
       |----------------------------------------------------------------------------------|
       */
       function __construct($strNomBD, $strNomFichierInfosSensibles) {
-          $this->nomBD = "prj_immigrants";
+          $this->nomBD = "pjf_immigrants";
           $this->nomFichierInfosSensibles = $strNomFichierInfosSensibles;
 
           $this->connexion();
