@@ -1,11 +1,11 @@
 BODY { padding-left:15px; padding-top:15px; }
-BODY, INPUT, SELECT { font-family:arial; font-size:16px; }
+BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; }
 TABLE { border-collapse: collapse; }
 TD { padding:5px; }
 P { font-size: 20px; }
 
-.sTitreApplication { font-size:32px; line-height:26px; font-weight:bold; margin-top:0px; }
-.sTitreSection { font-size:24px; line-height:20px; font-weight:bold; }
+.sTitreApplication { font-size:24px; line-height:26px; font-weight:bold; margin-top:0px; font-family: "Helvetica CE", sans-serif; }
+.sTitreSection { font-size:16px; line-height:20px; font-weight:bold; font-family: "Helvetica CE", sans-serif; }
 
 .sBleu { color:blue; }
 .sDate { width:90px; }
@@ -14,10 +14,99 @@ P { font-size: 20px; }
 .sGauche { text-align:left; }
 .sEntete { background-color:#cccccc; }
 .sGras { font-weight:bold; }
-.sTableau { font-family:consolas; }
 .sRouge { color:red; }
 .sVert { color:darkgreen; }
 .sBleuFond { background-color:blue; color:white; }
 .sNonSouligne { text-decoration:none; }
 .sPaiement { color:blue; width:80px; font-weight:bold; text-align:right; vertical-align:middle; height:22px; padding:1px; }
 .sSansStyle { border:none; background-color:white; }
+.sLogin { font-family: "Helvetica CE", sans-serif; }
+.sLogo { font-size: 10px; font-style: italic}
+.sBlanc { color:white; font-weight: lighter}
+.sMilieu { 
+    width:450px;
+    position:fixed;
+    margin-left:-200px; /* half of width */
+    left:50%;
+}
+.sCentrer { text-align:center; }
+.sErreur {     
+    width:450px;
+    position:fixed;
+    margin-left:-200px; /* half of width */
+    left:50%;
+    top:25%;
+    color:red;
+    font-size: 14px;
+    font-style : italic;
+    font-weight : bold;
+}
+.sMotDePasse {
+    width:450px;
+    position:fixed;
+    margin-left:-200px; /* half of width */
+    left:70%;
+    top:39%;
+    font-size: 14px;
+    font-style : italic;
+}
+
+.sUtilisateur {
+    width:450px;
+    position:fixed;
+    margin-left:-200px; /* half of width */
+    left:70%;
+    top:32%;
+    font-size: 14px;
+    font-style : italic;
+}
+
+.sButton {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 150px;
+  height: 42px;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  border: none;
+  -webkit-border-radius: 21px;
+  border-radius: 21px;
+  font-family: "Helvetica CE", sans-serif;
+  color: rgba(255,255,255,1);
+  text-decoration: normal;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background: rgba(40,40,40,0.4);
+  -webkit-box-shadow: 1px 1px 2px 0 rgba(0,0,0,0.5) inset;
+  box-shadow: 1px 1px 2px 0 rgba(0,0,0,0.5) inset;
+  -webkit-transition: all 100ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  -moz-transition: all 100ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  -o-transition: all 100ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  transition: all 100ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+}
+
+.sButton:hover {
+  color: rgba(255,255,255,1);
+  background: rgba(40,40,40,0.4);
+  -webkit-transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  -moz-transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  -o-transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+}
+
+.sButton:focus {
+  width: 213px;
+  cursor: default;
+  padding: -13px 20px 0;
+  color: rgba(255,255,255,1);
+  -webkit-transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  -moz-transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  -o-transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+}
