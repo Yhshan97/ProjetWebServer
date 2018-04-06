@@ -10,7 +10,7 @@ function connexion($strNomUtil,$strMotPasse,$objSQL){
             header("location: nouvel-utilisateur.php");
         }
         else {
-            ecrit("<p class=\"sRouge\"> Mauvaise combination de nom d'utilisateur/mot de passe </p>");
+            ecrit("<p class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </p>");
         }
     }
     else{
@@ -26,7 +26,7 @@ function connexion($strNomUtil,$strMotPasse,$objSQL){
                 }
         }
             if(!$booTrouve)
-                ecrit("<p class=\"sRouge\"> Mauvaise combination de nom d'utilisateur/mot de passe </p>");
+                ecrit("<p class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </p>");
     }
     return $booTrouve;
 }
