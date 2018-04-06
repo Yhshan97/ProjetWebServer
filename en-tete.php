@@ -10,10 +10,7 @@
          <p class="sTitreApplication">
             <?php echo "$strTitreApplication\n"; ?>
             <span class="sTitreSection">
-               <br />par <span class="sRouge"><?php echo $strNomAuteur; ?></span>
-            <input id="btnActualiser" name="btnActualiser" type="button" value="Actualiser"
-               style="font-size:12px;vertical-align:3px; color:black; " 
-               onclick="window.location = document.location.href;" />
+               <br />par <span class="sRouge"><?php echo $strNomAuteur; ?></span> <br />
                </span>
          </p>
       </div>
