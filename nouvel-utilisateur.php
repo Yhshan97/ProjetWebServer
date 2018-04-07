@@ -22,7 +22,7 @@ require_once("en-tete.php");
         <td>
             Nom d'utilisateur :
         </td><td>
-            <?php input("nomUtilisateur", "", "text", 25, post("nomUtilisateur"), true); ?>
+            <?php input("nomUtilisateur", "", "text", 25, "", true); ?>
         </td>
         <td>
             <?php
@@ -60,20 +60,20 @@ require_once("en-tete.php");
         <td>
             Nom complet :
         </td><td>
-<?php input("NomComplet", "", "text", 30, post("NomComplet"), true); ?>
+            <?php input("NomComplet", "", "text", 30, "", true); ?>
         </td>
         <td>
             <?php
             if (empty(post("NomComplet")) && isset($_POST["NomComplet"]))
-                echo "<div class=\"sRouge\"> Entrez un nom complet! </div>"
-                ?>
+                echo "<div class=\"sRouge\"> Entrez un nom complet! </div>";
+            ?>
         </td>
     </tr>
     <tr>
         <td>
             Courriel :
         </td><td>
-            <?php input("Courriel", "", "text", 30, post("Courriel"), true); ?>
+            <?php input("Courriel", "", "text", 30, "", true); ?>
         </td>
         <td>
             <?php
@@ -94,31 +94,35 @@ require_once("en-tete.php");
 </table>
 
 
-
 <?php
-if (post("nomUtilisateur") && post("motDePasse") && post("StatutAdmin") && post("NomComplet") && post("Courriel")) {
+if (post("nomUtilisateur") && post("motDePasse") && post("NomComplet") && post("Courriel")) {
     $mySqli = new mysql("", $strInfosSensibles);
 
     $nbAdmins = mysqli_query($mySqli->cBD, "SELECT count(statutAdmin) FROM Utilisateur where StatutAdmin = 1");
     $count = $nbAdmins->fetch_row();
-    
-    if (($count[0] < 9 && $count[0] > 0) || ($count[0] == 0 && post("StatutAdmin") == 1)) {
-        $mySqli->insereEnregistrement("utilisateur", post("nomUtilisateur"), post("motDePasse"), post("StatutAdmin"), post("NomComplet"), post("Courriel"));
+
+    if ((intval($count[0]) < 9 && intval($count[0]) > 0) || (intval($count[0]) == 0 && post("StatutAdmin") == "1")) {
+        $mySqli->insereEnregistrement("utilisateur", post("nomUtilisateur"), post("motDePasse"),
+            post("StatutAdmin"), post("NomComplet"), post("Courriel"));
         
         $mySqli->OK ? ecrit("<p class=\"sVert\"> Nouvel utilisateur cr&eacute&eacute</p>") :
                         ecrit("<p class=\"sRouge\"> Cr&eacuteation nouvel utilisateur &eacutechou&eacute </p>");
-        if($mySqli->OK){
-            header("location: gestion-documents-administrateur.php");
+
+        if($mySqli->OK && intval($count[0]) == 0){
+                header("location: gestion-documents-administrateur.php");
         }
-    } 
-    else if ($count[0] > 9) {
+    }
+    else if (intval($count[0]) > 9) {
         ecrit("<p class=\"sRouge\"> Cr&eacuteation nouvel utilisateur &eacutechou&eacute, plus que 9 administrateur. </p>");
-    } 
+    }
     else {
         ecrit("<p class=\"sRouge\"> Cr&eacuteation nouvel utilisateur &eacutechou&eacute, il doit avoir au moin 1 administrateur. </p>");
     }
-    
     $mySqli->deconnexion();
 }
 
 require_once("pied-page.php");
+
+?>
+
+
