@@ -63,3 +63,38 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
         return $objSQL->OK;
     }
 }
+
+
+
+
+
+
+
+function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
+    $booSigleOk = false;
+    $booTitreOk = false;
+    if(strlen($strSigle) == 7 && ctype_digit(gauche($strSigle, 3)) && substr($strSigle, 3,1) == '-' && ctype_alnum(droite($strSigle, 3))){
+        $booSigleOk = true;
+    }
+    
+    if(strlen($strTitreCours)<=50 && strlen($strTitreCours)>=5 ){
+        $booTitreOk = true;
+    }
+    
+    if($booSigleOk && $booTitreOk){
+        switch ($mode) {
+            case "ajouter":
+                $objSQL->insereEnregistrement("Cours", $strSigle, $strTitreCours);
+                break;
+            case "modifier": //a tester
+                $objSQL->metAJourEnregistrements("Cours", "Sigle='$strSigle', Titre='$strTitreCours'");
+                break;
+            case "retirer": //a tester
+                $objSQL->supprimeEnregistrements("Cours", "Where Sigle=$strSigle");
+                break;
+            default:
+                return false;
+        }
+        return $objSQL->OK;
+    }
+}
