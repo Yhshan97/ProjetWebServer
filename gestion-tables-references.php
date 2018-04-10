@@ -1,5 +1,4 @@
 <?php
-
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
@@ -14,11 +13,20 @@ require_once("librairies-communes-2018-03-17.php");
 require_once("librairies-projetFinal-2018-03-24.php");
 
 require_once("en-tete.php");
-
-echo post("option");
+echo post("action");
 
 switch (post("option")) {
     case 1:
+        ?>
+        <div>
+            <table>
+                <tr>
+                    
+                </tr>
+            </table>
+        </div>
+
+        <?php
         break;
     case 2:
         break;
