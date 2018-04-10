@@ -65,11 +65,6 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
 }
 
 
-
-
-
-
-
 function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
     $booSigleOk = false;
     $booTitreOk = false;

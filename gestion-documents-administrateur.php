@@ -30,8 +30,8 @@
 
 
 ?>
+<form id="frmSaisie" method="POST" action="">
 
-<!-- A changer bien sur -->
 <div <?php echo $booConnexion  ? "style=\"display:none\"": "" ?> >
     <table class="sTableau sMilieu" style="top: 30%">
    <tr>
@@ -77,13 +77,14 @@
    </tr>
 </table>
 </div>
-
+</form>
 <div <?php echo !$booConnexion  ? "style=\"display:none\"": "" ?> >
 
 
 <!--  ici   -->
 <label for="Jour">Bienvenue <?php echo post("nomUtilisateur") ?> :) Vous désirez ...</label><br/>
-<select name="Jour" id="Jour"  />
+<form id="saisieChoix" method="POST" action="gestion-tables-references.php">
+<select name="option" id="option"  />
     <option value="1">1. Mettre à jour la liste des documents</option>
     <option value="2">2. Mettre à jour les tables de référence </option>
     <option value="3">3. Assigner les privilèges d'accès aux documents </option>
@@ -92,7 +93,7 @@
     <option value="6">6. Terminer l'application </option>
 </select>               
 <p><input type="submit" value="Valider le choix"></p>
-             
+</form>
 </div>
 
 <?php

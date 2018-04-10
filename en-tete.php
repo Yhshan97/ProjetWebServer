@@ -5,8 +5,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <link rel="stylesheet" type="text/css" href="<?php echo $strNomFichierCSS; ?>" /></head>
 <body>
-   <form id="frmSaisie" method="POST" action="">
-      <div id="divEntete" class="">
+    <div id="divEntete" class="">
          <p class="sTitreApplication">
             <?php echo "$strTitreApplication\n"; ?>
             <span class="sTitreSection">
