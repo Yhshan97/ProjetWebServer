@@ -324,15 +324,6 @@
          
    /*
    |-------------------------------------------------------------------------------------|
-   | ContenuChamp($intNo, $strNomChamp)
-    * 
-    * Retourne la valeur du champ $strNomChamp de l'enregistrement numéro $intNo 
-    * de la listeEnregistrements
-   |-------------------------------------------------------------------------------------|
-   */
-   
-    /*
-   |-------------------------------------------------------------------------------------|
    | mysqli_result
    | Réf.: http://php.net/manual/fr/class.mysqli-result.php User Contributed Notes (Marc17)
    |
@@ -341,28 +332,29 @@
    |                   d'enregistrements.
    |-------------------------------------------------------------------------------------|
    */
-   function contenuChamp($intNo,$strNomChamp) {
-      if ($this->listeEnregistrements === false) return false;
-      if ($intNo >= mysqli_num_rows($this->listeEnregistrements)) return false;
-      if (is_string($strNomChamp) && !(strpos($strNomChamp, ".")===false)) {
-         $t_field = explode(".", $strNomChamp);
-         $strNomChamp = -1;
-         $t_fields = mysqli_fetch_fields($this->listeEnregistrements);
-         for ($id=0; $id < mysqli_num_fields($this->listeEnregistrements); $id++) {
+   
+     function mysqli_result($result, $row, $field=0) {
+      if ($result === false) return false;
+      if ($row >= mysqli_num_rows($result)) return false;
+      if (is_string($field) && !(strpos($field, ".")===false)) {
+         $t_field = explode(".", $field);
+         $field = -1;
+         $t_fields = mysqli_fetch_fields($result);
+         for ($id=0; $id < mysqli_num_fields($result); $id++) {
             if ($t_fields[$id]->table == $t_field[0] && $t_fields[$id]->name == $t_field[1]) {
-               $strNomChamp=$id;
+               $field=$id;
                break;
             }
          }
-         if ($strNomChamp == -1) return false;
+         if ($field == -1) return false;
       }
-      mysqli_data_seek($this->listeEnregistrements,$intNo);
-      $line = mysqli_fetch_array($this->listeEnregistrements);
-      
-      return isset($line[$strNomChamp]) ? $line[$strNomChamp] : false;
+      mysqli_data_seek($result,$row);
+      $line = mysqli_fetch_array($result);
+      return isset($line[$field]) ? $line[$field] : false;
    }
    
-   
+  
+  
    /*
    |-------------------------------------------------------------------------------------|
    | etablitRelation($strNomTablePrimaire, $strClePrimaire, $strNomTableEtrangere, $strCleEtrangere, $strNomRelation="")
