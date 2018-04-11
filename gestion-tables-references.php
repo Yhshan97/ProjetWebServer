@@ -29,7 +29,7 @@ $mySqli = new mysql("", $strInfosSensibles);
     <option value="2">2. Gestion des cours 
     <option value="3">3. Gestion des cours-sessions
     <option value="4">4. Gestion des catégories de documents 
-    <option value="5">5. Gestion des utilisateurs 
+    <option value="5">5. Gestion des utilisateurs </option>
         </select>
     <br><br> 
     <input class="" id="btnRetour" type="button" onclick="window.history.back()" value="Retour">  
@@ -40,7 +40,7 @@ $mySqli = new mysql("", $strInfosSensibles);
 switch (post("option2")) {
     case 1:
         ?>
-        <div style='border: black;border-collapse: separate;border-bottom-width: 2px;'>
+        <div style='border: unset'>
             <table>
                 <tr>
                     <td>
@@ -53,12 +53,12 @@ switch (post("option2")) {
                         } else {
                             $mySqli->selectionneEnregistrements("Session");
                             $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
-                            
+
                             while ($val = mysqli_fetch_array($resultat, MYSQLI_NUM)) {
-                                $tab[] = $val[0];
+                                $Description[] = $val[0];
                             }
 
-                            echo creerSelectHTML("Sessions", "Session", "","fonction1(this)", $tab);
+                            echo creerSelectHTML("Sessions", "Session", "", "", $Description);
                         }
                         ?>
                     </td>
@@ -150,8 +150,12 @@ $mySqli->deconnexion();
 ?>
 
 <script>
-    
-    function fonction1(objet){
-        var value = objet.value;
-        document.getElementById("dateDebut").value = <?php  ?>;
+
+    <?php if (isset($_POST["action"])) { ?>
+    window.onload = function f1() {
+        var tabObj = document.getElementById("radBtn").elements;
+        tabObj[<?php echo post("action") == "ajout" ? "0" : post("action") == "modif" ? "1" : "2"  ?>].checked = true;
+        alert(tabObj[1]);
     }
+    <?php } ?>
+</script>
