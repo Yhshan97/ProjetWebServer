@@ -47,26 +47,20 @@ switch (post("option2")) {
                         Session d'étude : 
                     </td>
                     <td>
-        <?php
-        if (post("action") == "ajout") {
-            input("Session", "", "text", 6, "", true);
-        } else {
-            GestionSession("ajouter", "H-2018", "2018-09-12", "2019-01-05", $mySqli);
-            GestionSession("ajouter", "H-2019", "2018-09-12", "2019-01-05", $mySqli);
-            GestionSession("ajouter", "H-2020", "2018-09-12", "2019-01-05", $mySqli);
-            GestionSession("ajouter", "H-2021", "2018-09-12", "2019-01-05", $mySqli);
-            $mySqli->requete = "SELECT Description FROM Session";
-            $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
-            $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
-            var_dump($tab);
-            $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
-            var_dump($tab);
-            $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
-            var_dump($tab);
-            
-            //creerSelectHTML("Sessions","Session", "", "");
-        }
-        ?>
+                        <?php
+                        if (post("action") == "ajout") {
+                            input("Session", "", "text", 6, "", true);
+                        } else {
+                            $mySqli->selectionneEnregistrements("Session");
+                            $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
+                            
+                            while ($val = mysqli_fetch_array($resultat, MYSQLI_NUM)) {
+                                $tab[] = $val[0];
+                            }
+
+                            echo creerSelectHTML("Sessions", "Session", "","fonction1(this)", $tab);
+                        }
+                        ?>
                     </td>
                 </tr>
                 <tr>
@@ -74,7 +68,7 @@ switch (post("option2")) {
                         Date de début de la session : 
                     </td>
                     <td>
-        <?php input("dateDebut", "", "date", 10, "", true); ?>
+                        <?php input("dateDebut", "", "date", 10, "", true); ?>
                     </td>
                 </tr>
                 <tr>
@@ -82,7 +76,7 @@ switch (post("option2")) {
                         Date de fin de la session : 
                     </td>
                     <td>
-        <?php input("dateFin", "", "date", 10, "", true); ?>
+                        <?php input("dateFin", "", "date", 10, "", true); ?>
                     </td>
                 </tr>
             </table>
@@ -149,3 +143,10 @@ switch (post("option2")) {
 require_once("pied-page.php");
 $mySqli->deconnexion();
 ?>
+
+<script>
+    
+    function fonction1(objet){
+        var value = objet.value;
+        document.getElementById("dateDebut").value = <?php  ?>;
+    }

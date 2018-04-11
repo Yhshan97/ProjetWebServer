@@ -94,11 +94,12 @@ function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
 }
 
 
-function creerSelectHTML($strID,$strName,$strClass,$tableauValues){
-    $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\">";
+function creerSelectHTML($strID,$strName,$strClass,$onchange,$tableauValues){
+    $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\" onchange=\"$onchange\">";
     
-    for($i=1;$i<=count($tableauValues);$i++){
-        $strSelectHTML .= "<option value=\"$i\">" . $tableauValues[$i];
+    for($i=0;$i<count($tableauValues);$i++){
+        $strSelectHTML .= "<option value=\"". ($i) ."\">" . $tableauValues[$i];
     }
     $strSelectHTML .= "</select>";
+    return $strSelectHTML;
 }
