@@ -44,7 +44,6 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
     }
     
     if ($booOK) {
-        echo "allo";
         switch ($mode) {
             case "ajouter":
                 $objSQL->insereEnregistrement("Session", $session, $dateDebut, $dateFin);
@@ -92,4 +91,14 @@ function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
         }
         return $objSQL->OK;
     }
+}
+
+
+function creerSelectHTML($strID,$strName,$strClass,$tableauValues){
+    $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\">";
+    
+    for($i=1;$i<=count($tableauValues);$i++){
+        $strSelectHTML .= "<option value=\"$i\">" . $tableauValues[$i];
+    }
+    $strSelectHTML .= "</select>";
 }

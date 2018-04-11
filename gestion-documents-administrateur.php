@@ -100,6 +100,7 @@ if (post("nomUtilisateur") && post("motDePasse"))
 </div>
 
 <?php
+$mySqli->deconnexion();
 require_once("pied-page.php");
 ?>
 <!--

@@ -16,7 +16,7 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 require_once("en-tete.php");
 ?>
-
+<form id="creerUtil" method="post">
 <table class="sTableau">
     <tr>
         <td>
@@ -92,7 +92,7 @@ require_once("en-tete.php");
         </td>
     </tr>
 </table>
-
+</form>
 
 <?php
 if (post("nomUtilisateur") && post("motDePasse") && post("NomComplet") && post("Courriel")) {
