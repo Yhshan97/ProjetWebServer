@@ -97,7 +97,8 @@ switch (post("option2")) {
             input("Cours", "", "text", 6, "", true);
         }
         else{
-            $mySqli->requete = selectionneEnregistrements("Cours");
+            $mySqli->selectionneEnregistrements("Cours");
+
             $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
             $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
             //var_dump($tab);
@@ -114,7 +115,7 @@ switch (post("option2")) {
                         Titre du Cours : 
                     </td>
                     <td>
-        <?php input("TitreCours", "", "date", 10, "", true); ?>
+        <?php input("TitreCours", "", "text", 10, "", true); ?>
                     </td>
                 </tr>
                 <tr>
@@ -122,7 +123,7 @@ switch (post("option2")) {
                         Nom du Professeur : 
                     </td>
                     <td>
-        <?php input("NomProf", "", "date", 10, "", true); ?>
+        <?php input("NomProf", "", "text", 10, "", true); ?>
                     </td>
                 </tr>
     </table>
@@ -139,6 +140,10 @@ switch (post("option2")) {
     case 6:
         break;
 }
+
+?>
+<button name="btnConfirmer" title="Confirmer" type="submit">Confirmer</button>
+<?php
 
 require_once("pied-page.php");
 $mySqli->deconnexion();
