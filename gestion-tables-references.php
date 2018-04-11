@@ -90,6 +90,51 @@ switch (post("option2")) {
         <?php
         break;
     case 2:
+        ?>
+<div style='border: black;border-collapse: separate;border-bottom-width: 2px;'>
+    <table>
+        <tr>
+            <td>
+                Sigle du cours :
+            </td>
+            <td>
+                <?php
+        if (post("action") == "ajout") {
+            input("Cours", "", "text", 6, "", true);
+        }
+        else{
+            $mySqli->requete = selectionneEnregistrements("Cours");
+            $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
+            $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
+            //var_dump($tab);
+            $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
+           // var_dump($tab);
+            $tab = mysqli_fetch_array($resultat, MYSQLI_NUM);
+           // var_dump($tab);
+        }
+        ?>
+            </td>
+        </tr>
+                        <tr>
+                    <td>
+                        Titre du Cours : 
+                    </td>
+                    <td>
+        <?php input("TitreCours", "", "date", 10, "", true); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Nom du Professeur : 
+                    </td>
+                    <td>
+        <?php input("NomProf", "", "date", 10, "", true); ?>
+                    </td>
+                </tr>
+    </table>
+    
+</div>
+<?php
         break;
     case 3:
         break;
