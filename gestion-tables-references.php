@@ -195,7 +195,7 @@ switch (post("option2")) {
                         <td>
                             <?php
                             if (post("action") == "ajout") {
-                                input("Sigle", "", "text", 6, "", true);
+                                input("Sigle", "", "text", 7, "", true);
                             } else {
                                 /*$mySqli->selectionneEnregistrements("Session");
                                 $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
@@ -207,7 +207,7 @@ switch (post("option2")) {
                                     $description[0] = " -------- ";
 
                                 echo creerSelectHTML("Sessions", "Session", "", "", $description);*/
-                                echo creerSelectHTMLAvecRequete("Cours","Sigle","","selectCours","Cours","","",$mySqli);
+                                echo creerSelectHTMLAvecRequete("Cours","Sigle","","selectCours","Sigle","","",$mySqli);
                             }
                             ?>
                         </td>
@@ -219,7 +219,7 @@ switch (post("option2")) {
                                 Titre du cours :
                             </td>
                             <td>
-                                <?php input("Titre", "", "text", 10, "", true); ?>
+                                <?php input("Titre", "", "text", 50, "", true); ?>
                             </td>
                         </tr>
                         <tr>
@@ -227,7 +227,7 @@ switch (post("option2")) {
                                 Nom du professeur :
                             </td>
                             <td>
-                                <?php input("NomProf", "", "text", 10, "", true); ?>
+                                <?php input("NomProf", "", "text", 50, "", true); ?>
                             </td>
                         </tr>
                     <?php } ?>
@@ -242,23 +242,28 @@ switch (post("option2")) {
                 </table>
             </form>
             <?php
+             //var_dump(post("Sigle"));
             if (isset($_POST["action"]) && isset($_POST["Sigle"])) {
+                 //var_dump(post("action"));
                 if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]) && isset($_POST["NomProf"]))) {
                     if (post("Sigle") && post("Titre") && post("NomProf")) {
                         if (GestionCours(post("action"), post("Sigle"), post("Titre"), post("NomProf"), $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
-                            echo "<div class='sErreur'>La commande a echou&eacutee</div>";
+                            echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
                         }
                     } else {
                         echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                     }
                 } else if (post("action") == "retir") {
-                    if (post("Cours")) {
+                  // var_dump(post("action"));
+                    //var_dump(post("Sigle"));
+                    if (post("Sigle")) {
+                        
                         if (GestionCours(post("action"), post("Sigle"), "", "", $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
-                            echo "<div class='sErreur'>La commande a echou&eacutee</div>";
+                            echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
                         }
                     } else {
                         echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
