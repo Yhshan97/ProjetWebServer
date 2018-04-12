@@ -45,7 +45,6 @@ $mySqli = new mysql("", $strInfosSensibles);
 </form>
 
 <?php
-
 switch (post("option2")) {
     case 1:
         ?>
@@ -214,7 +213,8 @@ switch (post("option2")) {
                                 ?>
                             </td>
                         </tr>
-                    <?php }
+                    <?php
+                    }
                     if (post("action") == "ajout" || post("action") == "modif") {
                         ?>
                         <tr>
@@ -247,7 +247,7 @@ switch (post("option2")) {
                                 ?>
                             </td>
                         </tr>
-        <?php } ?>
+                    <?php } ?>
                     <tr>
                         <td></td>
                         <td align="right">
@@ -267,9 +267,9 @@ switch (post("option2")) {
                 } else {
                     echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                 }
-            }else{
+            } else {
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
-            } 
+            }
         } else if (post("action") == "modif") {
             if (post("coursSession") && post("session") && post("cours") && post("prof")) {
                 if (gestionCoursSession(post("action"), post("coursSession"), post("session"), post("cours"), post("prof"), $mySqli)) {
@@ -277,19 +277,19 @@ switch (post("option2")) {
                 } else {
                     echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                 }
-            }else{
+            } else {
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
-            } 
-        } else if(post("action") == "retir" && isset($_POST["coursSession"])){
-             if (post("coursSession")) {
+            }
+        } else if (post("action") == "retir" && isset($_POST["coursSession"])) {
+            if (post("coursSession")) {
                 if (gestionCoursSession(post("action"), post("coursSession"), "", "", "", $mySqli)) {
                     echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                 } else {
                     echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                 }
-            }else{
+            } else {
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
-            } 
+            }
         }
         break;
     case 4:
@@ -298,7 +298,6 @@ switch (post("option2")) {
             <form id="GestionCategorie" method="post" action="">
                 <table>
                     <tr>
-
                         <?php
                         if (post("action") != "ajout") {
                             ?>

@@ -28,7 +28,7 @@ if (post("nomUtilisateur") && post("motDePasse")){
 }
 if(isset($_POST["option"])){
     switch(post("option")){
-        case "1":
+        case "1": header("location: mise-a-jour-liste-document");
             break;
         case "2": header("location: gestion-tables-references.php");
             break;
