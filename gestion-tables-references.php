@@ -202,7 +202,7 @@ switch (post("option2")) {
         <div>
             <form id="GestionSession" method="post" action="">
                 <table>
-                    <?php if (post("action") == "modif") { ?>
+                    <?php if (post("action") == "modif" || post("action") == "retir") { ?>
                         <tr>
                             <td>
                                 Cours-session :
@@ -259,8 +259,6 @@ switch (post("option2")) {
             </form>
         </div>
         <?php
-        var_dump(post("session"));
-        var_dump(post("coursSession"));
         if (post("action") == "ajout" && (isset($_POST["session"]) || isset($_POST["coursSession"]))) {
             if (post("session") && post("cours") && post("prof")) {
                 if (gestionCoursSession(post("action"), "", post("session"), post("cours"), post("prof"), $mySqli)) {
@@ -269,7 +267,6 @@ switch (post("option2")) {
                     echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                 }
             }else{
-                echo "allo";
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             } 
         } else if (post("action") == "modif") {
@@ -280,7 +277,6 @@ switch (post("option2")) {
                     echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                 }
             }else{
-                echo "allo 2";
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             } 
         } else if(post("action") == "retir" && isset($_POST["coursSession"])){
@@ -291,7 +287,6 @@ switch (post("option2")) {
                     echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                 }
             }else{
-                echo "allo";
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             } 
         }
