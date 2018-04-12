@@ -85,6 +85,41 @@ function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     }
 }
 
+function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $strNomProf, $objSQL){
+        $booOK = false;
+
+        if($mode == "ajout"){
+            if (preg_match("/-{4,9}/", $strNomProf) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && preg_match("/-{4,9}/", $strSigle) != 1) 
+            $booOK = true;
+            }
+        else if($mode == "modif"){
+            if (preg_match("/-{4,9}/", $strCoursSession) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && 
+                    preg_match("/-{4,9}/", $strSigle) != 1 && preg_match("/-{4,9}/", $strNomProf)) 
+            $booOK = true;
+        }
+        if ($mode == "retir") {
+            if (preg_match("/-{4,9}/", $strCoursSession) != 1) 
+            $booOK = true;
+        }
+
+    if ($booOK) {
+        switch ($mode) {
+            case "ajout":
+                $objSQL->insereEnregistrement("coursSession", "$strSigle ($strSession)", $strSession, $strSigle, $strNomProf);
+                break;
+            case "modif":
+                $objSQL->metAJourEnregistrements("coursSession", "Session='$strSession', Sigle='$strSigle', NomProf='$strNomProf'", "coursSession='$strCoursSession'");
+                break;
+            case "retir":
+                $objSQL->supprimeEnregistrements("coursSession", "coursSession='$strCoursSession'");
+                break;
+        }
+        return $objSQL->OK;
+    }
+    
+}
+
+
 function creerSelectHTML($strID, $strName, $strClass, $onchange, $tableauValues, $numerique = false) {
     $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\" onchange=\"$onchange\">";
 
