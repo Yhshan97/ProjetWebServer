@@ -146,7 +146,7 @@ switch (post("option2")) {
                                 Titre du cours :
                             </td>
                             <td>
-            <?php input("Titre", "", "text", 50, "", true); ?>
+                                <?php input("Titre", "", "text", 50, "", true); ?>
                             </td>
                         </tr>
                         <tr>
@@ -154,10 +154,10 @@ switch (post("option2")) {
                                 Nom du professeur :
                             </td>
                             <td>
-            <?php input("NomProf", "", "text", 50, "", true); ?>
+                                <?php input("NomProf", "", "text", 50, "", true); ?>
                             </td>
                         </tr>
-        <?php } ?>
+                    <?php } ?>
                     <tr>
                         <td></td>
                         <td align="right">
@@ -168,49 +168,49 @@ switch (post("option2")) {
                     </tr>
                 </table>
             </form>
-        <?php
-        if (isset($_POST["action"]) && isset($_POST["Sigle"])) {
-            if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]) && isset($_POST["NomProf"]))) {
-                if (post("Sigle") && post("Titre") && post("NomProf")) {
-                    if (GestionCours(post("action"), post("Sigle"), post("Titre"), post("NomProf"), $mySqli)) {
-                        echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+            <?php
+            if (isset($_POST["action"]) && isset($_POST["Sigle"])) {
+                if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]) && isset($_POST["NomProf"]))) {
+                    if (post("Sigle") && post("Titre") && post("NomProf")) {
+                        if (GestionCours(post("action"), post("Sigle"), post("Titre"), post("NomProf"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                        }
                     } else {
-                        echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                     }
-                } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
-                }
-            } else if (post("action") == "retir") {
-                if (post("Sigle")) {
+                } else if (post("action") == "retir") {
+                    if (post("Sigle")) {
 
-                    if (GestionCours(post("action"), post("Sigle"), "", "", $mySqli)) {
-                        echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        if (GestionCours(post("action"), post("Sigle"), "", "", $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                        }
                     } else {
-                        echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                     }
-                } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                 }
             }
-        }
-        ?>
-        </div>
-            <?php
-            break;
-        case 3:
             ?>
+        </div>
+        <?php
+        break;
+    case 3:
+        ?>
         <div>
             <form id="GestionSession" method="post" action="">
                 <table>
-        <?php if (post("action") == "ajout") { ?>
+                    <?php if (post("action") == "ajout") { ?>
                         <tr>
                             <td>
                                 Session :
                             </td>
                             <td>
-            <?php
-            echo creerSelectHTMLAvecRequete("Session", "Description", "", "selectSession", "session", "", "", $mySqli);
-            ?>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Session", "Description", "", "selectSession", "session", "", "", $mySqli);
+                                ?>
                             </td>
                         </tr>
                         <tr>
@@ -218,9 +218,9 @@ switch (post("option2")) {
                                 Cours :
                             </td>
                             <td>
-            <?php
-            echo creerSelectHTMLAvecRequete("Cours", "Sigle", "", "selectCours", "cours", "", "", $mySqli);
-            ?>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Cours", "Sigle", "", "selectCours", "cours", "", "", $mySqli);
+                                ?>
                             </td>
                         </tr>
                         <tr>
@@ -228,12 +228,12 @@ switch (post("option2")) {
                                 Nom prof :
                             </td>
                             <td>
-            <?php
-            echo creerSelectHTMLAvecRequete("Utilisateur", "NomComplet", "C=StatutAdmin=1", "selectProf", "prof", "", "", $mySqli);
-            ?>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Utilisateur", "NomComplet", "C=StatutAdmin=1", "selectProf", "prof", "", "", $mySqli);
+                                ?>
                             </td>
                         </tr>
-                            <?php } ?>
+                    <?php } ?>
                     <tr>
                         <td></td>
                         <td align="right">
@@ -251,10 +251,75 @@ switch (post("option2")) {
         }
         break;
     case 4:
+        ?>
+        <div>
+            <form id="GestionCategorie" method="post" action="">
+                <table>
+                    <tr>
+
+                        <?php
+                        if (post("action") != "ajout") {
+                            ?>
+                            <td>
+                                Catégorie :
+                            </td>
+                            <td>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Categorie", "Description", "", "selectCategorie", "Description", "", "", $mySqli);
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php if (post("action") != "retir") { ?>
+                        <tr>
+                            <td>
+                                Description :
+                            </td>
+                            <td>
+                                <?php input("Description", "", "text", 50, "", true); ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                            <input type="hidden" name="action" value="<?php echo post("action") ?>">
+                            <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
+                            <input id="btnSoumettre" type="submit" value="Confirmer"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <?php
+            if (isset($_POST["action"]) && isset($_POST["Description"])) {
+                if (post("action") == "ajout" || post("action") == "modif") {
+                    if (post("Description")) {
+                        if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                } else if (post("action") == "retir") {
+                    if (post("Description")) {
+
+                        if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                }
+            }
+            ?>
+        </div>
+        <?php
         break;
     case 5:
-        break;
-    case 6:
         break;
 }
 
