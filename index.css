@@ -34,31 +34,23 @@ P { font-size: 20px; }
     width:450px;
     position:fixed;
     margin-left:-200px; /* half of width */
-    left:50%;
-    top:25%;
+    left: 1320;
+    top:370;
     color:red;
     font-size: 14px;
     font-style : italic;
     font-weight : bold;
+    font-family: Poppins-Regular;
 }
+
 .sMotDePasse {
-    width:450px;
-    position:fixed;
-    margin-left:-200px; /* half of width */
-    left:70%;
-    top:39%;
-    font-size: 14px;
-    font-style : italic;
+    top:430;
+    left:960;
 }
 
 .sUtilisateur {
-    width:450px;
-    position:fixed;
-    margin-left:-200px; /* half of width */
-    left:70%;
-    top:32%;
-    font-size: 14px;
-    font-style : italic;
+    top:320;
+    left:970;
 }
 
 .sButton {
@@ -67,7 +59,7 @@ P { font-size: 20px; }
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   width: 150px;
-  height: 42px;
+  height: 42px; 
   cursor: pointer;
   top: 0;
   right: 0;
@@ -91,22 +83,75 @@ P { font-size: 20px; }
   transition: all 100ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
 }
 
-.sButton:hover {
-  color: rgba(255,255,255,1);
-  background: rgba(40,40,40,0.4);
-  -webkit-transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
-  -moz-transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
-  -o-transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
-  transition: all 200ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
-}
-
 .sButton:focus {
   width: 213px;
   cursor: default;
   padding: -13px 20px 0;
-  color: rgba(255,255,255,1);
+  color: black;
   -webkit-transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
   -moz-transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
   -o-transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
   transition: all 400ms cubic-bezier(0.68, -0.75, 0.265, 1.75);
+  background: rgba(200,200,200,0.2); 
+  
+}
+
+.sButton:hover {
+    background: rgba(200,200,200,0.2); 
+}
+
+.sGrand {
+  width: 300px;
+  height: 60px; 
+}
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url("Poppins-Regular.ttf"); 
+}
+
+@font-face {
+  font-family: Poppins-ThinItalic;
+  src: url("Poppins-ThinItalic.ttf"); 
+}
+
+.login100-form {
+  width: 100%;
+}
+
+.login100-form-logo {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-image: url("i.jpg");
+  background-color: #cccccc;
+  background-size: cover;
+  margin-left: 680;
+  margin-top: 250;
+  border: 2px solid white;
+}
+
+.login100-form-title {
+  font-family: Poppins-Medium;
+  font-size: 30px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+  display: block;
+}
+
+.rectangle {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 50px;
+  width: 100px;
 }
