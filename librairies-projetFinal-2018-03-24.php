@@ -57,16 +57,15 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
 
 function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     $booEverything = false;
-
-    if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {
-        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match('~[0-9]~', $strNomProf) != 1) {
-            $booEverything;
+    if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {    
+        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match("/^\w{5,50}/", $strNomProf) == 1) {        
+            var_dump($booEverything);
+            $booEverything = true;
         }
         if ($mode == "retir") {
             $booEverything = true;
         }
     }
-    var_dump($booEverything);
     if ($booEverything) {
         switch ($mode) {
             case "ajout":
@@ -152,4 +151,31 @@ function creerSelectHTMLAvecRequete($strNomTable, $strNomColonne, $strCondition 
 
 function session($strNomVariable) {
     return isset($_SESSION["$strNomVariable"]) ? $_SESSION["$strNomVariable"] : false;
+}
+
+function GestionCategorieDocument($mode, $strDescription, $objSQL) {
+    $booDescription = false;
+    if (preg_match("/^\w{3,15}/", $strDescription)) {
+        $booDescription = true;
+        if ($mode == "retir") {
+            $booDescription = true;
+        }
+    }
+    var_dump($booDescription);
+    if ($booDescription) {
+        switch ($mode) {
+            case "ajout":
+                $objSQL->insereEnregistrement("Categorie", $strDescription);
+                break;
+            case "modif": //a tester
+                $objSQL->metAJourEnregistrements("Categorie", "Description='$strDescription'");
+                break;
+            case "retir": //a tester
+                $objSQL->supprimeEnregistrements("Categorie", "Description='$strDescription'");
+                break;
+            default:
+                return false;
+        }
+        return $objSQL->OK;
+    }
 }
