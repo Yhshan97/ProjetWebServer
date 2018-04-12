@@ -59,9 +59,10 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
 }
 
 
-function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
+function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     $booSigleOk = false;
     $booTitreOk = false;
+    $booNomProf = false;
     if(strlen($strSigle) == 7 && ctype_digit(gauche($strSigle, 3)) && substr($strSigle, 3,1) == '-' && ctype_alnum(droite($strSigle, 3))){
         $booSigleOk = true;
     }
@@ -70,13 +71,17 @@ function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
         $booTitreOk = true;
     }
     
-    if($booSigleOk && $booTitreOk){
+    if(ctype_alpha($strNomProf)){
+        $booNomProf = true;
+    }
+    
+    if($booSigleOk && $booTitreOk && $booNomProf){
         switch ($mode) {
             case "ajouter":
-                $objSQL->insereEnregistrement("Cours", $strSigle, $strTitreCours);
+                $objSQL->insereEnregistrement("Cours", $strSigle, $strTitreCours, $strNomProf);
                 break;
             case "modifier": //a tester
-                $objSQL->metAJourEnregistrements("Cours", "Sigle='$strSigle', Titre='$strTitreCours'");
+                $objSQL->metAJourEnregistrements("Cours", "Sigle='$strSigle', Titre='$strTitreCours' , NomProf='$strNomProf'");
                 break;
             case "retirer": //a tester
                 $objSQL->supprimeEnregistrements("Cours", "Where Sigle=$strSigle");
