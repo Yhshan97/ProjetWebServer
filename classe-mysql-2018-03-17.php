@@ -16,6 +16,7 @@
       public $nomBD = "";                       /* Nom de la base de données */
       public $OK = false;                       /* Opération réussie ou non */
       public $requete = "";                     /* Requête exécutée */
+      
       /*
       |----------------------------------------------------------------------------------|
       | __construct
