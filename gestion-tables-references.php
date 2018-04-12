@@ -20,19 +20,24 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 $mySqli = new mysql("", $strInfosSensibles);
 ?>
 <form id="action" method="post" action="">
-    <br> <input type="radio" name="action" value="ajout" checked="checked"> Ajouter
-    <br> <input type="radio" name="action" value="modif"> Modifier
-    <br> <input type="radio" name="action" value="retir"> Retirer 
+    <br> <input type="radio" id="radBtn" name="action" value="ajout"
+        <?php
+    if(post("action") == "ajout" || !isset($_POST["action"]))
+        echo "checked";
+        ?>
+    > Ajouter
+    <br> <input type="radio" id="radBtn" name="action" value="modif" <?php if(post("action") == "modif") echo "checked"; ?>> Modifier
+    <br> <input type="radio" id="radBtn" name="action" value="retir" <?php if(post("action") == "retir") echo "checked"; ?>> Retirer
     <br> <br>
-    <select name="option2" id="option" onchange=""/>
+    <select name="option2" id="option" onchange="" >
     <option value="1">1. Gestion des sessions d'étude
     <option value="2">2. Gestion des cours 
     <option value="3">3. Gestion des cours-sessions
-    <option value="4">4. Gestion des catégories de documents 
+    <option value="4">4. Gestion des catégories de documents
     <option value="5">5. Gestion des utilisateurs </option>
-        </select>
+    </select>
     <br><br> 
-    <input class="" id="btnRetour" type="button" onclick="window.history.back()" value="Retour">  
+    <input class="" id="btnRetour" type="button" onclick="window.location.href='gestion-documents-administrateur.php'" value="Retour">
     <input class="" id="InpValider" type="submit" value="Valider choix">
 </form>
 
@@ -40,11 +45,12 @@ $mySqli = new mysql("", $strInfosSensibles);
 switch (post("option2")) {
     case 1:
         ?>
-        <div style='border: unset'>
+        <div>
+        <form id="GestionSession" method="post" action="">
             <table>
                 <tr>
                     <td>
-                        Session d'étude : 
+                        Session d'étude :
                     </td>
                     <td>
                         <?php
@@ -55,31 +61,70 @@ switch (post("option2")) {
                             $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
 
                             while ($val = mysqli_fetch_array($resultat, MYSQLI_NUM)) {
-                                $Description[] = $val[0];
+                                $description[] = $val[0];
                             }
+                            if (!isset($description))
+                                $description[0] = " -------- ";
 
-                            echo creerSelectHTML("Sessions", "Session", "", "", $Description);
+                            echo creerSelectHTML("Sessions", "Session", "", "", $description);
                         }
                         ?>
                     </td>
                 </tr>
+                <?php
+                if (post("action") != "retir") { ?>
+                    <tr>
+                        <td>
+                            Date de début de la session :
+                        </td>
+                        <td>
+                            <?php input("dateDebut", "", "date", 10, "", true); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Date de fin de la session :
+                        </td>
+                        <td>
+                            <?php input("dateFin", "", "date", 10, "", true); ?>
+                        </td>
+                    </tr>
+                <?php } ?>
                 <tr>
-                    <td>
-                        Date de début de la session : 
-                    </td>
-                    <td>
-                        <?php input("dateDebut", "", "date", 10, "", true); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Date de fin de la session : 
-                    </td>
-                    <td>
-                        <?php input("dateFin", "", "date", 10, "", true); ?>
+                    <td></td>
+                    <td align="right">
+                        <input type="hidden" name="action" value="<?php echo post("action") ?>">
+                        <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
+                        <input id="btnSoumettre" type="submit" value="Confirmer"/>
                     </td>
                 </tr>
             </table>
+        </form>
+        <?php
+        if (isset($_POST["action"]) && isset($_POST["Session"])) {
+        if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["dateDebut"]) && isset($_POST["dateFin"]))) {
+            if (post("Session") && post("dateDebut") && post("dateFin")) {
+                if (GestionSession(post("action"), post("Session"), post("dateDebut"), post("dateFin"), $mySqli)) {
+                    echo "La commande a ete effectu&eacutee";
+                } else {
+                    echo "La commande a echou&eacutee";
+                }
+            } else {
+                echo "Impossible d'effectuer la commande, donn&eacutees manquantes";
+            }
+        } else if (post("action") == "retir") {
+            if (post("Session")) {
+                if(GestionSession(post("action"), post("Session"), "", "", $mySqli)){
+                    echo "La commande a ete effectu&eacutee";
+                } else {
+                    echo "La commande a echou&eacutee";
+                }
+            } else {
+                echo "Impossible d'effectuer la commande, donn&eacutees manquantes";
+            }
+        }
+        }
+            ?>
         </div>
         <?php
         break;
@@ -148,14 +193,3 @@ switch (post("option2")) {
 require_once("pied-page.php");
 $mySqli->deconnexion();
 ?>
-
-<script>
-
-    <?php if (isset($_POST["action"])) { ?>
-    window.onload = function f1() {
-        var tabObj = document.getElementById("radBtn").elements;
-        tabObj[<?php echo post("action") == "ajout" ? "0" : post("action") == "modif" ? "1" : "2"  ?>].checked = true;
-        alert(tabObj[1]);
-    }
-    <?php } ?>
-</script>

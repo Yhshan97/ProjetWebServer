@@ -14,23 +14,24 @@ require_once("librairies-projetFinal-2018-03-24.php");
 require_once("background.php");
 require_once("en-tete.php");
 
-$strMonIP = "";
-$strIPServeur = "";
-$strNomServeur = "";
-$strInfosSensibles = "";
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
+session_start();
 $mySqli = new mysql("", $strInfosSensibles);
 
-$booConnexion = false;
-
-if (post("nomUtilisateur") && post("motDePasse"))
-    if (connexion(post("nomUtilisateur"), post("motDePasse"), $mySqli))
+if (post("nomUtilisateur") && post("motDePasse")){
+    if (connexion(post("nomUtilisateur"), post("motDePasse"), $mySqli)){
         $booConnexion = true;
+        $_SESSION["connectee"] = true;
+        $_SESSION["nomUtilisateur"] = post("nomUtilisateur");
+    }
+}
+
+
 ?>
 <form id="frmSaisie" method="POST" action="">
 
-    <div <?php echo $booConnexion ? "style=\"display:none\"" : "" ?> >
+    <div <?php echo (!isset($_SESSION["connectee"]) || session("connectee") == false) ? "" : "style=\"display:none\"" ?> >
         <table class="sTableau sMilieu" style="top: 30%">
             <tr>
                 <td>
@@ -79,21 +80,18 @@ if (post("nomUtilisateur") && post("motDePasse"))
         </table>
     </div>
 </form>
-<div <?php echo!$booConnexion ? "style=\"display:none\"" : "" ?> >
 
-
-    <!--  ici   -->
-    <label for="Jour">Bienvenue <?php echo post("nomUtilisateur") ?> :) Vous désirez ...</label><br/>
-    <form id="saisieChoix" method="POST" action="gestion-tables-references.php">
-        <select name="option" id="option" onchange="maFonction(this)"/>
-        <option value="1">1. Mettre à jour la liste des documents</option>
-        <option value="2">2. Mettre à jour les tables de référence </option>
-        <option value="3">3. Assigner les privilèges d'accès aux documents </option>
-        <option value="4">4. Assigner un groupe d'utilisateurs à un cours-session </option>
-        <option value="5">5. Reconstruire l'arborescence des documents </option>
-        <option value="6">6. Terminer l'application </option>
+<div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> >
+    <label for="Jour">Bienvenue <?php echo session("nomUtilisateur") ?> :) Vous désirez ...</label><br/>
+    <form id="saisieChoix" name="choix" method="POST" action="">
+        <select name="option" id="option">
+            <option value="1">1. Mettre à jour la liste des documents</option>
+            <option value="2">2. Mettre à jour les tables de référence </option>
+            <option value="3">3. Assigner les privilèges d'accès aux documents </option>
+            <option value="4">4. Assigner un groupe d'utilisateurs à un cours-session </option>
+            <option value="5">5. Reconstruire l'arborescence des documents </option>
+            <option value="6">6. Terminer l'application </option>
         </select>
-        <a id="radio"></a>
 
         <p><input type="submit" value="Valider le choix"></p>
     </form>
@@ -103,19 +101,3 @@ if (post("nomUtilisateur") && post("motDePasse"))
 $mySqli->deconnexion();
 require_once("pied-page.php");
 ?>
-<!--
-<script>
-    function maFonction(objet) {
-        var aaa = objet.value;
-        if (aaa == 2) {
-            document.getElementById("radio").innerHTML = `<br>
-                    <br><input type=\"radio\" name=\"action\" value=\"ajout\" checked=\"checked\"> Ajouter
-                    <br><input type=\"radio\" name=\"action\" value=\"modif\"> Modifier
-                    <br><input type=\"radio\" name=\"action\" value=\"retir\"> Retirer `;
-    }
-    else {
-        document.getElementById("radio").innerHTML = "";
-    }
-    }
-</script>
--->
