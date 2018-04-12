@@ -293,6 +293,73 @@ switch (post("option2")) {
         }
         break;
     case 4:
+        ?>
+        <div>
+            <form id="GestionCategorie" method="post" action="">
+                <table>
+                    <tr>
+
+                        <?php
+                        if (post("action") != "ajout") {
+                            ?>
+                            <td>
+                                Catégorie :
+                            </td>
+                            <td>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Categorie", "Description", "", "selectCategorie", "Description", "", "", $mySqli);
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php if (post("action") != "retir") { ?>
+                        <tr>
+                            <td>
+                                Description :
+                            </td>
+                            <td>
+                                <?php input("Description", "", "text", 50, "", true); ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                            <input type="hidden" name="action" value="<?php echo post("action") ?>">
+                            <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
+                            <input id="btnSoumettre" type="submit" value="Confirmer"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <?php
+            if (isset($_POST["action"]) && isset($_POST["Description"])) {
+                if (post("action") == "ajout" || post("action") == "modif") {
+                    if (post("Description")) {
+                        if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                } else if (post("action") == "retir") {
+                    if (post("Description")) {
+
+                        if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                }
+            }
+            ?>
+        </div>
+        <?php
         break;
     case 5:
         break;
