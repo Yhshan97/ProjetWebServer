@@ -155,8 +155,6 @@ switch (post("option2")) {
                             </td>
                             <td>
                                 <?php input("NomProf", "", "text", 50, "", true); ?>
-<<<<<<< HEAD
-=======
                             </td>
                         </tr>
                     <?php } ?>
@@ -246,7 +244,6 @@ switch (post("option2")) {
                                 <?php
                                 echo creerSelectHTMLAvecRequete("Utilisateur", "NomComplet", "C=StatutAdmin=1", "selectProf", "prof", "", "", $mySqli);
                                 ?>
->>>>>>> origin/master
                             </td>
                         </tr>
                     <?php } ?>
@@ -260,7 +257,95 @@ switch (post("option2")) {
                     </tr>
                 </table>
             </form>
-<<<<<<< HEAD
+            <?php
+            if (isset($_POST["action"]) && isset($_POST["Sigle"])) {
+                if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]) && isset($_POST["NomProf"]))) {
+                    if (post("Sigle") && post("Titre") && post("NomProf")) {
+                        if (GestionCours(post("action"), post("Sigle"), post("Titre"), post("NomProf"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                } else if (post("action") == "retir") {
+                    if (post("Sigle")) {
+
+                        if (GestionCours(post("action"), post("Sigle"), "", "", $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                }
+            }
+            ?>
+        </div>
+        <?php
+        break;
+    case 3:
+        ?>
+        <div>
+            <form id="GestionSession" method="post" action="">
+                <table>
+                    <?php if (post("action") == "modif") { ?>
+                        <tr>
+                            <td>
+                                Cours-session :
+                            </td>
+                            <td>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("CoursSession", "coursSession", "", "selectCoursSession", "coursSession", "", "", $mySqli);
+                                ?>
+                            </td>
+                        </tr>
+                    <?php }
+                    if (post("action") == "ajout" || post("action") == "modif") {
+                        ?>
+                        <tr>
+                            <td>
+                                Session :
+                            </td>
+                            <td>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Session", "Description", "", "selectSession", "session", "", "", $mySqli);
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Cours :
+                            </td>
+                            <td>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Cours", "Sigle", "", "selectCours", "cours", "", "", $mySqli);
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Nom prof :
+                            </td>
+                            <td>
+                                <?php
+                                echo creerSelectHTMLAvecRequete("Utilisateur", "NomComplet", "C=StatutAdmin=1", "selectProf", "prof", "", "", $mySqli);
+                                ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                            <input type="hidden" name="action" value="<?php echo post("action") ?>">
+                            <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
+                            <input id="btnSoumettre" type="submit" value="Confirmer"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
             <?php
             if (isset($_POST["action"]) && isset($_POST["Sigle"])) {
                 if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]) && isset($_POST["NomProf"]))) {

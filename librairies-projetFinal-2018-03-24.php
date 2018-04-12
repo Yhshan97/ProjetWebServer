@@ -57,15 +57,16 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
 
 function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     $booEverything = false;
-    if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {    
-        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match("/^\w{5,50}/", $strNomProf) == 1) {        
-            var_dump($booEverything);
-            $booEverything = true;
+
+    if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {
+        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match('~[0-9]~', $strNomProf) != 1) {
+            $booEverything;
         }
         if ($mode == "retir") {
             $booEverything = true;
         }
     }
+    var_dump($booEverything);
     if ($booEverything) {
         switch ($mode) {
             case "ajout":
@@ -84,45 +85,39 @@ function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     }
 }
 
-function GestionCategorieDocument($mode, $strDescription, $objSQL) {
-    $booDescription = false;
-    if (preg_match("/^\w{3,15}/", $strDescription)) {
-        $booDescription = true;
-        if ($mode == "retir") {
-            $booDescription = true;
+function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $strNomProf, $objSQL){
+        $booOK = false;
+
+        if($mode == "ajout"){
+            if (preg_match("/-{4,9}/", $strNomProf) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && preg_match("/-{4,9}/", $strSigle) != 1) 
+            $booOK = true;
+            }
+        else if($mode == "modif"){
+            if (preg_match("/-{4,9}/", $strCoursSession) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && 
+                    preg_match("/-{4,9}/", $strSigle) != 1 && preg_match("/-{4,9}/", $strNomProf)) 
+            $booOK = true;
         }
-    }
-    var_dump($booDescription);
-    if ($booDescription) {
+        if ($mode == "retir") {
+            if (preg_match("/-{4,9}/", $strCoursSession) != 1) 
+            $booOK = true;
+        }
+
+    if ($booOK) {
         switch ($mode) {
             case "ajout":
-                $objSQL->insereEnregistrement("Categorie", $strDescription);
+                $objSQL->insereEnregistrement("coursSession", "$strSigle ($strSession)", $strSession, $strSigle, $strNomProf);
                 break;
-            case "modif": //a tester
-                $objSQL->metAJourEnregistrements("Categorie", "Description='$strDescription'");
+            case "modif":
+                $objSQL->metAJourEnregistrements("coursSession", "Session='$strSession', Sigle='$strSigle', NomProf='$strNomProf'", "coursSession='$strCoursSession'");
                 break;
-            case "retir": //a tester
-                $objSQL->supprimeEnregistrements("Categorie", "Description='$strDescription'");
+            case "retir":
+                $objSQL->supprimeEnregistrements("coursSession", "coursSession='$strCoursSession'");
                 break;
-            default:
-                return false;
         }
         return $objSQL->OK;
     }
-}
-
-
-
-
-function GestionUtilisateurs($param) {
     
 }
-
-
-
-
-
-
 
 
 function creerSelectHTML($strID, $strName, $strClass, $onchange, $tableauValues, $numerique = false) {
