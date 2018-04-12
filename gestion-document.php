@@ -44,7 +44,14 @@ $mySqli->listeEnregistrements = mysqli_query($mySqli->cBD, $mySqli->requete);
         </tr>
          <tr>
             <td>
-                DateCours :  <?php input("dateCours", "", "date", 10, "", true); ?>
+                DateCours :   <select id="ddlNoSequence" name="ddlNoSequence" class="">
+				<option value=""></option>
+				<script type="text/javascript">
+				    for (var i = 1; i <= 20; i++) {
+				        document.write('<option value="' + i + '">' + i + '</option>')
+				    }
+				</script>
+                             </select>
             </td>
         </tr>
         <tr>
