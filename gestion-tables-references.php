@@ -32,11 +32,11 @@ $mySqli = new mysql("", $strInfosSensibles);
                 value="retir" <?php if (post("action") == "retir") echo "checked"; ?>> Retirer
     <br> <br>
     <select name="option2" id="option" onchange="">
-        <option value="1">1. Gestion des sessions d'étude
-        <option value="2">2. Gestion des cours
-        <option value="3">3. Gestion des cours-sessions
-        <option value="4">4. Gestion des catégories de documents
-        <option value="5">5. Gestion des utilisateurs</option>
+        <option value="1" <?php if(post("option2") == "1") echo "selected" ?>>1. Gestion des sessions d'étude
+        <option value="2" <?php if(post("option2") == "2") echo "selected" ?>>2. Gestion des cours
+        <option value="3" <?php if(post("option2") == "3") echo "selected" ?>>3. Gestion des cours-sessions
+        <option value="4" <?php if(post("option2") == "4") echo "selected" ?>>4. Gestion des catégories de documents
+        <option value="5" <?php if(post("option2") == "5") echo "selected" ?>>5. Gestion des utilisateurs</option>
     </select>
     <br><br>
     <input class="" id="btnRetour" type="button" onclick="window.location.href='gestion-documents-administrateur.php'"
@@ -60,16 +60,6 @@ switch (post("option2")) {
                             if (post("action") == "ajout") {
                                 input("Session", "", "text", 6, "", true);
                             } else {
-                                /*$mySqli->selectionneEnregistrements("Session");
-                                $resultat = mysqli_query($mySqli->cBD, $mySqli->requete);
-
-                                while ($val = mysqli_fetch_array($resultat, MYSQLI_NUM)) {
-                                    $description[] = $val[0];
-                                }
-                                if (!isset($description))
-                                    $description[0] = " -------- ";
-
-                                echo creerSelectHTML("Sessions", "Session", "", "", $description);*/
                                 echo creerSelectHTMLAvecRequete("Session","Description","","selectSession","Session","","",$mySqli);
                             }
                             ?>
@@ -323,10 +313,21 @@ switch (post("option2")) {
                             </td>
                         </tr>
                     <?php } ?>
-
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                            <input type="hidden" name="action" value="<?php echo post("action") ?>">
+                            <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
+                            <input id="btnSoumettre" type="submit" value="Confirmer"/>
+                        </td>
+                    </tr>
                 </table>
-        </div>
-        <?php
+            </form>
+            </div>
+            <?php
+            if (post("action") == "ajout"){
+                
+            }
         break;
     case 4:
         break;
