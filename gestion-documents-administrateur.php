@@ -26,7 +26,25 @@ if (post("nomUtilisateur") && post("motDePasse")){
         $_SESSION["nomUtilisateur"] = post("nomUtilisateur");
     }
 }
+if(isset($_POST["option"])){
+    switch(post("option")){
+        case "1":
+            break;
+        case "2": header("location: gestion-tables-references.php");
+            break;
+        case "3":
+            break;
+        case "4":
+            break;
+        case "5":
+            break;
+        case "6":
+            session_unset();
+            header("location: gestion-documents-administrateur.php");
+            break;
 
+    }
+}
 
 ?>
 <form id="frmSaisie" method="POST" action="">
@@ -57,7 +75,7 @@ if (post("nomUtilisateur") && post("motDePasse")){
                 <td>
                     <?php
                     if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
-                        echo "<div class=\"sErreur sMotDePasse\"> Entrez un mot de passe! </div>"
+                        echo "<div class=\"sErreur sMotDePasse\" style=\"margin-right: 150px;\"> Entrez un mot de passe! </div>"
                         ?>
                 </td>
             </tr>
@@ -82,7 +100,7 @@ if (post("nomUtilisateur") && post("motDePasse")){
 </form>
 
 <div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> >
-    <label for="Jour">Bienvenue <?php echo session("nomUtilisateur") ?> :) Vous désirez ...</label><br/>
+    <label for="Jour">Bienvenu(e) <?php echo session("NomComplet") ?> :) Vous désirez ...</label><br/><br>
     <form id="saisieChoix" name="choix" method="POST" action="">
         <select name="option" id="option">
             <option value="1">1. Mettre à jour la liste des documents</option>
@@ -92,8 +110,8 @@ if (post("nomUtilisateur") && post("motDePasse")){
             <option value="5">5. Reconstruire l'arborescence des documents </option>
             <option value="6">6. Terminer l'application </option>
         </select>
-
-        <p><input type="submit" value="Valider le choix"></p>
+        <br><br>
+        <input type="submit" value="Valider le choix">
     </form>
 </div>
 

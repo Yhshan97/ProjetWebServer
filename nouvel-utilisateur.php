@@ -11,6 +11,7 @@ require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");
 require_once("librairies-communes-2018-03-17.php");
 require_once("librairies-projetFinal-2018-03-24.php");
+require_once("background.php");
 
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
@@ -36,6 +37,9 @@ require_once("en-tete.php");
             Mot de passe :
         </td><td>
             <?php input("motDePasse","", "password", 15, "", true); ?>
+            <td>
+                <input id="visible" type="checkbox" onchange="switchVisible(this)"/> Visible
+        </td>
         </td>
         <td>
             <?php
@@ -43,6 +47,7 @@ require_once("en-tete.php");
                 echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"
                 ?>
         </td>
+        <td>  </td>
     </tr>
     <tr>
         <td>
@@ -124,5 +129,14 @@ if (post("nomUtilisateur") && post("motDePasse") && post("NomComplet") && post("
 require_once("pied-page.php");
 
 ?>
-
+<script>
+    function switchVisible(objChkBox){
+        if(objChkBox.checked){
+            document.getElementById("motDePasse").type = "text";
+        }
+        else{
+            document.getElementById("motDePasse").type = "password";
+        }
+    }
+</script>
 

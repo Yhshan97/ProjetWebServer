@@ -114,7 +114,8 @@
                       break;
               }
           }
-          $this->requete .= "PRIMARY KEY(". $strCles . ")) ENGINE=InnoDB";
+          if(!empty($strCles))
+            $this->requete .= "PRIMARY KEY(". $strCles . ")) ENGINE=InnoDB";
           $this->OK = mysqli_query($this->cBD, $this->requete);
 
           return $this->OK;

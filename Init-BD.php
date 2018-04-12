@@ -60,6 +60,8 @@ $objMySqli->supprimeTable("session");
 ecrit("Suppression table 'Session' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 $objMySqli->supprimeTable("Utilisateur");
 ecrit("Suppression table 'Utilisateur' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 4);
+$objMySqli->supprimeTable("CoursSession");
+ecrit("Suppression table 'cours-session' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 4);
 
 
 //Creation des tables Categorie,Cours,Document
@@ -103,6 +105,11 @@ $objMySqli->creeTableGenerique("Utilisateur", "V25,NomUtilisateur;".
                                            "V50,Courriel;", "NomUtilisateur");
 ecrit("Creation table 'Utilisateur' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
+$objMySqli->creeTableGenerique("CoursSession", "V16,coursSession;".
+    "V6,Session;".
+    "V7,Sigle;".
+    "V30,NomProf;", "coursSession");
+ecrit("Creation table 'CoursSession' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 $objMySqli->etablitRelation("Categorie", "Description", "Document", "Categorie","FK_Categorie_Document");
 ecrit("Etablit relation entre categorie et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);

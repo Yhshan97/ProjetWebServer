@@ -19,11 +19,6 @@ function connexion($strNomUtil,$strMotPasse,$objSQL){
                     $booTrouve = true;
                     $_SESSION["NomComplet"] = $ligne["NomComplet"];
                     $_SESSION["courriel"] = $ligne["Courriel"];
-                    ecrit("<p class=\"sVert\"> Connexion ok </p>",1);
-                    ecrit("<div class=\"sGras\">Nom Utilisateur : " . $ligne["NomUtilisateur"],1);
-                    ecrit("Statut : " . ($ligne["StatutAdmin"] == 0 ? "Utilisateur":"Administrateur"),1);
-                    ecrit("Nom Complet : " . $ligne["NomComplet"],1);
-                    ecrit("Courriel : " . $ligne["Courriel"] . "</p>",1);
                 }
         }
             if(!$booTrouve)
@@ -109,6 +104,20 @@ function creerSelectHTML($strID,$strName,$strClass,$onchange,$tableauValues,$num
 
     $strSelectHTML .= "</select>";
     return $strSelectHTML;
+}
+
+function creerSelectHTMLAvecRequete($strNomTable, $strNomColonne,$strCondition="",$strID,$strName,$strClass,$onchange,$mySqli){
+    $mySqli->selectionneEnregistrements($strNomTable,$strCondition);
+    $result = mysqli_query($mySqli->cBD,$mySqli->requete);
+
+    while ($val = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $Tableau[] = $val["$strNomColonne"];
+    }
+    if (!isset($Tableau))
+        $Tableau[0] = " -------- ";
+
+    return creerSelectHTML($strID, $strName, $strClass, $onchange, $Tableau);
+
 }
 
 function session($strNomVariable){
