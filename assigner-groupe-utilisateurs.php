@@ -14,7 +14,7 @@ require_once("librairies-projetFinal-2018-03-24.php");
 require_once("background.php");
 require_once("en-tete.php");
 
-
+session_start();
 
 
 

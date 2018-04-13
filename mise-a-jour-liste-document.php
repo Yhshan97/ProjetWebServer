@@ -14,7 +14,7 @@ require_once("librairies-projetFinal-2018-03-24.php");
 require_once("background.php");
 require_once("en-tete.php");
 
-
+session_start();
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 $mySqli = new mysql("", $strInfosSensibles);
@@ -38,3 +38,6 @@ echo $mySqli->nbEnregistrements ?> document(s) </label>
     
 </form>
 
+<?php
+require_once ("pied-page.php");
+?>

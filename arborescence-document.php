@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
-$strTitreApplication = "Mettre à jour les tables de r&eacutef&eacuterences";
+$strTitreApplication = "Mettre à jour la liste des documents";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
@@ -17,7 +17,7 @@ require_once("en-tete.php");
 
 
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
-
+session_start();
 $mySqli = new mysql("", $strInfosSensibles);
 ?>
 <form id="arborescence">
@@ -54,3 +54,7 @@ $mySqli = new mysql("", $strInfosSensibles);
         </tr>
     </table>
 </form>
+
+<?php
+require_once ("pied-page.php");
+?>

@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
-$strTitreApplication = "Mettre à jour les tables de r&eacutef&eacuterences";
+$strTitreApplication = "Mettre à jour la liste des documents";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
@@ -169,3 +169,7 @@ session_start();
     <input class="" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
            value="Retour">
 </form>
+
+<?php
+require_once ("pied-page.php");
+?>
