@@ -271,7 +271,7 @@ switch (post("option2")) {
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             }
         } else if (post("action") == "modif") {
-            if (post("coursSession") && post("session") && post("cours") && post("prof")) {
+            if (isset($_POST["coursSession"]) && isset($_POST["session"]) && post("cours") && post("prof")) {
                 if (gestionCoursSession(post("action"), post("coursSession"), post("session"), post("cours"), post("prof"), $mySqli)) {
                     echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                 } else {
@@ -365,8 +365,6 @@ switch (post("option2")) {
                         echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                     }
                 }
-            } else {
-                echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             }
             ?>
         </div>
@@ -375,7 +373,9 @@ switch (post("option2")) {
     case 5:
         if (post("action") == "ajout") {
             ?>
-            <form id='gestionUtilisateur' name='formTableRef' value="1" action='nouvel-utilisateur.php' ></form>
+            <form id='gestionUtilisateur' method="post" value="1" action='nouvel-utilisateur.php'>
+                <input name="formTableRef" type="hidden" value="1">
+            </form>
             <script type="text/javascript">
                 document.getElementById('gestionUtilisateur').submit();
             </script>
