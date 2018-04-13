@@ -51,11 +51,11 @@ require_once("en-tete.php");
     </tr>
     <tr>
         <td>
-            Statut admin :
+            Statut admin : 
         </td><td>
             <select name="StatutAdmin">
-                <option value="0">Utilisateur</option>
-                <option value="1" selected>Administrateur</option>
+                <option value="0" <?php if(isset($_POST["formTableRef"])) echo "selected"; ?>>Utilisateur</option>
+                <option value="1" <?php if(!isset($_POST["formTableRef"])) echo "selected"; ?>>Administrateur</option>
             </select>
         </td>
         <td>
@@ -93,8 +93,9 @@ require_once("en-tete.php");
         </td>
         <td align="right">
             <input type="button" value="Retour" onclick="<?php echo isset($_POST["formTableRef"]) ? 
-            "window.location.href='gestion-documents-administrateur.php'" : 
-                    "window.location.href='gestion-tables-references.php'" ?>">
+            "window.location.href='gestion-tables-references.php'" : 
+                    "window.location.href='gestion-documents-administrateur.php'"
+                     ?>">
             <input id="btnCreer" name="btnCreer" type="submit" value="Créer Utilisateur">
         </td>
     </tr>
