@@ -92,7 +92,9 @@ require_once("en-tete.php");
             
         </td>
         <td align="right">
-            <input type="button" value="Retour" onclick="window.location.href='gestion-documents-administrateur.php'">
+            <input type="button" value="Retour" onclick="<?php echo isset($_POST["formTableRef"]) ? 
+            "window.location.href='gestion-documents-administrateur.php'" : 
+                    "window.location.href='gestion-tables-references.php'" ?>">
             <input id="btnCreer" name="btnCreer" type="submit" value="Créer Utilisateur">
         </td>
     </tr>

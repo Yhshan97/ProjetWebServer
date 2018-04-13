@@ -57,8 +57,8 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
 
 function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     $booEverything = false;
-    if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {    
-        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match("/^\w{5,50}/", $strNomProf) == 1) {        
+    if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {
+        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match("/^\w{5,50}/", $strNomProf) == 1) {
             var_dump($booEverything);
             $booEverything = true;
         }
@@ -84,22 +84,22 @@ function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     }
 }
 
-function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $strNomProf, $objSQL){
-        $booOK = false;
+function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $strNomProf, $objSQL) {
+    $booOK = false;
 
-        if($mode == "ajout"){
-            if (preg_match("/-{4,9}/", $strNomProf) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && preg_match("/-{4,9}/", $strSigle) != 1) 
+    if ($mode == "ajout") {
+        if (preg_match("/-{4,9}/", $strNomProf) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && preg_match("/-{4,9}/", $strSigle) != 1)
             $booOK = true;
-            }
-        else if($mode == "modif"){
-            if (preg_match("/-{4,9}/", $strCoursSession) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && 
-                    preg_match("/-{4,9}/", $strSigle) != 1 && preg_match("/-{4,9}/", $strNomProf)) 
+    }
+    else if ($mode == "modif") {
+        if (preg_match("/-{4,9}/", $strCoursSession) != 1 && preg_match("/-{4,9}/", $strSession) != 1 &&
+                preg_match("/-{4,9}/", $strSigle) != 1 && preg_match("/-{4,9}/", $strNomProf))
             $booOK = true;
-        }
-        if ($mode == "retir") {
-            if (preg_match("/-{4,9}/", $strCoursSession) != 1) 
+    }
+    if ($mode == "retir") {
+        if (preg_match("/-{4,9}/", $strCoursSession) != 1)
             $booOK = true;
-        }
+    }
 
     if ($booOK) {
         switch ($mode) {
@@ -115,9 +115,7 @@ function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $s
         }
         return $objSQL->OK;
     }
-    
 }
-
 
 function creerSelectHTML($strID, $strName, $strClass, $onchange, $tableauValues, $numerique = false) {
     $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\" onchange=\"$onchange\">";
@@ -161,14 +159,13 @@ function GestionCategorieDocument($mode, $strDescription, $objSQL) {
             $booDescription = true;
         }
     }
-    var_dump($booDescription);
     if ($booDescription) {
         switch ($mode) {
             case "ajout":
                 $objSQL->insereEnregistrement("Categorie", $strDescription);
                 break;
             case "modif": //a tester
-                $objSQL->metAJourEnregistrements("Categorie", "Description='$strDescription'");
+                $objSQL->metAJourEnregistrements("Categorie", "Description='" . func_get_arg(3) . "'", "Description='$strDescription'");
                 break;
             case "retir": //a tester
                 $objSQL->supprimeEnregistrements("Categorie", "Description='$strDescription'");
@@ -177,5 +174,22 @@ function GestionCategorieDocument($mode, $strDescription, $objSQL) {
                 return false;
         }
         return $objSQL->OK;
+    }
+}
+
+function gestionUtilisateur($mode, $strUtilSelect, $strNom, $strMotDePasse, $booStatut, $strNomComplet, $strCourriel, $objSQL) {
+
+    if ($mode == "retir") {
+        if (preg_match("/-{4,9}/", $strUtilSelect) != 1) {
+            $objSQL->supprimeEnregistrements("utilisateur", "NomUtilisateur='$strUtilSelect'");
+            return $objSQL->OK;
+        } else return false;
+    } else if ($mode == "modif") {
+        if (preg_match("/\w{1,2}.\w{2,25}/", $strNom) && preg_match("/.{3,25}/", $strMotDePasse) &&
+                preg_match("/\D+, \D+/", $strNomComplet) && preg_match("/\w{10,50}/", $strCourriel)) {
+            $objSQL->metAJourEnregistrements("utilisateur", "NomUtilisateur='$strNom', MotDePasse='$strMotDePasse', StatutAdmin='$booStatut', NomComplet='$strNomComplet', Courriel='$strCourriel'", "NomUtilisateur='$strUtilSelect'");
+            return $objSQL->OK;
+        }
+        else return false;
     }
 }

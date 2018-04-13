@@ -317,7 +317,7 @@ switch (post("option2")) {
                                 Description :
                             </td>
                             <td>
-                                <?php input("Description", "", "text", 50, "", true); ?>
+                                <?php input("DescriptionModif", "", "text", 50, "", true); ?>
                             </td>
                         </tr>
                     <?php } ?>
@@ -332,10 +332,20 @@ switch (post("option2")) {
                 </table>
             </form>
             <?php
-            if (isset($_POST["action"]) && isset($_POST["Description"])) {
-                if (post("action") == "ajout" || post("action") == "modif") {
-                    if (post("Description")) {
-                        if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
+            if (isset($_POST["action"]) && (isset($_POST["DescriptionModif"]) || isset($_POST["Description"]))) {
+                if (post("action") == "ajout") {
+                    if (post("DescriptionModif") && !empty(post("DescriptionModif"))) {
+                        if (GestionCategorieDocument(post("action"), post("DescriptionModif"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                        } else {
+                            echo "<div class='sErreur'>La commande a echou&eacutee</div>";
+                        }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                } else if (post("action") == "modif") {
+                    if (post("Description") && post("DescriptionModif")) {
+                        if (GestionCategorieDocument(post("action"), post("Description"), $mySqli, post("DescriptionModif"))) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
                             echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
@@ -355,15 +365,142 @@ switch (post("option2")) {
                         echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                     }
                 }
+            } else {
+                echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             }
             ?>
         </div>
         <?php
         break;
     case 5:
-        break;
-    case 6:
-        break;
+        if (post("action") == "ajout") {
+            ?>
+            <form id='gestionUtilisateur' name='formTableRef' value="1" action='nouvel-utilisateur.php' ></form>
+            <script type="text/javascript">
+                document.getElementById('gestionUtilisateur').submit();
+            </script>
+            <?php
+        } else if (post("action") == "modif") {
+            ?>
+            <div>
+                <form id='frmModifUtil' method="post" action=''>
+                    <table>
+                        <tr>
+                            <td>
+                                Nom d'utilisateur : 
+                            </td>
+                            <td>
+                                <?php echo creerSelectHTMLAvecRequete("utilisateur", "NomUtilisateur", "", "selectNomUtil", "selectNomUtil", "", "", $mySqli) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Nom d'utilisateur :
+                            </td><td>
+                                <?php input("nomUtil", "", "text", 25, "", true); ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Mot de passe :
+                            </td><td>
+                                <?php input("motDePasse", "", "password", 15, "", true); ?>
+                            <td>
+                                <input id="visible" type="checkbox" onchange="switchVisible(this)"/> Visible
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Statut admin :
+                            </td><td>
+                                <select name="StatutAdmin">
+                                    <option value="0" selected>Utilisateur</option>
+                                    <option value="1" >Administrateur</option>
+                                </select>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Nom complet :
+                            </td><td>
+                                <?php input("NomComplet", "", "text", 30, "", true); ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Courriel :
+                            </td><td>
+                                <?php input("Courriel", "", "text", 30, "", true); ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="right">
+                                <input type="hidden" name="action" value="<?php echo post("action") ?>"/>
+                                <input type="hidden" name="option2" value="<?php echo post("option2") ?>"/>
+                                <input id='soumettre' type='submit' value='Choisir utilisateur' >
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <?php
+            if (isset($_POST["selectNomUtil"]) && isset($_POST["nomUtil"]) && isset($_POST["motDePasse"]) &&
+                    isset($_POST["NomComplet"]) && isset($_POST["Courriel"])) {
+                if (post("selectNomUtil") && post("nomUtil") && post("motDePasse") && post("NomComplet") && post("Courriel")) {
+                    if (gestionUtilisateur(post("action"), post("selectNomUtil"), post("nomUtil"), post("motDePasse"), post("StatutAdmin"), post("NomComplet"), post("Courriel"), $mySqli)) {
+                        echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                    } else {
+                        echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                    }
+                } else {
+                    echo "<div class='sErreur'>Les donn&eacutees ne sont pas compl&egravestes</div>";
+                }
+            }
+        } else if (post("action") == "retir") {
+            ?>
+            <div>
+                <form id='frmModifUtil' method="post" action=''>
+                    <table>
+                        <tr>
+                            <td>
+                                Nom d'utilisateur : 
+                            </td>
+                            <td>
+                                <?php echo creerSelectHTMLAvecRequete("utilisateur", "NomUtilisateur", "", "selectNomUtil", "selectNomUtil", "", "", $mySqli) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="right">
+                                <input type="hidden" name="action" value="<?php echo post("action") ?>"/>
+                                <input type="hidden" name="option2" value="<?php echo post("option2") ?>"/>
+                                <input id='soumettre' type='submit' value="Supprimer l'utilisateur" >
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <?php
+            if (post("selectNomUtil")) {
+                $nbAdmins = mysqli_query($mySqli->cBD, "SELECT count(statutAdmin) FROM Utilisateur where StatutAdmin = 1");
+                $count = $nbAdmins->fetch_row();
+                
+                
+                if ($count[0] > 1) {
+                    if (gestionUtilisateur(post("action"), post("selectNomUtil"), "", "", "", "", "", $mySqli)) {
+                        echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
+                    } else {
+                        echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                    }
+                } else {
+                    echo "<div class='sErreur'>Il doit avoir au moins 1 administrateur</div>";
+                }
+            }
+            break;
+        }
 }
 
 require_once("pied-page.php");
