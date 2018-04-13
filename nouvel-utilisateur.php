@@ -12,7 +12,7 @@ require_once("classe-mysql-2018-03-17.php");
 require_once("librairies-communes-2018-03-17.php");
 require_once("librairies-projetFinal-2018-03-24.php");
 require_once("background.php");
-
+session_start();
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 require_once("en-tete.php");

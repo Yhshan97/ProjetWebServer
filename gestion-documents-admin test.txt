@@ -1,0 +1,133 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+
+/* Variables nécessaires pour les fichiers d'inclusion */
+$strTitreApplication = "Gestion des documents (Administrateur)";
+$strNomFichierCSS = "index.css";
+$strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
+$boo1 = false;
+$boo2 = false;
+
+/* Liste des fichiers d'inclusion */
+require_once("classe-fichier-2018-03-16.php");
+require_once("classe-mysql-2018-03-17.php");
+require_once("librairies-communes-2018-03-17.php");
+require_once("librairies-projetFinal-2018-03-24.php");
+require_once("background.php");
+require_once("en-tete.php");
+
+detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
+
+session_start();
+$mySqli = new mysql("", $strInfosSensibles);
+
+if (post("nomUtilisateur") && post("motDePasse")){
+    if (connexion(post("nomUtilisateur"), post("motDePasse"), $mySqli)){
+        $booConnexion = true;
+        $_SESSION["connectee"] = true;
+        $_SESSION["nomUtilisateur"] = post("nomUtilisateur");
+    }
+}
+if(isset($_POST["option"])){
+    switch(post("option")){
+        case "1":
+            break;
+        case "2": header("location: gestion-tables-references.php");
+            break;
+        case "3":
+            break;
+        case "4":
+            break;
+        case "5":
+            break;
+        case "6":
+            session_unset();
+            header("location: gestion-documents-administrateur.php");
+            break;
+
+    }
+}
+
+?>
+<form id="frmSaisie" method="POST" action="">
+    <span class="login100-form-logo"></span>
+    <div id="divSaisie">
+        <table class="sTableau sMilieu" style="top: 25%; text-align: center;">
+            <td class="sBlanc"> Identifiant </td>
+            <tr>  
+                <td>
+                    <?php input("nomUtilisateur", "sButton sCentrer", "text", 15, post("nomUtilisateur"), true); ?>
+                </td>
+                <td>
+                    <?php
+                    if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
+                        echo "<span class=\"sErreur sUtilisateur\"> Entrez un nom d'utilisateur! </span>"
+                        ?>
+                </td>
+            </tr>
+        </table>
+        <table class="sTableau sMilieu" style="top: 37%; text-align: center;">
+            <td class="sBlanc"> Mot de passe </td>
+            <tr>
+                <td>    
+                    <?php input("motDePasse", "sButton sCentrer", "password", 15, "", true); ?>
+                </td>
+                <td>
+                    <?php
+                    if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
+                        echo "<div class=\"sErreur sMotDePasse\"> Entrez un mot de passe! </div>"
+                        ?>
+                </td>
+            </tr>
+        </table>
+        <table class="sTableau sMilieu" style="top: 320; left:1300;">
+            <tr>
+                <td></td>
+                <td>
+                    <input id="btnConnexion" name="btnConnexion" type="submit" value="Connexion" onclick="" class="sButton sGrand" style=" font-family: Poppins-Regular;">
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:500px; left:900px">
+    <label for="Jour">Bienvenu(e) <?php echo session("NomComplet") ?> :) Vous désirez ...</label><br/><br>
+    <form id="saisieChoix" name="choix" method="POST" action="">
+        <select name="option" id="option" class="sList">
+            <option value="1">1. Mettre à jour la liste des documents</option>
+            <option value="2">2. Mettre à jour les tables de référence </option>
+            <option value="3">3. Assigner les privilèges d'accès aux documents </option>
+            <option value="4">4. Assigner un groupe d'utilisateurs à un cours-session </option>
+            <option value="5">5. Reconstruire l'arborescence des documents </option>
+            <option value="6">6. Terminer l'application </option>
+        </select>
+        <br><br>
+        <input type="submit" value="Valider le choix" class="sButton">
+    </form>
+</div>
+
+<?php
+$mySqli->deconnexion();
+?>
+
+<script type="text/javascript">
+    function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
