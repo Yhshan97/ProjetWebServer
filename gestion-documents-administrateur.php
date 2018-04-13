@@ -36,7 +36,7 @@ if(isset($_POST["option"])){
             break;
         case "4":
             break;
-        case "5":
+        case "5": header("location: arborescence-document.php");
             break;
         case "6":
             session_unset();
