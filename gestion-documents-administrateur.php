@@ -34,7 +34,7 @@ if(isset($_POST["option"])){
             break;
         case "3":
             break;
-        case "4":
+        case "4": header("location: assigner-utilisateur-courssession.php");
             break;
         case "5": header("location: arborescence-document.php");
             break;

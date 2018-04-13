@@ -1,5 +1,4 @@
 <?php
-
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
@@ -20,36 +19,22 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 $mySqli = new mysql("", $strInfosSensibles);
 ?>
-<form id="arborescence">
+<form id="assignerUser" method="post" action="">
     <table>
-        <tr class="sEntete">
-            <td>
-           Session 
-           </td>
-           <td>
-           Sigle 
-           </td>
-           <td>
-           Professeur 
-           </td>
-           <td>
-           Date du cours 
-           </td>
-           <td>
-           Titre du document 
-           </td>
-           <td>
-           Case a cocher 
-           </td>
-        </tr>
         <tr>
-            Il n'ya aucun document présent dans la base de donnée
+            <td>
+                Veuillez svp entrer le nom du fichier CSV
+            </td>
+            <td>
+                <?php echo input("nomFichier", "", "text", 50, "") ?>
+            </td>
         </tr>
         <tr>
             <td>
-                <br> <br>
-                <input class="" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
-           value="Retour">
+                <button id="btnConfirmer" class="">Confirmer</button>
+            </td>
+            <td>        <input class="" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+                           value="Retour">
             </td>
         </tr>
     </table>
