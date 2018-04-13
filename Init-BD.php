@@ -122,6 +122,12 @@ ecrit("Etablit relation entre session et document :" . ($objMySqli->OK ? " Succ&
 $objMySqli->etablitRelation("Cours", "Sigle", "Document", "Sigle","FK_Cours_Document");
 ecrit("Etablit relation entre cours et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
+$objMySqli->etablitRelation("Session", "Description", "courssession", "Session","FK_Session_coursSession");
+ecrit("Etablit relation entre courssession et session :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->etablitRelation("Cours", "Sigle", "courssession", "Sigle","FK_Cours_coursSession");
+ecrit("Etablit relation entre courssession et Cours :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
 
 $objMySqli->afficheInformationsSurBD();
 
