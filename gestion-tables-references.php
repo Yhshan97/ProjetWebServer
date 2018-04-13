@@ -374,6 +374,8 @@ switch (post("option2")) {
         if (post("action") == "ajout") {
             ?>
             <form id='gestionUtilisateur' method="post" value="1" action='nouvel-utilisateur.php'>
+                <input type="hidden" name="action" value="<?php echo post("action") ?>"/>
+                <input type="hidden" name="option2" value="<?php echo post("option2") ?>"/>
                 <input name="formTableRef" type="hidden" value="1">
             </form>
             <script type="text/javascript">
@@ -487,9 +489,10 @@ switch (post("option2")) {
             if (post("selectNomUtil")) {
                 $nbAdmins = mysqli_query($mySqli->cBD, "SELECT count(statutAdmin) FROM Utilisateur where StatutAdmin = 1");
                 $count = $nbAdmins->fetch_row();
-                
-                
-                if ($count[0] > 1) {
+                $booUtilChoisiAdmin = mysqli_query($mySqli->cBD, "SELECT statutAdmin FROM Utilisateur where nomUtilisateur='". post("selectNomUtil") . "'");
+                $booAdmin = $booUtilChoisiAdmin->fetch_row();
+
+                if (($count[0] > 1) || ($count[0] == 1 && $booAdmin[0] != 1)) {
                     if (gestionUtilisateur(post("action"), post("selectNomUtil"), "", "", "", "", "", $mySqli)) {
                         echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                     } else {
@@ -506,3 +509,13 @@ switch (post("option2")) {
 require_once("pied-page.php");
 $mySqli->deconnexion();
 ?>
+<script>
+    function switchVisible(objChkBox){
+        if(objChkBox.checked){
+            document.getElementById("motDePasse").type = "text";
+        }
+        else{
+            document.getElementById("motDePasse").type = "password";
+        }
+    }
+</script>
