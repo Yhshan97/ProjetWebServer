@@ -32,7 +32,7 @@ if(isset($_POST["option"])){
             break;
         case "2": header("location: gestion-tables-references.php");
             break;
-        case "3":
+        case "3": header("location: assigner-privileges-document.php");
             break;
         case "4": header("location: assigner-utilisateur-courssession.php");
             break;
