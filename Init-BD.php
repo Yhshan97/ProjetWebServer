@@ -52,17 +52,24 @@ ecrit((empty($objMySqli->cBD->error) ? " effectu&eacute correctement !" : die(" 
 //Drop les tables s'ils existent deja
 $objMySqli->supprimeTable("document");
 ecrit("Suppression table 'Document' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
-$objMySqli->supprimeTable("categorie");
-ecrit("Suppression table 'Categorie' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->supprimeTable("CoursSession");
+ecrit("Suppression table 'cours-session' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
 $objMySqli->supprimeTable("cours");
 ecrit("Suppression table 'Cours' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
-$objMySqli->supprimeTable("session");
-ecrit("Suppression table 'Session' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
-$objMySqli->supprimeTable("Utilisateur");
-ecrit("Suppression table 'Utilisateur' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 4);
-$objMySqli->supprimeTable("CoursSession");
-ecrit("Suppression table 'cours-session' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 4);
 
+$objMySqli->supprimeTable("categorie");
+ecrit("Suppression table 'Categorie' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->supprimeTable("Privilege");
+ecrit("Suppression table 'Privilege' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->supprimeTable("Utilisateur");
+ecrit("Suppression table 'Utilisateur' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->supprimeTable("session");
+ecrit("Suppression table 'Session' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 4);
 
 //Creation des tables Categorie,Cours,Document
 $objMySqli->creeTableGenerique("Categorie", "V15,Description", "Description");
@@ -106,18 +113,21 @@ $objMySqli->creeTableGenerique("Utilisateur", "V25,NomUtilisateur;".
 ecrit("Creation table 'Utilisateur' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 $objMySqli->creeTableGenerique("CoursSession", "V16,coursSession;".
-    "V6,Session;".
-    "V7,Sigle;".
-    "V30,NomProf;", "coursSession");
+                                            "V6,Session;".
+                                            "V7,Sigle;".
+                                            "V30,NomProf;", "coursSession");
 ecrit("Creation table 'CoursSession' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->creeTableGenerique("Privilege", "V50,IDPrivilege;".
+                                            "V16,coursSession;". 
+                                            "V25,NomUtilisateur;", "NoPrivilege");
+ecrit("Creation table 'Privilege' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 $objMySqli->etablitRelation("Categorie", "Description", "Document", "Categorie","FK_Categorie_Document");
 ecrit("Etablit relation entre categorie et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
-
 $objMySqli->etablitRelation("Session", "Description", "Document", "Session","FK_Session_Document");
 ecrit("Etablit relation entre session et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
-
 
 $objMySqli->etablitRelation("Cours", "Sigle", "Document", "Sigle","FK_Cours_Document");
 ecrit("Etablit relation entre cours et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
@@ -127,6 +137,12 @@ ecrit("Etablit relation entre courssession et session :" . ($objMySqli->OK ? " S
 
 $objMySqli->etablitRelation("Cours", "Sigle", "courssession", "Sigle","FK_Cours_coursSession");
 ecrit("Etablit relation entre courssession et Cours :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->etablitRelation("CoursSession", "coursSession", "Privilege", "coursSession","FK_Privilege_CoursSession");
+ecrit("Etablit relation entre courssession et privilege :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
+
+$objMySqli->etablitRelation("utilisateur", "NomUtilisateur", "Privilege", "NomUtilisateur","FK_Privilege_nomUtilisateur");
+ecrit("Etablit relation entre utilisateur et privilege :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 
 $objMySqli->afficheInformationsSurBD();
