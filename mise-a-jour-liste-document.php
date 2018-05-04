@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-
+session_start();
 /* Variables nécessaires pour les fichiers d'inclusion */
 $strTitreApplication = "Mettre à jour la liste des documents";
 $strNomFichierCSS = "index.css";
@@ -32,7 +32,7 @@ if(isset($_POST["coursSession"])){
         $infosCoursSession["coursSession"] = $mySqli->contenuChamp(0, "coursSession");
         $infosCoursSession["Sigle"] = $mySqli->contenuChamp(0, "Sigle");
         $infosCoursSession["Session"] = $mySqli->contenuChamp(0, "Session");
-        var_dump($infosCoursSession);
+       // var_dump($infosCoursSession);
     }
 }
 
@@ -103,6 +103,46 @@ if(isset($_POST["coursSession"])){
                 <th>Date de début</th>
                 <th>Date de fin</th>
                 <th>Titre</th>
+            </tr>
+            <tr>
+                <!-- Session  -->
+                <th>
+                    <?php echo $infosCoursSession["Session"]; ?>
+                </th>
+                <!-- SigleCours  -->
+                <th>
+                    <?php echo $infosCoursSession["Sigle"]; ?>
+                </th>
+                <!-- DateCours  -->
+                <th>
+                    <input type="date" id="idDateCours" name="dateCours" >
+                </th>
+                <!-- NoSequence  -->
+                <th>
+                    <input type="number" id="idNoSequence" name="noSequence" min="0" max="20">
+                </th>
+                <!-- DateDebut  -->
+                <th>
+                    <input type="date" id="idDateDebut" name="dateAccessDebut" >
+                </th>
+                <!-- DateFin  -->
+                <th>
+                    <input type="date" id="idDateFin" name="dateAccessFin" >
+                </th>
+                <!-- Titre  -->
+                <th>
+                    <input type="text" id="idTitre" name="titre" >
+                </th>
+            </tr>
+            <tr>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+            </tr>
+            <tr class="sEntete">
                 <th>Description</th>
                 <th>Nombre de pages</th>
                 <th>Catégorie</th>
@@ -110,34 +150,40 @@ if(isset($_POST["coursSession"])){
                 <th>Date version</th>
                 <th>Hyper lien</th>
                 <th>Ajouté par</th>
-                <th>Action</th>
             </tr>
             <tr>
-                <!-- Session  -->
-                <td>
-                    <?php echo $infosCoursSession["Session"]; ?>
-                </td>
-                <!-- SigleCours  -->
-                <td>
-                    <?php echo $infosCoursSession["Sigle"]; ?>
-                </td>
-                <!-- DateCours  -->
-                <!-- NoSequence  -->
-                <!-- DateDebut  -->
-                <!-- DateFin  -->
-                <!-- Titre  -->
                 <!-- Description  -->
+                <th>
+                    <input type="text" id="idDescription" name="description" >
+                </th>
                 <!-- NbPages  -->
+                <th>
+                    <input type="text" id="idNbPages" name="nbPages" >
+                </th>
                 <!-- Categorie  -->
+                <th>
+                    <?php echo creerSelectHTMLAvecRequete("Categorie", "Description", "", "idCategorie", "categorie", "sList", "", $mySqli);  ?>
+                </th>
                 <!-- NoVersion  -->
+                <th>
+                    <input type="number" id="idNoVersion" name="noVersion" min="1" max="99" >
+                </th>
                 <!-- DateVersion  -->
+                <th>
+                    <input type="date" id="idDateVersion" name="dateVersion" >
+                </th>
                 <!-- HyperLien  -->
+                <th>
+                    <a>MODULE DE TELEVERSEMENT</a>
+                </th>
                 <!-- AjoutePar  -->
-                <!-- Action  -->
-                
+                <th>
+                    <?php echo $_SESSION["NomComplet"];?>
+                </th>
             </tr>
-            
         </table>
+        
+        <input type="button" id="idbtAjout"
         
         
         
