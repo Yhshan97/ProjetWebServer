@@ -43,7 +43,7 @@ $mySqli = new mysql("", $strInfosSensibles);
            </td>
         </tr>
         <tr>
-            Aucun document présent dans la base de donnée
+            Il n'ya aucun document présent dans la base de donnée
         </tr>
         <tr>
             <td>
