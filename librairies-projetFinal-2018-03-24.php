@@ -138,11 +138,11 @@ function creerSelectHTMLAvecRequete($strNomTable, $strNomColonne, $strCondition 
     $mySqli->selectionneEnregistrements($strNomTable, $strCondition);
     $result = mysqli_query($mySqli->cBD, $mySqli->requete);
 
+    $Tableau[0] = " -------- ";
     while ($val = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $Tableau[] = $val["$strNomColonne"];
     }
-    if (!isset($Tableau))
-        $Tableau[0] = " -------- ";
+        
 
     return creerSelectHTML($strID, $strName, $strClass, $onchange, $Tableau);
 }

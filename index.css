@@ -2,6 +2,7 @@ BODY { padding-left:15px; padding-top:15px; height: 100%; overflow: hidden }
 BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; height: 100%; overflow: hidden}
 TABLE { border-collapse: collapse; }
 TD { padding:5px; }
+TH { height: 20px; padding:15px;}
 P { font-size: 20px; }
 
 .sTitreApplication { font-size:24px; line-height:26px; font-weight:bold; margin-top:0px; font-family: "Helvetica CE", sans-serif; }
@@ -23,6 +24,7 @@ P { font-size: 20px; }
 .sLogin { font-family: "Helvetica CE", sans-serif; }
 .sLogo { font-size: 10px; font-style: italic}
 .sBlanc { color:white; font-weight: lighter}
+.tableBordure { border-collapse: collapse; }
 .sMilieu { 
     width:450px;
     position:fixed;
