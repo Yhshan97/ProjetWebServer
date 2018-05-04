@@ -19,8 +19,8 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 session_start();
 $mySqli = new mysql("", $strInfosSensibles);
 
-if (post("nomUtilisateur") && post("motDePasse")){
-    if (connexion(post("nomUtilisateur"), post("motDePasse"), $mySqli)){
+if (post("nomUtilisateur") && post("motDePasse")) {
+    if (connexion(post("nomUtilisateur"), post("motDePasse"), $mySqli)) {
         $booConnexion = true;
         $_SESSION["connectee"] = true;
         $_SESSION["nomUtilisateur"] = post("nomUtilisateur");
@@ -45,16 +45,15 @@ if(isset($_POST["option"])){
 
     }
 }
-
 ?>
-<form id="frmSaisie" method="POST" action="">
-
-    <div <?php echo (!isset($_SESSION["connectee"]) || session("connectee") == false) ? "" : "style=\"display:none\"" ?> >
-        <table class="sTableau sMilieu" style="top: 30%">
-            <tr>
-                <td>
-                    Nom d'utilisateur :
-                </td><td>
+<form id="frmSaisie" method="POST" action="" style="font-family: Poppins-Regular;">
+    
+    <div id="divSaisie" <?php echo session("connectee") == false ? "" : "style=\"display:none\"" ?>>
+        <span class="login100-form-logo"></span>
+        <table class="sTableau sMilieu" style="top: 25%; text-align: center;">
+            <td class="sBlanc" style="left:870"> Identifiant </td>
+            <tr>  
+                <td style="position: fixed;left:880">
                     <?php input("nomUtilisateur", "sButton sCentrer", "text", 15, post("nomUtilisateur"), true); ?>
                 </td>
                 <td>
@@ -65,44 +64,38 @@ if(isset($_POST["option"])){
                 </td>
             </tr>
         </table>
-        <table class="sTableau sMilieu" style="top: 37%; left: 51.1%">
+        <table class="sTableau sMilieu" style="top: 37%; left:1095">
+            <td class="sBlanc" style="position:fixed;top: 36.5%; left:900"> Mot de passe </td>
             <tr>
-                <td>
-                    Mot de passe :
-                </td><td>
+                <td style="position:fixed; left:880; top:40%;">    
                     <?php input("motDePasse", "sButton sCentrer", "password", 15, "", true); ?>
+                </td>
+                <td  style="position:fixed; left:880; top:46%; font-size: 14px">
+                    <input type="checkbox" class="sButton" onchange="document.getElementById('motDePasse').type = this.checked ? 'text' : 'password'" style="height:10px; width:10px;">Montrer le mot de passe
                 </td>
                 <td>
                     <?php
                     if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
-                        echo "<div class=\"sErreur sMotDePasse\" style=\"margin-right: 150px;\"> Entrez un mot de passe! </div>"
+                        echo "<div class=\"sErreur sMotDePasse\"> Entrez un mot de passe! </div>"
                         ?>
                 </td>
             </tr>
         </table>
-        <table class="sTableau sMilieu" style="top: 44%; left: 54.2%">
+        <table class="sTableau sMilieu" style="top: 330; left:1300;">
             <tr>
                 <td></td>
                 <td>
-                    <input id="btnConnexion" name="btnConnexion" type="submit" value="Connexion" onclick="" class="sButton">
-                </td>
-            </tr>
-        </table>
-        <table  class="sTableau sMilieu" style="top: 49.5%; left: 54.2%">
-            <tr>
-                <td></td>
-                <td>
-                    <input id="btnActualiser" name="btnActualiser" type="button" value="Actualiser" class="sButton"onclick="window.location = document.location.href;" />
+                    <input id="btnConnexion" name="btnConnexion" type="submit" value="Connexion" onclick="" class="sButton sGrand" style=" font-family: Poppins-Regular;">
                 </td>
             </tr>
         </table>
     </div>
 </form>
 
-<div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> >
-    <label for="Jour">Bienvenu(e) <?php echo session("NomComplet") ?> :) Vous désirez ...</label><br/><br>
+<div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
+    <label for="Jour">Bienvenu(e) cher(e) utilisateur(e) Vous désirez ...</label><br/><br>
     <form id="saisieChoix" name="choix" method="POST" action="">
-        <select name="option" id="option">
+        <select name="option" id="option" class="sList">
             <option value="1">1. Mettre à jour la liste des documents</option>
             <option value="2">2. Mettre à jour les tables de référence </option>
             <option value="3">3. Assigner les privilèges d'accès aux documents </option>
@@ -111,11 +104,19 @@ if(isset($_POST["option"])){
             <option value="6">6. Terminer l'application </option>
         </select>
         <br><br>
-        <input type="submit" value="Valider le choix">
+        <input type="submit" value="Valider le choix" class="sButton">
     </form>
 </div>
-
 <?php
 $mySqli->deconnexion();
-require_once("pied-page.php");
 ?>
+<script type="text/javascript">
+    function password() {
+        var x = document.getElementById("motDePasse");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

@@ -17,7 +17,7 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 require_once("en-tete.php");
 ?>
-<form id="creerUtil" method="post">
+<form id="creerUtil" method="post" style="font-family: Poppins-Regular;">
 <table class="sTableau">
     <tr>
         <td>
@@ -28,7 +28,7 @@ require_once("en-tete.php");
         <td>
             <?php
             if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
-                echo "<div class=\"sRouge\"> Entrez un nom d'utilisateur! </div>"
+                echo "<div class=\"sErreur\"> Entrez un nom d'utilisateur! </div>"
                 ?>
         </td>
     </tr>
@@ -38,7 +38,7 @@ require_once("en-tete.php");
         </td><td>
             <?php input("motDePasse","", "password", 15, "", true); ?>
             <td>
-                <input id="visible" type="checkbox" onchange="switchVisible(this)"/> Visible
+                <input type="checkbox" class="sButton" onchange="document.getElementById('motDePasse').type = this.checked ? 'text' : 'password'" style="height:10px; width:10px; left: 100">Montrer le mot de passe
         </td>
         </td>
         <td>
@@ -92,11 +92,11 @@ require_once("en-tete.php");
             
         </td>
         <td align="right">
-            <input type="button" value="Retour" onclick="<?php echo isset($_POST["formTableRef"]) ? 
+            <input type="button" class="sButton" value="Retour" onclick="<?php echo isset($_POST["formTableRef"]) ? 
             "window.location.href='gestion-tables-references.php'" : 
                     "window.location.href='gestion-documents-administrateur.php'"
                      ?>">
-            <input id="btnCreer" name="btnCreer" type="submit" value="Créer Utilisateur">
+            <input id="btnCreer" class="sButton" name="btnCreer" type="submit" value="Créer Utilisateur">
         </td>
     </tr>
 </table>

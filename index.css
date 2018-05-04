@@ -1,5 +1,5 @@
-BODY { padding-left:15px; padding-top:15px; }
-BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; }
+BODY { padding-left:15px; padding-top:15px; height: 100%; overflow: hidden }
+BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; height: 100%; overflow: hidden}
 TABLE { border-collapse: collapse; }
 TD { padding:5px; }
 P { font-size: 20px; }
@@ -29,7 +29,8 @@ P { font-size: 20px; }
     margin-left:-200px; /* half of width */
     left:50%;
 }
-.sCentrer { text-align:center; }
+.sCentrer { text-align:center;
+}
 .sErreur {     
     width:450px;
     position:fixed;
@@ -39,18 +40,17 @@ P { font-size: 20px; }
     color:red;
     font-size: 14px;
     font-style : italic;
-    font-weight : bold;
     font-family: Poppins-Regular;
 }
 
 .sMotDePasse {
-    top:445;
-    left:960;
+    top:480;
+    left:1090;
 }
 
 .sUtilisateur {
     top:330;
-    left:970;
+    left:960;
 }
 
 .sButton {
@@ -132,7 +132,7 @@ P { font-size: 20px; }
   background-color: #cccccc;
   background-size: cover;
   margin-left: 680;
-  margin-top: 250;
+  margin-top: 215;
   border: 2px solid white;
 }
 

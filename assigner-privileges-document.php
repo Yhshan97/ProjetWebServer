@@ -28,17 +28,17 @@ echo $mySqli->nbEnregistrements ?> cours-session </label>
 echo $mySqli->nbEnregistrements ?> utilisateur(s) </label>
       <br> <br>
       Liste des cours-session
-      <?php echo creerSelectHTMLAvecRequete("CoursSession", "coursSession", "", "selectCoursSession", "coursSession", "", "", $mySqli);?>
+      <?php echo creerSelectHTMLAvecRequete("CoursSession", "coursSession", "", "selectCoursSession", "coursSession", "sList", "", $mySqli);?>
       <br> <br>
       Liste des Utilisateurs
-      <?php echo creerSelectHTMLAvecRequete("utilisateur", "NomUtilisateur", "", "selectUtilisateur", "NomUtilisateur", "", "", $mySqli);?>
+      <?php echo creerSelectHTMLAvecRequete("utilisateur", "NomUtilisateur", "", "selectUtilisateur", "NomUtilisateur", "sList", "", $mySqli);?>
        <br> <br>
        <table>
            
        </table>
-       <button id="btnSelection" onclick="window.location.href= 'gestion-document.php'">Selection</button>
+       <button id="btnSelection" class="sButton" onclick="window.location.href= 'gestion-document.php'">Selection</button>
       <br> <br>
-    <input class="" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
            value="Retour">
     
     

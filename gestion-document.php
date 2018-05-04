@@ -27,7 +27,7 @@ $mySqli->listeEnregistrements = mysqli_query($mySqli->cBD, $mySqli->requete);
 
 session_start();
 ?>
-<form id="document" method="post" action="">
+<form id="document" method="post" action="" style="font-family: Poppins-Regular;">
 
     <table>
         Veuillez saisir les données du nouveau document à ajouter dans <?php echo post("coursSession"); ?> 
@@ -166,7 +166,7 @@ session_start();
         </tr>
 
     </table>
-    <input class="" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
            value="Retour">
 </form>
 

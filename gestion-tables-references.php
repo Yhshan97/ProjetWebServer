@@ -19,19 +19,20 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 $mySqli = new mysql("", $strInfosSensibles);
 ?>
-<form id="action" method="post" action="">
-    <br> <input type="radio" id="radBtn" name="action" value="ajout"
+<form id="action" method="post" action="" style="font-family: Poppins-Regular;height:680px">
+    <ul> <li> <input type="radio" id="a-option" name="action" value="ajout"
     <?php
     if (post("action") == "ajout" || !isset($_POST["action"]))
         echo "checked";
-    ?>
-                > Ajouter
-    <br> <input type="radio" id="radBtn" name="action"
-                value="modif" <?php if (post("action") == "modif") echo "checked"; ?>> Modifier
-    <br> <input type="radio" id="radBtn" name="action"
-                value="retir" <?php if (post("action") == "retir") echo "checked"; ?>> Retirer
-    <br> <br>
-    <select name="option2" id="option" onchange="">
+    ?> 
+                     >  <label for="a-option">Ajouter</label><div class="check"></div></li><li>
+    <input type="radio" id="m-option" name="action"
+           value="modif" <?php if (post("action") == "modif") echo "checked"; ?>> <label for="m-option">Modifier</label><div class="check"><div class="inside"></div></div></li><li>
+    <input type="radio" id="r-option" name="action"
+           value="retir" <?php if (post("action") == "retir") echo "checked"; ?>>  <label for="r-option">Retirer</label><div class="check"><div class="inside"></div></div></li>
+
+    </ul>
+    <select name="option2" id="option" onchange="" class="sList" style="position:fixed; top:200px; left:100px">
         <option value="1" <?php if (post("option2") == "1") echo "selected" ?>>1. Gestion des sessions d'étude
         <option value="2" <?php if (post("option2") == "2") echo "selected" ?>>2. Gestion des cours
         <option value="3" <?php if (post("option2") == "3") echo "selected" ?>>3. Gestion des cours-sessions
@@ -39,9 +40,9 @@ $mySqli = new mysql("", $strInfosSensibles);
         <option value="5" <?php if (post("option2") == "5") echo "selected" ?>>5. Gestion des utilisateurs</option>
     </select>
     <br><br>
-    <input class="" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
-           value="Retour">
-    <input class="" id="InpValider" type="submit" value="Valider choix">
+    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+           value="Retour" style="position:fixed; top:280px; left:600px">
+    <input class="sButton" id="InpValider" type="submit" value="Valider choix" style="position:fixed; top:200px; left:600px">
 </form>
 
 <?php
@@ -49,7 +50,7 @@ switch (post("option2")) {
     case 1:
         ?>
         <div>
-            <form id="GestionSession" method="post" action="">
+            <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
                 <table>
                     <tr>
                         <td>
@@ -124,7 +125,7 @@ switch (post("option2")) {
     case 2:
         ?>
         <div>
-            <form id="GestionCours" method="post" action="">
+            <form id="GestionCours" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
                 <table>
                     <tr>
                         <td>
@@ -200,7 +201,7 @@ switch (post("option2")) {
     case 3:
         ?>
         <div>
-            <form id="GestionSession" method="post" action="">
+            <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
                 <table>
                     <?php if (post("action") == "modif" || post("action") == "retir") { ?>
                         <tr>
@@ -295,7 +296,7 @@ switch (post("option2")) {
     case 4:
         ?>
         <div>
-            <form id="GestionCategorie" method="post" action="">
+            <form id="GestionCategorie" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
                 <table>
                     <tr>
                         <?php
@@ -373,9 +374,7 @@ switch (post("option2")) {
     case 5:
         if (post("action") == "ajout") {
             ?>
-            <form id='gestionUtilisateur' method="post" value="1" action='nouvel-utilisateur.php'>
-                <input type="hidden" name="action" value="<?php echo post("action") ?>"/>
-                <input type="hidden" name="option2" value="<?php echo post("option2") ?>"/>
+            <form id='gestionUtilisateur' method="post" value="1" action='nouvel-utilisateur.php' style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
                 <input name="formTableRef" type="hidden" value="1">
             </form>
             <script type="text/javascript">
@@ -385,7 +384,7 @@ switch (post("option2")) {
         } else if (post("action") == "modif") {
             ?>
             <div>
-                <form id='frmModifUtil' method="post" action=''>
+                <form id='frmModifUtil' method="post" action='' style="font-family: Poppins-Regular">
                     <table>
                         <tr>
                             <td>
@@ -408,7 +407,7 @@ switch (post("option2")) {
                             </td><td>
                                 <?php input("motDePasse", "", "password", 15, "", true); ?>
                             <td>
-                                <input id="visible" type="checkbox" onchange="switchVisible(this)"/> Visible
+                               <input type="checkbox" class="sButton" onchange="document.getElementById('motDePasse').type = this.checked ? 'text' : 'password'" style="height:10px; width:10px;">Montrer le mot de passe
                             </td>
                         </tr>
                         <tr>
@@ -464,7 +463,7 @@ switch (post("option2")) {
         } else if (post("action") == "retir") {
             ?>
             <div>
-                <form id='frmModifUtil' method="post" action=''>
+                <form id='frmModifUtil' method="post" action='' style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
                     <table>
                         <tr>
                             <td>
@@ -489,10 +488,9 @@ switch (post("option2")) {
             if (post("selectNomUtil")) {
                 $nbAdmins = mysqli_query($mySqli->cBD, "SELECT count(statutAdmin) FROM Utilisateur where StatutAdmin = 1");
                 $count = $nbAdmins->fetch_row();
-                $booUtilChoisiAdmin = mysqli_query($mySqli->cBD, "SELECT statutAdmin FROM Utilisateur where nomUtilisateur='". post("selectNomUtil") . "'");
-                $booAdmin = $booUtilChoisiAdmin->fetch_row();
-
-                if (($count[0] > 1) || ($count[0] == 1 && $booAdmin[0] != 1)) {
+                
+                
+                if ($count[0] > 1) {
                     if (gestionUtilisateur(post("action"), post("selectNomUtil"), "", "", "", "", "", $mySqli)) {
                         echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                     } else {
@@ -509,13 +507,3 @@ switch (post("option2")) {
 require_once("pied-page.php");
 $mySqli->deconnexion();
 ?>
-<script>
-    function switchVisible(objChkBox){
-        if(objChkBox.checked){
-            document.getElementById("motDePasse").type = "text";
-        }
-        else{
-            document.getElementById("motDePasse").type = "password";
-        }
-    }
-</script>

@@ -4,7 +4,7 @@
         if ($_SESSION["connectee"]) {
             ?>
             <div>
-                <button class="sButton" style="position: relative;" onclick="deconnecter()">Deconnexion</button>
+                <button class="sButton" style="position: relative;font-family: Poppins-Regular;" onclick="deconnecter()">Deconnexion</button>
             </div>
             <script>
                 function deconnecter() {
