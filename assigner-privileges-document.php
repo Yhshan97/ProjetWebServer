@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
-$strTitreApplication = "Assigner un groupe d'utilisateurs à un cours-session";
+$strTitreApplication = "Assigner les privilèges d'accès aux documents";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
@@ -20,31 +20,31 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 $mySqli = new mysql("", $strInfosSensibles);
 $objetUtil = new mysql("", $strInfosSensibles);
 $objetPrivilege = new mysql("",$strInfosSensibles);
-var_dump($_POST);
+
 
 /* Ajout des privileges qui sont enregistré */
-for($x= 0; $x<count($_POST); $x++){
-    //$mySqli->insereEnregistrement("privilege");
-}
+    $compteur = 0;
+    foreach($_POST as $NoPrivilege){
+        if($compteur == 0){
+            $mySqli->supprimeEnregistrements("privilege");
+            $compteur ++;
+        }
 
-$tabPrivileges = [];
-
-
-
+        $nomUtilFOR = substr($NoPrivilege,0,strlen($NoPrivilege)-17);
+        $coursSessionFOR = substr($NoPrivilege,-16);
+        $mySqli->insereEnregistrement("privilege",$NoPrivilege,$nomUtilFOR,$coursSessionFOR);
+    }
 
 ?>
 <form id="assignerPrivileges" method="post" action="">
     <br>
-    <p> Il y'a <?php
+    <p> Il y a <?php
         $mySqli->selectionneEnregistrements("courssession");
-        echo $mySqli->nbEnregistrements
-        ?> cours-session </p>
-    <br> <br>
-    <p> Il y'a <?php
-        $mySqli->selectionneEnregistrements("documents");
-        echo $mySqli->nbEnregistrements
-        ?> document(s) </p>
-    <br> <br>
+        echo $mySqli->nbEnregistrements?> cours-session(s). </p>
+    <p> Il y a <?php
+        $mySqli->selectionneEnregistrements("utilisateur");
+        echo $mySqli->nbEnregistrements ?> utilisateur(s). </p>
+    <br>
     
     <?php
     $mySqli->selectionneEnregistrements('courssession');
@@ -53,27 +53,29 @@ $tabPrivileges = [];
     $objetUtil->selectionneEnregistrements('utilisateur');
     $intNombreUtilisateur = $objetUtil->nbEnregistrements;
     
-    echo "<table> \n";
-    echo "<tr class='sEntete'><td> Nom d'utilisateur / Cours-Session </td>\n";
+    echo "<table border='1'> \n";
+    echo "<tr class='sEntete'><th> Nom d'utilisateur / Cours-Session </th>\n";
     for ($j = 0; $j < $intNombreCoursSession; $j++) {
-                echo "<td>" . $mySqli->contenuChamp($j, 'Sigle') . "</br>" . $mySqli->contenuChamp($j, 'Session') . "</td>\n";
+                echo "<th>" . $mySqli->contenuChamp($j, 'Sigle') . "</br>" . $mySqli->contenuChamp($j, 'Session') . "</th>\n";
     }
     echo "</tr>\n";
     
     for ($i = 0; $i < $intNombreUtilisateur; $i++) {
-        echo "<tr>\n<td>" . $objetUtil->contenuChamp($i, "NomComplet"). "</td>\n";
+        echo "<tr style='background-color: whitesmoke;'>\n<td>" . $objetUtil->contenuChamp($i, "NomUtilisateur"). "</td>\n";
         for ($j2 = 0; $j2 < $intNombreCoursSession; $j2++) {
-            
-            echo "<td> <input type=\"checkbox\" name=\"".$objetUtil->contenuChamp($i, "NomUtilisateur")."-". $mySqli->contenuChamp($j2, "coursSession") . 
-                    "\" value=\"" .$objetUtil->contenuChamp($i, "NomUtilisateur")."-". $mySqli->contenuChamp($j2, "coursSession") . "\"/></td>\n" ;
+            $nom = $objetUtil->contenuChamp($i, "NomUtilisateur")."-". $mySqli->contenuChamp($j2, "coursSession");
+            $objetPrivilege->selectionneEnregistrements("privilege","C=IDPrivilege='$nom'");
+            $StrChecked = $objetPrivilege->nbEnregistrements == 1 ? "checked" : "";
+
+            echo "<td align='center'> <input type=\"checkbox\" name=\"". $nom ."\" value=\"" . $nom . "\" ". $StrChecked . "/></td>\n" ;
         }
         echo "</tr>\n";
     }
     echo "</table>\n";
     ?>
+    <br>
+    <input id="btnSelection" type="submit" class="sButton" value="Enregistrement" />
 
-    <button id="btnSelection" class="sButton" onclick="window.location.href = 'gestion-document.php'">Selection</button>
-    <br> <br>
     <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
            value="Retour">
 </form>

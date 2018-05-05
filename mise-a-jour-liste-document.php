@@ -84,12 +84,11 @@ if(isset($_POST["coursSession"])){
     <br>
     <br>
     
-    <input type="submit" class='sButton' id="BtnCoursSession" value="Selection" style="font-family: Poppins-Regular;font-size:16px;top:275;left:250" >
+    <input type="submit" class='sButton' id="BtnCoursSession" value="Selection">
     
     <br>
     <br>
-    <input class="sButton" id="btnRetour" style="font-family: Poppins-Regular;font-size:16px;top:300;left:250" 
-           type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'" value="Retour">
+    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'" value="Retour">
     </div>
     
     <div <?php echo !$binSelect ? "style='display: none'" : "" ?>>
@@ -162,7 +161,7 @@ if(isset($_POST["coursSession"])){
                 </th>
                 <!-- Categorie  -->
                 <th>
-                    <?php echo creerSelectHTMLAvecRequete("Categorie", "Description", "", "idCategorie", "categorie", "sList", "", $mySqli);  ?>
+                    <?php echo creerSelectHTMLAvecRequete("Categorie", "Description", "", "idCategorie", "categorie", "", "", $mySqli);  ?>
                 </th>
                 <!-- NoVersion  -->
                 <th>
@@ -183,15 +182,12 @@ if(isset($_POST["coursSession"])){
             </tr>
         </table>
         
-        <input type="button" id="idbtAjout"
-        
-        
-        
-        
+        <input type="button" id="idbtAjout" value="Ajouter">
+        </br>
+        </br>
+        <input class="sButton" id="btnRetour" type="button" onclick="window.location.href='mise-a-jour-liste-document'" value="Retour">
     </div>
 </form>
-
-
 
 
 

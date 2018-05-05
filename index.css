@@ -1,9 +1,10 @@
-BODY { padding-left:15px; padding-top:15px; height: 100%; overflow: hidden }
-BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; height: 100%; overflow: hidden}
-TABLE {border-style: solid; border:black;}
-TD { padding:5px; }
-TH { height: 15px; padding:15px;}
+BODY { padding:15px; height: 100%; overflow: auto; }
+BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;  overflow: auto;}
+TABLE {border: 1px solid black; border-collapse: collapse; overflow:auto; }
+TD { padding:10px; white-space: nowrap;}
+TH { height: 15px; padding:15px; border: 1px solid black; white-space: nowrap;}
 P { font-size: 20px; }
+
 
 .sTitreApplication { font-size:24px; line-height:26px; font-weight:bold; margin-top:0px; font-family: "Helvetica CE", sans-serif; }
 .sTitreSection { font-size:16px; line-height:20px; font-weight:bold; font-family: "Helvetica CE", sans-serif; }
@@ -24,7 +25,6 @@ P { font-size: 20px; }
 .sLogin { font-family: "Helvetica CE", sans-serif; }
 .sLogo { font-size: 10px; font-style: italic}
 .sBlanc { color:white; font-weight: lighter}
-.tableBordure { border-collapse: collapse; }
 .sMilieu { 
     width:450px;
     position:fixed;
