@@ -1,11 +1,11 @@
 BODY { padding:15px; height: 100%; overflow: auto; }
 BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;  overflow: auto;}
-TABLE {border: 1px solid black; border-collapse: collapse; overflow:auto; }
+TABLE { border-collapse: collapse; overflow:auto; }
 TD { padding:10px; white-space: nowrap;}
 TH { height: 15px; padding:15px; border: 1px solid black; white-space: nowrap;}
 P { font-size: 20px; }
 
-
+.sBorder {border: 1px solid black;}
 .sTitreApplication { font-size:24px; line-height:26px; font-weight:bold; margin-top:0px; font-family: "Helvetica CE", sans-serif; }
 .sTitreSection { font-size:16px; line-height:20px; font-weight:bold; font-family: "Helvetica CE", sans-serif; }
 

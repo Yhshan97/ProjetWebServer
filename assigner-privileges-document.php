@@ -25,13 +25,16 @@ $objetPrivilege = new mysql("",$strInfosSensibles);
 /* Ajout des privileges qui sont enregistré */
     $compteur = 0;
     foreach($_POST as $NoPrivilege){
+        // Delete tous les privileges quand il clique sur le bouton enregistrer
         if($compteur == 0){
             $mySqli->supprimeEnregistrements("privilege");
             $compteur ++;
         }
 
-        $nomUtilFOR = substr($NoPrivilege,0,strlen($NoPrivilege)-17);
-        $coursSessionFOR = substr($NoPrivilege,-16);
+        $nomUtilFOR = substr($NoPrivilege,0,strlen($NoPrivilege)-17);   // Separe "NomUtil-420-4W5 (H-2018)" à "NomUtil"
+        $coursSessionFOR = substr($NoPrivilege,-16);                    // Separe l'autre côté donc "420-4W5 (H-2018)"
+
+        // Ajoute ligne par ligne tous les inputs qui ont ete envoyes par $_POST
         $mySqli->insereEnregistrement("privilege",$NoPrivilege,$nomUtilFOR,$coursSessionFOR);
     }
 
@@ -53,21 +56,36 @@ $objetPrivilege = new mysql("",$strInfosSensibles);
     $objetUtil->selectionneEnregistrements('utilisateur');
     $intNombreUtilisateur = $objetUtil->nbEnregistrements;
     
-    echo "<table border='1'> \n";
+    echo "<table> \n";
+    echo "<tr><td style=\"border:none;\"></td>\n";
+
+    // Affichage des checkbox qui checkent tous les checkbox de la colonne  * onclick='checkAll(this)'; *
+    for ($j = 0; $j < $intNombreCoursSession; $j++) {
+        echo "<td align='center' style=\"border:none;\"> <input type=\"checkbox\" id=\"$j\" value=\"". $mySqli->contenuChamp($j,"coursSession") .
+            "\" onclick='checkAll(this);' /></td>\n";
+    }
+
+    // Premiere ligne du tableau avec les noms de cours-sessions
+    echo "</tr>\n";
     echo "<tr class='sEntete'><th> Nom d'utilisateur / Cours-Session </th>\n";
     for ($j = 0; $j < $intNombreCoursSession; $j++) {
                 echo "<th>" . $mySqli->contenuChamp($j, 'Sigle') . "</br>" . $mySqli->contenuChamp($j, 'Session') . "</th>\n";
     }
     echo "</tr>\n";
-    
+
+    // Deroulement ligne par ligne donc for basé sur le nombre d'utilisateurs
     for ($i = 0; $i < $intNombreUtilisateur; $i++) {
-        echo "<tr style='background-color: whitesmoke;'>\n<td>" . $objetUtil->contenuChamp($i, "NomUtilisateur"). "</td>\n";
+        echo "<tr style='background-color: whitesmoke;'>\n<td class='sBorder'>" . $objetUtil->contenuChamp($i, "NomUtilisateur"). "</td>\n";
+
+        // Deuxieme for pour afficher les checkbox dépendant du nombre de cours-sessions
         for ($j2 = 0; $j2 < $intNombreCoursSession; $j2++) {
+            // Crée le nom unique du checkbox    ex: "NomUtil1-420-4W5 (H-2018)"
             $nom = $objetUtil->contenuChamp($i, "NomUtilisateur")."-". $mySqli->contenuChamp($j2, "coursSession");
+            // Verifier si ce privilège est dans la base de données. Si oui $strChecked="checked"
             $objetPrivilege->selectionneEnregistrements("privilege","C=IDPrivilege='$nom'");
             $StrChecked = $objetPrivilege->nbEnregistrements == 1 ? "checked" : "";
 
-            echo "<td align='center'> <input type=\"checkbox\" name=\"". $nom ."\" value=\"" . $nom . "\" ". $StrChecked . "/></td>\n" ;
+            echo "<td align='center' class='sBorder'> <input type=\"checkbox\" name=\"$nom\" value=\"$nom\" $StrChecked /> </td>\n" ;
         }
         echo "</tr>\n";
     }
@@ -80,7 +98,21 @@ $objetPrivilege = new mysql("",$strInfosSensibles);
            value="Retour">
 </form>
 
-
+<script>
+    function checkAll(checkBox){
+        // Get dans un array tous les objets inputs
+        var inputs = document.getElementsByTagName("input");
+        // Creer une expression reguliere   ex: /.*420-4W5 \(H-2018\)/
+        var regex = new RegExp(".*" + checkBox.value.replace("(","\\(").replace(")","\\)"));
+        
+        // Cocher ou decocher tous les checkbox ou leur valeur match le regex
+        for(var i = 0; i < inputs.length; i++) {
+            if(inputs[i].type == "checkbox" && regex.test(inputs[i].value)) {
+                inputs[i].checked = checkBox.checked;
+            }
+        }
+    }
+</script>
 
 <?php
 $objetUtil->deconnexion();
