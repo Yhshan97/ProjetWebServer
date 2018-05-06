@@ -193,3 +193,29 @@ function gestionUtilisateur($mode, $strUtilSelect, $strNom, $strMotDePasse, $boo
         else return false;
     }
 }
+
+function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "", $strID, $strName, $strClass,$strValue, $onchange, $mySqli, $numerique=false){
+    $mySqli->selectionneEnregistrements($strNomTable, $strCondition);
+    $result = mysqli_query($mySqli->cBD, $mySqli->requete);
+
+    $Tableau[0] = " -------- ";
+    while ($val = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $Tableau[] = $val["$strNomColonne"];
+    }
+
+    $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\" onchange=\"$onchange\">";
+
+    if ($numerique) {
+        for ($i = 0; $i < count($Tableau); $i++) {
+            $strSelectHTML .= "<option value=\"" . ($i) . "\">" . $Tableau[$i];
+        }
+    } else {
+        foreach ($Tableau as $val) {
+            $choisi = $strValue === $val ? "selected": "";
+            $strSelectHTML .= "<option value=\"$val\" $choisi>" . $val;
+        }
+    }
+
+    $strSelectHTML .= "</select>";
+    return $strSelectHTML;
+}

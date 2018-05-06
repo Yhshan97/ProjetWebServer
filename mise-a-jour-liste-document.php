@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-session_start();
+
 /* Variables nécessaires pour les fichiers d'inclusion */
 $strTitreApplication = "Mettre à jour la liste des documents";
 $strNomFichierCSS = "index.css";
@@ -16,11 +16,20 @@ require_once("en-tete.php");
 
 
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
+session_start();
 
+if(!isset($_SESSION["NomComplet"]))
+    die();
+var_dump($_POST);
 $mySqli = new mysql("pjf_immigrants", $strInfosSensibles);
 $msgCoursSessionSelect = "";
+$msgResultatAction = "";
 $binSelect = post("coursSession") != "";
 $infosCoursSession = [];
+
+$tabNomsColonnes = ["Session","Sigle du cours", "Date remise", "No. de séquence",
+    "Date début", "Date fin", "Titre","Description", "Nb. de pages",
+    "Catégorie", "No. version", "Date dernière version", "Hyper lien", "Ajouté par"];
 
 if(isset($_POST["coursSession"])){
     if(post("coursSession") == ""){
@@ -28,17 +37,45 @@ if(isset($_POST["coursSession"])){
     }
     else {
         $binSelect = true;
-        $mySqli->selectionneEnregistrements("coursSession");
+        $mySqli->selectionneEnregistrements("coursSession","C=coursSession='".post("coursSession")."'");
         $infosCoursSession["coursSession"] = $mySqli->contenuChamp(0, "coursSession");
         $infosCoursSession["Sigle"] = $mySqli->contenuChamp(0, "Sigle");
         $infosCoursSession["Session"] = $mySqli->contenuChamp(0, "Session");
-       // var_dump($infosCoursSession);
+        $mySqli->selectionneEnregistrements("cours","C=Sigle='". $infosCoursSession["Sigle"] ."'");
+        $infosCoursSession["titreCours"] = $mySqli->contenuChamp(0, "Titre");
     }
 }
+if(isset($_POST["DocumentAction"])){
+    if(post("DocumentAction") == "Ajouter"){        // IL MANQUE && !empty(post("hyperLien"))
+        if(!empty(post("session")) && !empty(post("sigle")) && !empty(post("dateCours")) &&
+            !empty(post("noSequence")) && !empty(post("dateAccessDebut")) && !empty(post("dateAccessFin")) &&
+            !empty(post("titre")) && !empty(post("description")) && !empty(post("nbPages")) &&
+            !empty(post("categorie")) && !empty(post("noVersion")) && !empty(post("dateVersion")) &&
+            !empty(post("ajoutePar")))
+        {
+            $mySqli->insereEnregistrement("Document",post("session"),post("sigle"),post("dateCours"),post("noSequence"),post("dateAccessDebut"),
+                post("dateAccessFin"),post("titre"),post("description"),post("nbPages"),post("categorie"),post("noVersion"),post("dateVersion"),
+                post("hyperLien"),post("ajoutePar"));
 
+            $msgResultatAction = $mySqli->OK ? "<span class='sVert sBlancFond'> La commande à été effectuée</span>" :
+                "<span class='sBlanc sRougeFond'> Ajout pas possible. Même titre de document existe!'</span>";
+        }
+        else {
+            $msgResultatAction = "<span class='sBlanc sRougeFond'> Ajout pas possible. Données manquantes !</span>";
+        }
+    }
+    if(post("DocumentAction") == "Retirer"){
+
+    }
+    if(post("DocumentAction") == "Modifier"){
+
+    }
+
+
+}
 ?>
 
-<form id="formListeDoc" method="post" action="">
+<form id="ajoutDocument" method="post" action="">
     <div <?php echo $binSelect ? "style='display: none'" : "" ?>>
     <br>
     <label id="lbl"> Il y a <?php $mySqli->selectionneEnregistrements("courssession"); echo $mySqli->nbEnregistrements; ?> 
@@ -90,47 +127,57 @@ if(isset($_POST["coursSession"])){
     <br>
     <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'" value="Retour">
     </div>
-    
-    <div <?php echo !$binSelect ? "style='display: none'" : "" ?>>
-        
-        <table>
+
+    <?php
+    if($binSelect) {
+        ?>
+
+    <div>
+        </br>
+        </br>
+
+        <table style="width: 1280px;">
+            <td colspan="6" align="center" class="sGras" style="font-size: 32px;">
+                <?php
+                echo $infosCoursSession["coursSession"] . "<br/>" .
+                    "<span style='font-size: 24px;'>".$infosCoursSession["titreCours"] . "</span>";
+                ?>
+            </td>
+            <tr><td></td></tr>
             <tr class="sEntete">
-                <th>Session</th>
-                <th>Sigle cours</th>
-                <th>Date Cours</th>
-                <th>No séquence</th>
-                <th>Date de début</th>
-                <th>Date de fin</th>
-                <th>Titre</th>
+                <?php for($i1=2;$i1<8;$i1++){
+                    echo "<th>$tabNomsColonnes[$i1]</th>";
+                } ?>
             </tr>
             <tr>
-                <!-- Session  -->
-                <th>
-                    <?php echo $infosCoursSession["Session"]; ?>
-                </th>
-                <!-- SigleCours  -->
-                <th>
-                    <?php echo $infosCoursSession["Sigle"]; ?>
-                </th>
+                <!-- Session HIDDEN -->
+                <input type="hidden" name="session" value="<?php echo $infosCoursSession["Session"] ?>">
+                <!-- Sigle HIDDEN -->
+                <input type="hidden" name="sigle" value="<?php echo $infosCoursSession["Sigle"] ?>">
+
                 <!-- DateCours  -->
                 <th>
-                    <input type="date" id="idDateCours" name="dateCours" >
+                    <input type="date" id="idDateCours" name="dateCours" value="<?php echo post("dateCours") ?>">
                 </th>
                 <!-- NoSequence  -->
                 <th>
-                    <input type="number" id="idNoSequence" name="noSequence" min="0" max="20">
+                    <input type="number" id="idNoSequence" name="noSequence" min="0" max="20" value="<?php echo post("noSequence") ?>">
                 </th>
                 <!-- DateDebut  -->
                 <th>
-                    <input type="date" id="idDateDebut" name="dateAccessDebut" >
+                    <input type="date" id="idDateDebut" name="dateAccessDebut" value="<?php echo post("dateAccessDebut") ?>">
                 </th>
                 <!-- DateFin  -->
                 <th>
-                    <input type="date" id="idDateFin" name="dateAccessFin" >
+                    <input type="date" id="idDateFin" name="dateAccessFin" value="<?php echo post("dateAccessFin") ?>">
                 </th>
                 <!-- Titre  -->
                 <th>
-                    <input type="text" id="idTitre" name="titre" >
+                    <input type="text" id="idTitre" name="titre" value="<?php echo post("titre") ?>">
+                </th>
+                <!-- Description  -->
+                <th>
+                    <input type="text" id="idDescription" name="description" value="<?php echo post("description") ?>">
                 </th>
             </tr>
             <tr>
@@ -142,34 +189,26 @@ if(isset($_POST["coursSession"])){
                 </td>
             </tr>
             <tr class="sEntete">
-                <th>Description</th>
-                <th>Nombre de pages</th>
-                <th>Catégorie</th>
-                <th>Numéro version</th>
-                <th>Date version</th>
-                <th>Hyper lien</th>
-                <th>Ajouté par</th>
+                <?php for($i2=8;$i2<count($tabNomsColonnes);$i2++){
+                    echo "<th>$tabNomsColonnes[$i2]</th>";
+                } ?>
             </tr>
             <tr>
-                <!-- Description  -->
-                <th>
-                    <input type="text" id="idDescription" name="description" >
-                </th>
                 <!-- NbPages  -->
                 <th>
-                    <input type="text" id="idNbPages" name="nbPages" >
+                    <input type="number" id="idNbPages" name="nbPages" min="1" max="999" value="<?php echo post("nbPages") ?>">
                 </th>
                 <!-- Categorie  -->
                 <th>
-                    <?php echo creerSelectHTMLAvecRequete("Categorie", "Description", "", "idCategorie", "categorie", "", "", $mySqli);  ?>
+                    <?php echo creerSelectAvecValeur("categorie","Description","","selectCategorie","categorie","",post("categorie"),"",$mySqli); ?>
                 </th>
                 <!-- NoVersion  -->
                 <th>
-                    <input type="number" id="idNoVersion" name="noVersion" min="1" max="99" >
+                    <input type="number" id="idNoVersion" name="noVersion" min="1" max="99" value="<?php echo post("noVersion") ?>">
                 </th>
                 <!-- DateVersion  -->
                 <th>
-                    <input type="date" id="idDateVersion" name="dateVersion" >
+                    <input type="date" id="idDateVersion" name="dateVersion" value="<?php echo post("dateVersion") ?>">
                 </th>
                 <!-- HyperLien  -->
                 <th>
@@ -178,24 +217,134 @@ if(isset($_POST["coursSession"])){
                 <!-- AjoutePar  -->
                 <th>
                     <?php echo $_SESSION["NomComplet"];?>
+                    <input type="hidden" name="ajoutePar" value="<?php echo $_SESSION["NomComplet"]; ?>">
                 </th>
             </tr>
         </table>
-        
-        <input type="button" id="idbtAjout" value="Ajouter">
+
+        </br>
+        <input type="submit" id="idbtAjout" class="sButton" name="DocumentAction" value="Ajouter">
         </br>
         </br>
-        <input class="sButton" id="btnRetour" type="button" onclick="window.location.href='mise-a-jour-liste-document'" value="Retour">
+        <?php echo $msgResultatAction; ?>
+        </br>
     </div>
 </form>
 
+<form id="retraitDocument" method="post">
+    </br>
+    </br>
+    </br>
+    </br>
+    <input type="hidden" name="coursSession" value="<?php echo $infosCoursSession["coursSession"]; ?>">
+    <?php if($binSelect) {?>
+    <div style="overflow:auto; width: 1280px;" >
+        <table>
+            <td colspan="7" align="center" class="sGras" style="font-size: 32px;">
+                <?php
+                echo $infosCoursSession["coursSession"] . "<br/>" .
+                    "<span style='font-size: 24px;'>".$infosCoursSession["titreCours"] . "</span>";
+                ?>
+            </td>
+            <td colspan="6" align="center" class="sGras" style="font-size: 32px;">
+                <?php
+                echo $infosCoursSession["coursSession"] . "<br/>" .
+                    "<span style='font-size: 24px;'>".$infosCoursSession["titreCours"] . "</span>";
+                ?>
+            </td>
+        <?php
+            // Boucle pour la ligne d'entete
+            echo "<tr class=\"sEntete\">";
+            echo "<th></th>";
+            for($i1=2;$i1<count($tabNomsColonnes);$i1++){
+                echo "<th>$tabNomsColonnes[$i1]</th>";
+            }
+            echo "</tr>";
 
+            // Boucle pour le nombre de documents
+        $mySqli->requete = "SELECT * FROM document WHERE Session='". $infosCoursSession["Session"] . "' AND Sigle='". $infosCoursSession["Sigle"]."'";
+        $mySqli->listeEnregistrements = mysqli_query($mySqli->cBD, $mySqli->requete);
 
+        if ($mySqli->listeEnregistrements)
+            $mySqli->nbEnregistrements = mysqli_num_rows($mySqli->listeEnregistrements);
+
+            for($i=0; $i < $mySqli->nbEnregistrements; $i++){
+                echo "<tr>";
+                /* Check box */
+                echo "<th>". "<input type='checkbox' id='cbDocument$i' name='cbDocument$i' value='check'>" ."</th>";
+
+                echo "<form id='modifDocument' method='post'>";
+                ?>
+                <!-- coursSession HIDDEN -->
+                <input type="hidden" name="coursSession" value="<?php echo $infosCoursSession["coursSession"] ?>">
+
+                <?php
+                /* date remise */
+                echo "<th><input type='date' name='RdateCours' value='". $mySqli->contenuChamp($i,"DateCours") ."' ></th>";
+
+                /* no sequence */
+                echo "<th><input type='number' name='RnoSequence' min='1' max='20' value='". $mySqli->contenuChamp($i,"NoSequence") ."' ></th>";
+
+                /* date acces debut */
+                echo "<th><input type='date' name='RdateDebut' value='". $mySqli->contenuChamp($i,"DateAccesDebut") ."' ></th>";
+
+                /* date acces fin */
+                echo "<th><input type='date' name='RdateFin' value='". $mySqli->contenuChamp($i,"DateAccesFin") ."' ></th>";
+
+                /* titre */
+                echo "<th><input type='text' name='Rtitre' minlength='5' maxlength='100' value='". $mySqli->contenuChamp($i,"Titre") ."' ></th>";
+
+                /* description */
+                echo "<th><input type='text' name='Rdescription' minlength='5' maxlength='255' value='". $mySqli->contenuChamp($i,"Description") ."' ></th>";
+
+                /* nb pages */
+                echo "<th><input type='number' name='RnbPages' min='1' max='999' value='". $mySqli->contenuChamp($i,"NbPages") ."' ></th>";
+
+                /* categorie */
+                echo "<th>".creerSelectAvecValeur("categorie","Description","","RselectCategorie","Rcategorie","",$mySqli->contenuChamp($i,"Categorie"),"",$mySqli2)."</th>";
+
+                /* no version */
+                echo "<th><input type='number' name='RnoVersion' min='1' max='99' value='". $mySqli->contenuChamp($i,"NoVersion") ."' ></th>";
+
+                /* date version */
+                echo "<th><input type='date' name='RdateVersion' value='". $mySqli->contenuChamp($i,"DateVersion") ."' ></th>";
+
+                /* hyper lien */
+                echo "<th><input type='text' name='RhyperLien' minlength='5' maxlength='255' value='". $mySqli->contenuChamp($i,"HyperLien") ."' ></th>";
+
+                /* ajoute Par */
+                echo "<th><input type='text' name='RajoutePar' value='". $mySqli->contenuChamp($i,"AjoutePar") ."' disabled></th>";
+
+                /* bouton enregistrer modifications */
+                echo "<td><input type='submit' class='sButton' name='docModif' value='Modifier'></td>";
+
+                echo "</form>";
+                echo "</tr>";
+            }
+            if($mySqli->nbEnregistrements == 0){
+                echo "<td colspan='3'> Aucun document enregistré pour ce cours-session !</td>";
+            }
+        ?>
+        </table>
+    </div>
+    <?php } ?>
+    <br/>
+    <input type='submit' class='sButton' name='docRetir' value='Retirer'>
+</form>
+<?php
+}
+?>
+
+<br/><br/>
+<input class="sButton" id="btnRetour" type="button" onclick="window.location.href='mise-a-jour-liste-document'" value="Retour">
+<br/>
 <script>
     document.getElementById("selectCoursSession").value = "<?php echo post("coursSession"); ?>";
 </script>
 
 
 <?php
+$mySqli->deconnexion();
+$mySqli2->deconnexion();
 require_once 'pied-page.php';
 ?>

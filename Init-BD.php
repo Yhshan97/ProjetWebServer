@@ -99,7 +99,7 @@ $objMySqli->creeTableGenerique("Document",  "V6,Session;" .
                                             "E,NoVersion;" .
                                             "D,DateVersion;" .
                                             "V255,HyperLien;" .
-                                            "E,AjoutePar;", "Session");
+                                            "V25,AjoutePar;", "Titre,Session,Sigle");
 ecrit("Creation table 'Document' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 
@@ -151,7 +151,6 @@ ecrit("Etablit relation entre courssession et privilege :" . ($objMySqli->OK ? "
 
 $objMySqli->etablitRelation("utilisateur", "NomUtilisateur", "Privilege", "NomUtilisateur","FK_Privilege_nomUtilisateur");
 ecrit("Etablit relation entre utilisateur et privilege :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
-
 
 $objMySqli->deconnexion();
 ?>

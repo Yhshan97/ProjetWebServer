@@ -1,4 +1,4 @@
-BODY { padding:15px; height: 100%; overflow: auto; }
+BODY { padding:15px; height: 100%; overflow: -moz-scrollbars-vertical; }
 BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;  overflow: auto;}
 TABLE { border-collapse: collapse; overflow:auto; }
 TD { padding:10px; white-space: nowrap;}
@@ -9,6 +9,7 @@ P { font-size: 20px; }
 .sTitreApplication { font-size:24px; line-height:26px; font-weight:bold; margin-top:0px; font-family: "Helvetica CE", sans-serif; }
 .sTitreSection { font-size:16px; line-height:20px; font-weight:bold; font-family: "Helvetica CE", sans-serif; }
 
+.sRougeFond { background-color: darkred;}
 .sBleu { color:blue; }
 .sDate { width:90px; }
 .sDroite { text-align:right; }
@@ -280,3 +281,4 @@ input[type=radio]:checked ~ .check::before{
 input[type=radio]:checked ~ label{
   color: #0DFF92;
 }
+
