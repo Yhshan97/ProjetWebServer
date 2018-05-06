@@ -6,6 +6,12 @@ $strTitreApplication = "Mettre à jour les tables de r&eacutef&eacuterences";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
+session_start();
+
+if(!isset($_SESSION["NomComplet"])) {
+    header('location: gestion-documents-administrateur.php');
+}
+
 /* Liste des fichiers d'inclusion */
 require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");
@@ -14,7 +20,6 @@ require_once("librairies-projetFinal-2018-03-24.php");
 require_once("background.php");
 require_once("en-tete.php");
 
-session_start();
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 $mySqli = new mysql("", $strInfosSensibles);

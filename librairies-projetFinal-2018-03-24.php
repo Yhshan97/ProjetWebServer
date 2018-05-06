@@ -5,6 +5,7 @@ function connexion($strNomUtil, $strMotPasse, $objSQL) {
     $resultat = mysqli_query($objSQL->cBD, "SELECT * FROM Utilisateur");
     if ($resultat->num_rows == 0) {
         if (strcasecmp($strNomUtil, "admin") == 0 && $strMotPasse == "admin") {
+            $_SESSION["NomComplet"] = "";
             header("location: nouvel-utilisateur.php");
         } else {
             ecrit("<p class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </p>");
