@@ -28,7 +28,7 @@ $mySqli = new mysql("", $strInfosSensibles);
                 Veuillez svp entrer le nom du fichier CSV
             </td>
             <td>
-                <?php echo input("nomFichier", "", "text", 50, "") ?>
+                <?php echo input("nomFichier", "", "file", 50, "") ?>
             </td>
         </tr>
         <tr>
