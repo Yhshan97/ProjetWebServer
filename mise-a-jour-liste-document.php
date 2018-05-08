@@ -7,7 +7,7 @@ $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
 session_start();
-
+$_SESSION["nomFichierAjout"] = "";
 if(!isset($_SESSION["NomComplet"])) {
     header('location: gestion-documents-administrateur.php');
 }
@@ -49,17 +49,17 @@ if(isset($_POST["coursSession"])){
     }
 }
 if(isset($_POST["DocumentAction"])){
-    if(post("DocumentAction") == "Ajouter"){        // IL MANQUE && !empty(post("hyperLien"))
+    if(post("DocumentAction") == "Ajouter"){
         if(!empty(post("session")) && !empty(post("sigle")) && !empty(post("dateCours")) &&
             !empty(post("noSequence")) && !empty(post("dateAccessDebut")) && !empty(post("dateAccessFin")) &&
             !empty(post("titre")) && !empty(post("description")) && !empty(post("nbPages")) &&
             !empty(post("categorie")) && !empty(post("noVersion")) && !empty(post("dateVersion")) && 
-            !empty($_SESSION["nomFichierAjout"]) && !empty(post("ajoutePar")))
+            !empty(post("hyperLien")) && !empty(post("ajoutePar")))
         {
             $mySqli->insereEnregistrement("Document",post("session"),post("sigle"),post("dateCours"),post("noSequence"),post("dateAccessDebut"),
                 post("dateAccessFin"),post("titre"),post("description"),post("nbPages"),post("categorie"),post("noVersion"),post("dateVersion"),
-                $_SESSION["nomFichierAjout"],post("ajoutePar"));
-                
+                post("hyperLien"),post("ajoutePar"));
+            
             $_SESSION["nomFichierAjout"] = "";
 
             $msgResultatAction = $mySqli->OK ? "<span class='sVert sBlancFond'> La commande à été effectuée</span>" :
@@ -104,9 +104,9 @@ if(isset($_POST["DocumentAction"])){
                 ", NbPages="        . post("RnbPages") .
                 ", Categorie='"     . post("Rcategorie"). "'".
                 ", NoVersion="      . post("RnoVersion").
-                ",DateVersion='"    . post("RdateVersion")      . "'".
-                ",HyperLien="       . "''".
-                ",AjoutePar='"      . $_SESSION["NomComplet"]."'"
+                ", DateVersion='"   . post("RdateVersion") . "'".
+                ", HyperLien='"      . post("RhyperLien"). "'" .
+                ", AjoutePar='"     . $_SESSION["NomComplet"]."'"
                 ,
                 "Titre='" . post("titreAvantModif"). "' AND Sigle='" . $infosCoursSession["Sigle"] .
                 "' AND Session='".$infosCoursSession["Session"] . "'");
@@ -261,8 +261,10 @@ if(isset($_POST["DocumentAction"])){
                 <!-- HyperLien  -->
                 <th>
                     <button id="btnHyperLien" name="btnHyperLien" onclick="window.open('televersement.php','window','width=400,height=150')"> 
-                        Choisir un fichier</button><br/>
-                        <?php echo $_SESSION["nomFichierAjout"]; ?>
+                        Choisir un fichier</button>
+                    <input type="hidden" id='tbNomFichier' name='hyperLien' value='' />
+                    <br/>
+                        <span id='idNomFichier'></span>
                 </th>
                 <!-- AjoutePar  -->
                 <th>
@@ -288,7 +290,7 @@ if(isset($_POST["DocumentAction"])){
     </br>
     <input type="hidden" name="coursSession" value="<?php echo $infosCoursSession["coursSession"]; ?>">
     <?php if($binSelect) {?>
-    <div style="overflow:auto; width: 1350px; height:800px;" >
+    <div style="overflow:auto; width: 1350px;" >
         <table>
             <td colspan="7" align="center" class="sGras" style="font-size: 32px;">
                 <?php
@@ -362,10 +364,7 @@ if(isset($_POST["DocumentAction"])){
                 echo "<th><input type='date' name='RdateVersion' value='". $mySqli->contenuChamp($i,"DateVersion") ."' ></th>";
 
                 /* hyper lien */
-                echo "<th><input type='text' name='RhyperLien' minlength='5' maxlength='255' value='". $mySqli->contenuChamp($i,"HyperLien") ."' disabled></th>";
-                echo "<button id=\"btnHyperLien\" name=\"RhyperLien\" onclick=\"window.open('televersement.php','window','width=400,height=150')\"> ".
-                        "Choisir un fichier</button><br/>"
-                        . $_SESSION["nomFichierModif"]; 
+                echo "<th><input type=\"text\" name='RhyperLien' value=\"". $mySqli->contenuChamp($i,"HyperLien") ."\" disabled /></th>"; 
                 
                 /* ajoute Par */
                 echo "<th><input type='text' name='RajoutePar' value='". $mySqli->contenuChamp($i,"AjoutePar") ."' disabled></th>";
@@ -401,6 +400,12 @@ if(isset($_POST["DocumentAction"])){
 <br/>
 <script>
     document.getElementById("selectCoursSession").value = "<?php echo post("coursSession"); ?>";
+    
+    function setNomFichier(name){
+        document.getElementById('idNomFichier').innerHTML = name;
+        document.getElementById('tbNomFichier').value = name;
+        
+    }
 </script>
 
 

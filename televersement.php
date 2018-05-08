@@ -1,5 +1,10 @@
 <?php 
 
+/*
+ 
+ * Page de téléversement pour l'ajout d'un document
+
+*/
 $strMsgErreur = "";
     if(isset($_REQUEST["btnSubmit"])){
                 $strNomDossier      = "televersements/";
@@ -17,6 +22,12 @@ $strMsgErreur = "";
                     session_start();
                     $_SESSION["nomFichierAjout"] = $strNomFichier;
                     $strMsgErreur = "Le téléversement à été effectué";
+                    
+                    ?>
+                <script>    
+                    window.opener.setNomFichier('<?php echo $strNomFichier; ?>');
+                </script>
+                    <?php 
                 }
     }
 ?>
@@ -28,9 +39,9 @@ $strMsgErreur = "";
             <input type="file" name="tbFichier" >
             </tr>
             <tr>
-            <input type='submit' name='btnSubmit' value='Téléverser'>
+            <input type='submit' name='btnSubmit' value='Téléverser' >
             </tr>
-            <tr>
+            <tr><br />
                 <?php echo $strMsgErreur; ?>
             </tr>
         </table>
