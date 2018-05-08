@@ -6,6 +6,8 @@ $strTitreApplication = "Mettre à jour les tables de r&eacutef&eacuterences";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
+session_start();
+
 /* Liste des fichiers d'inclusion */
 require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");

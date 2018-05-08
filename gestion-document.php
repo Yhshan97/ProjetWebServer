@@ -6,6 +6,12 @@ $strTitreApplication = "Mettre à jour la liste des documents";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
+session_start();
+
+if(!isset($_SESSION["NomComplet"])) {
+    header('location: gestion-documents-administrateur.php');
+}
+
 /* Liste des fichiers d'inclusion */
 require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");
@@ -25,7 +31,7 @@ $mySqli = new mysql("pjf_immigrants", $strInfosSensibles);
 $mySqli->requete = "Select Session,Sigle from courssession where coursSession =" . "'" . $strCoursSession . "'";
 $mySqli->listeEnregistrements = mysqli_query($mySqli->cBD, $mySqli->requete);
 
-session_start();
+
 ?>
 <form id="document" method="post" action="" style="font-family: Poppins-Regular;">
 
