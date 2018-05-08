@@ -41,61 +41,106 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 $mySqli = new mysql("", $strInfosSensibles);
 ?>
 
-    <div id="divCorps">
-        <p class="sTitreSection">
-            Téléversement courant
-        </p>
-        <form id="frmTeleversement" method="post" enctype="multipart/form-data">
-            <input id="tbNomFichier" name="tbNomFichier" style="height:25px;" class="" type="file" />
-            <input id="btnTeleversement" name="btnTeleversement" style="height:25px;" class="" type="submit" value="Téléverser" />
-        </form>
-        <?php
-        if (isset($_REQUEST["btnTeleversement"])) {
-            ?>
-            <p class="sTitreSection">
-                Informations sur le fichier téléversé
-            </p>
-            <table>
-                <tr>
-                    <td><p>Nom du dossier :</p></td>
-                    <td class="sGras">
-                        <p> <?php echo $strNomDossier; ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td><p> Nom du fichier téléversé :</p></td>
-                    <td class="sGras">
-                        <p>   <?php echo $strNomFichier; ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td><p> Nom du fichier temporaire utilisé :</p></td>
-                    <td class="sGras">
-                        <p>    <?php echo basename($strNomFichierTemp); ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td><p> Type du fichier :</p></td>
-                    <td class="sGras">
-                        <p>   <?php echo $strTypeFichier . " (" . ($binImage ? "Image" : "Pas une image") . ")"; ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td><p> Taille du fichier :</p></td>
-                    <td class="sGras">
-                        <p>   <?php echo $intTaille; ?> octets</p>
-                    </td>
-                  
-                </tr>
-                <tr>
-                    <td>
-                        <a href="<?php echo $strNomDossier . $strNomFichier; ?>" target="_blank">
-                            <?php echo $strNomDossier . $strNomFichier; ?>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-            <?php
-        }
+<div id="divCorps">
+    <p class="sTitreSection">
+        Téléversement courant
+    </p>
+    <form id="frmTeleversement" method="post" enctype="multipart/form-data">
+        <input id="tbNomFichier" name="tbNomFichier" style="height:25px;" class="" type="file" />
+        <input id="btnTeleversement" name="btnTeleversement" style="height:25px;" class="" type="submit" value="Téléverser" />
+    </form>
+    <?php
+    if (isset($_REQUEST["btnTeleversement"])) {
         ?>
-    </div>
+        <p class="sTitreSection">
+            Informations sur le fichier téléversé
+        </p>
+        <table>
+            <tr>
+                <td><p>Nom du dossier :</p></td>
+                <td class="sGras">
+                    <p> <?php echo $strNomDossier; ?></p>
+                </td>
+            </tr>
+            <tr>
+                <td><p> Nom du fichier téléversé :</p></td>
+                <td class="sGras">
+                    <p>   <?php echo $strNomFichier; ?></p>
+                </td>
+            </tr>
+            <tr>
+                <td><p> Nom du fichier temporaire utilisé :</p></td>
+                <td class="sGras">
+                    <p>    <?php echo basename($strNomFichierTemp); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <td><p> Type du fichier :</p></td>
+                <td class="sGras">
+                    <p>   <?php echo $strTypeFichier . " (" . ($binImage ? "Image" : "Pas une image") . ")"; ?></p>
+                </td>
+            </tr>
+            <tr>
+                <td><p> Taille du fichier :</p></td>
+                <td class="sGras">
+                    <p>   <?php echo $intTaille; ?> octets</p>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?php echo $strNomDossier . $strNomFichier; ?>" target="_blank">
+                        <?php echo $strNomDossier . $strNomFichier; ?>
+                    </a>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 1280px;">
+            <tr class="sEntete">
+                <td>
+                    NomUtilisateur
+                </td>
+                <td>
+                    MotDePasse
+                </td>
+                <td>
+                    NomComplet
+                </td>
+                <td>
+                    Courriel
+                </td>
+                <td>
+                    Sigle1
+                </td>
+                <td>
+                    Sigle2
+                </td>
+                <td>
+                    Sigle3
+                </td>
+                <td>
+                    Sigle4
+                </td>
+                <td>
+                    Sigle5
+                </td>
+                <td>
+                    Verdict
+                </td>
+            </tr>
+            <?php
+             $tab = csv_to_array("televersements/Fichier.csv", ";");
+             
+             for ($index = 0; $index < count($tab); $index++) {
+                 echo "<tr style=\"background-color: whitesmoke;\">";
+                 foreach($tab[$index] as $key => $val){
+                     echo "<th>".$tab[$index][$key]."</th><th></th>";
+                 }
+                 echo "</tr>";
+             }
+            ?>
+        </table>
+        <?php
+    }
+    ?>
+</div>

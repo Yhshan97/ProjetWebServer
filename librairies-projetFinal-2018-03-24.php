@@ -220,3 +220,25 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
     $strSelectHTML .= "</select>";
     return $strSelectHTML;
 }
+
+
+
+function valideNomUtilisateur($strNomUtilisateur){
+     return preg_match("/\w{1,2}.\w{2,25}/", $strNomUtilisateur);
+}
+
+function valideMDP($strMDP){
+    return preg_match("/.{3,25}/", $strMDP);
+}
+
+function valideNomCOmplet($strNomComplet){
+    return preg_match("/-{4,9}/", $strNomComplet);
+}
+
+function valideCourriel($strCourriel){
+    return preg_match("/\w{10,50}/", $strCourriel);
+}
+
+function valideSigle($strSigle){
+    return preg_match("/-{4,9}/", $strSigle);
+}
