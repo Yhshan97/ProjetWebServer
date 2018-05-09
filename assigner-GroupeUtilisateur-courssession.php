@@ -129,15 +129,107 @@ $mySqli = new mysql("", $strInfosSensibles);
                 </td>
             </tr>
             <?php
-             $tab = csv_to_array("televersements/Fichier.csv", ";");
-             
-             for ($index = 0; $index < count($tab); $index++) {
-                 echo "<tr style=\"background-color: whitesmoke;\">";
-                 foreach($tab[$index] as $key => $val){
-                     echo "<th>".$tab[$index][$key]."</th><th></th>";
-                 }
-                 echo "</tr>";
-             }
+            $tab = csv_to_array("televersements/Fichier.csv", ";");
+            
+            $verdict = "";
+            $object = new mysql("pjf_immigrants", $strInfosSensibles);
+            for ($index = 0; $index < count($tab); $index++) {
+                echo "<tr style=\"background-color: whitesmoke;\">";
+                $booNomUtilOK = FALSE;
+            $booMDPOK = FALSE;
+            $booNomCompletOK = FALSE;
+            $booCourrielOK = FALSE;
+            $booSigle1OK = FALSE;
+            $booSigle2OK = FALSE;
+            $booSigle3OK = FALSE;
+            $booSigle4OK = FALSE;
+            $booSigle5OK = FALSE;
+                foreach ($tab[$index] as $key => $val) {
+                    echo "<th>" . $tab[$index][$key] . "</th>";
+                    if ($key == "NomUtilisateur") {
+                        if ($tab[$index][$key] != "") {
+                            $object->selectionneEnregistrements("utilisateur", "C=NomUtilisateur=" . $tab[$index][$key]);
+                            var_dump($object->listeEnregistrements);
+                            if ($object->nbEnregistrements == 0) {
+                                $booNomUtilOK = valideNomUtilisateur($tab[$index][$key]);
+                            }
+                        }
+                    } else if ($key == "MotDePasse") {
+                        if ($tab[$index][$key] != "") {
+                            $booMDPOK = valideMDP($tab[$index][$key]);
+                        }
+                    } else if ($key == "NomComplet") {
+                        if ($tab[$index][$key] != "") {
+                            $booNomCompletOK = valideNomCOmplet($tab[$index][$key]);
+                        }
+                    } else if ($key == "Courriel") {
+                        if ($tab[$index][$key] == "") {
+                            $booCourrielOK = TRUE;
+                        } else {
+                            $booCourrielOK = valideCourriel($tab[$index][$key]);
+                        }
+                    } else if ($key == "Sigle1") {
+                        if ($tab[$index][$key] == "") {
+                            $booSigle1OK = true;
+                        } else {
+                            $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
+                            echo $object->requete;
+                            if ($object->nbEnregistrements == 1) {
+                                $booSigle1OK = TRUE;
+                            }
+                        }
+                    } else if ($key == "Sigle2") {
+                        if ($tab[$index][$key] == "") {
+                            $booSigle2OK = true;
+                        } else {
+                            $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
+                            echo $object->requete;
+                            if ($object->nbEnregistrements == 1) {
+                                $booSigle2OK = TRUE;
+                            }
+                        }
+                    } else if ($key == "Sigle3") {
+                        if ($tab[$index][$key] == "") {
+                            $booSigle3OK = true;
+                        } else {
+                            $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
+                            if ($object->nbEnregistrements == 1) {
+                                $booSigle3OK = TRUE;
+                            }
+                        }
+                    } else if ($key == "Sigle4") {
+                        if ($tab[$index][$key] == "") {
+                            $booSigle4OK = true;
+                        } else {
+                            $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
+                            if ($object->nbEnregistrements == 1) {
+                                $booSigle4OK = TRUE;
+                            }
+                        }
+                    } else if ($key == "Sigle5") {
+                        if ($tab[$index][$key] == "") {
+                            $booSigle5OK = true;
+                        } else {
+                            $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
+                            if ($object->nbEnregistrements == 1) {
+                                $booSigle5OK = TRUE;
+                            }
+                        }
+                    }
+                    $verdict = ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK && $booSigle1OK && $booSigle2OK && $booSigle3OK && $booSigle4OK && $booSigle5OK ? "OK" : "PAS OK");
+                }
+                echo "<th>$verdict</th>";
+                echo "<th> NomUtil = $booNomUtilOK </th>";
+                echo "<th> MDP = $booMDPOK </th>";
+                echo "<th> NomComplet = $booNomCompletOK </th>";
+                echo "<th> Courriel = $booCourrielOK </th>";
+                echo "<th> Sigle1 = $booSigle1OK </th>";
+                echo "<th> Sigle2 = $booSigle2OK </th>";
+                echo "<th> Sigle3 = $booSigle3OK </th>";
+                echo "<th> SIgle4 = $booSigle4OK </th>";
+                echo "<th> Sigle5 = $booSigle5OK </th>";
+                echo "</tr>";
+            }
             ?>
         </table>
         <?php

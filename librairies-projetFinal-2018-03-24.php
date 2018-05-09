@@ -232,7 +232,7 @@ function valideMDP($strMDP){
 }
 
 function valideNomCOmplet($strNomComplet){
-    return preg_match("/-{4,9}/", $strNomComplet);
+    return preg_match("/\D+, \D+/", $strNomComplet);
 }
 
 function valideCourriel($strCourriel){
