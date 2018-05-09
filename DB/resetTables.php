@@ -145,10 +145,10 @@ $objMySqli->etablitRelation("Cours", "Sigle", "courssession", "Sigle","FK_Cours_
 ecrit("Etablit relation entre courssession et Cours :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 $objMySqli->etablitRelation("CoursSession", "coursSession", "Privilege", "coursSession","FK_Privilege_CoursSession");
+
 ecrit("Etablit relation entre courssession et privilege :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 
 $objMySqli->deconnexion();
 
-header("ajouterDonnees.php");
 ?>
