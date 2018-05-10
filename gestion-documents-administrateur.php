@@ -93,9 +93,14 @@ if(isset($_POST["option"])){
 </form>
 
 <div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
-    <label for="Jour">Bienvenu(e) cher(e) utilisateur(e) Vous désirez ...</label><br/><br>
+    <label for="Jour">Bienvenu(e) cher(e) utilisateur(e), vous désirez ...</label>
+    <br/>
+    <span id="spanDescription" class="sGras"></span>
+    <br/><br/>
     <form id="saisieChoix" name="choix" method="POST" action="">
-        <select name="option" id="option" class="sList">
+
+        <select name="option" id="option" class="sList" onchange="description(this)">
+            <option value="0"></option>
             <option value="1">1. Mettre à jour la liste des documents</option>
             <option value="2">2. Mettre à jour les tables de référence </option>
             <option value="3">3. Assigner les privilèges d'accès aux documents </option>
@@ -117,6 +122,31 @@ $mySqli->deconnexion();
             x.type = "text";
         } else {
             x.type = "password";
+        }
+    }
+    function description(obj){
+        switch(obj.value){
+            case '0':
+                document.getElementById('spanDescription').innerHTML = '';
+            break;
+            case '1':
+                document.getElementById('spanDescription').innerHTML = ' ajouter/modifier/retirer un ou plusieurs documents.';
+            break;
+            case '2':
+                document.getElementById('spanDescription').innerHTML = ' ajouter/modifier/retirer une ou plusieurs sessions, </br>cours, catégories de documents et/ou utilisateurs.';
+                break;
+            case '3':
+                document.getElementById('spanDescription').innerHTML = ' assigner les privilèges d\'accès aux documents pour <br/> un ou plusieurs utilisateurs.';
+                break;
+            case '4':
+                document.getElementById('spanDescription').innerHTML = ' ajouter une série d\'utilisateurs et les assigner à un cours-session existant.';
+                break;
+            case '5':
+                document.getElementById('spanDescription').innerHTML = ' effectuer du ménage dans la liste de documents enregistrés.';
+                break;
+            case '6':
+                document.getElementById('spanDescription').innerHTML = ' quitter l\'application.';
+                break;
         }
     }
 </script>
