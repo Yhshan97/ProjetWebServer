@@ -24,38 +24,68 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 
 $mySqli = new mysql("", $strInfosSensibles);
 ?>
-<form id="action" method="post" action="" style="font-family: Poppins-Regular;height:680px">
-    <ul> <li> <input type="radio" id="a-option" name="action" value="ajout"
-    <?php
-    if (post("action") == "ajout" || !isset($_POST["action"]))
-        echo "checked";
-    ?> 
-                     >  <label for="a-option">Ajouter</label><div class="check"></div></li><li>
+<form id="action" method="post" action="" style="font-family: Poppins-Regular;">
+    <ul style="height:50px;">
+        <li>
+            <input type="radio" id="a-option" name="action" value="ajout"<?php if (post("action") == "ajout")echo "checked";?>>
+            <label for="a-option">Ajouter</label>
+            <div class="check"></div>
+        </li>
+        <li>
     <input type="radio" id="m-option" name="action"
-           value="modif" <?php if (post("action") == "modif") echo "checked"; ?>> <label for="m-option">Modifier</label><div class="check"><div class="inside"></div></div></li><li>
+           value="modif" <?php if (post("action") == "modif") echo "checked"; ?>>
+            <label for="m-option">Modifier</label>
+            <div class="check">
+                <div class="inside"></div>
+            </div>
+        </li>
+    <li>
     <input type="radio" id="r-option" name="action"
-           value="retir" <?php if (post("action") == "retir") echo "checked"; ?>>  <label for="r-option">Retirer</label><div class="check"><div class="inside"></div></div></li>
+           value="retir" <?php if (post("action") == "retir") echo "checked"; ?>>
+            <label for="r-option">Retirer</label>
+            <div class="check"><div class="inside"></div></div>
+        </li>
+    </ul>
+
+    <ul>
 
     </ul>
-    <select name="option2" id="option" onchange="" class="sList" style="position:fixed; top:200px; left:100px">
+    <br />
+    <br />
+
+    <div style="float:none;">
+    <table><tr>
+            <td>
+    <select name="option2" id="option" onchange="" class="sList" style="margin-left: 70px;">
+        <option value="0">
         <option value="1" <?php if (post("option2") == "1") echo "selected" ?>>1. Gestion des sessions d'étude
         <option value="2" <?php if (post("option2") == "2") echo "selected" ?>>2. Gestion des cours
         <option value="3" <?php if (post("option2") == "3") echo "selected" ?>>3. Gestion des cours-sessions
         <option value="4" <?php if (post("option2") == "4") echo "selected" ?>>4. Gestion des catégories de documents
         <option value="5" <?php if (post("option2") == "5") echo "selected" ?>>5. Gestion des utilisateurs</option>
     </select>
-    <br><br>
-    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
-           value="Retour" style="position:fixed; top:280px; left:600px">
-    <input class="sButton" id="InpValider" type="submit" value="Valider choix" style="position:fixed; top:200px; left:600px">
+            </td>
+            <td>
+                <input class="sButton" id="InpValider" type="submit" value="Valider choix" >
+            </td>
+        </tr>
+        <tr><td></td>
+            <td>
+                <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+                       value="Retour" >
+            </td>
+        </tr>
+    </table>
+    </div>
 </form>
 
+<div style="margin-left: 50px;">
 <?php
 switch (post("option2")) {
     case 1:
         ?>
         <div>
-            <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
+            <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular;">
                 <table>
                     <tr>
                         <td>
@@ -94,11 +124,12 @@ switch (post("option2")) {
                         <td align="right">
                             <input type="hidden" name="action" value="<?php echo post("action") ?>">
                             <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
-                            <input id="btnSoumettre" type="submit" value="Confirmer"/>
+                            <input id="btnSoumettre" type="submit" class="sButton" value="Confirmer"/>
                         </td>
                     </tr>
                 </table>
             </form>
+
             <?php
             if (isset($_POST["action"]) && isset($_POST["Session"])) {
                 if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["dateDebut"]) && isset($_POST["dateFin"]))) {
@@ -125,12 +156,43 @@ switch (post("option2")) {
             }
             ?>
         </div>
+
+        <br/>
+
+        <div>
+            Sessions enregistrées
+            <br/>
+            <table class='tableBordure'>
+                <tr class="sEntete">
+                    <td class='tableBordure'>
+                        Session
+                    </td>
+                    <td class='tableBordure'>
+                        Date début
+                    </td>
+                    <td class='tableBordure'>
+                        Date fin
+                    </td>
+                </tr>
+                <?php
+                $mySqli->selectionneEnregistrements("Session");
+
+                for ($index=0; $index<$mySqli->nbEnregistrements; $index++){
+                    echo "<tr class='tableBordure'>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"Description") . "</td>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"DateDebut") . "</td>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"DateFin") . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </table>
+        </div>
         <?php
         break;
     case 2:
         ?>
         <div>
-            <form id="GestionCours" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
+            <form id="GestionCours" method="post" action="" style="font-family: Poppins-Regular; ">
                 <table>
                     <tr>
                         <td>
@@ -155,30 +217,22 @@ switch (post("option2")) {
                                 <?php input("Titre", "", "text", 50, "", true); ?>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                Nom du professeur :
-                            </td>
-                            <td>
-                                <?php input("NomProf", "", "text", 50, "", true); ?>
-                            </td>
-                        </tr>
                     <?php } ?>
                     <tr>
                         <td></td>
                         <td align="right">
                             <input type="hidden" name="action" value="<?php echo post("action") ?>">
                             <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
-                            <input id="btnSoumettre" type="submit" value="Confirmer"/>
+                            <input id="btnSoumettre" type="submit" class="sButton" value="Confirmer"/>
                         </td>
                     </tr>
                 </table>
             </form>
             <?php
             if (isset($_POST["action"]) && isset($_POST["Sigle"])) {
-                if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]) && isset($_POST["NomProf"]))) {
-                    if (post("Sigle") && post("Titre") && post("NomProf")) {
-                        if (GestionCours(post("action"), post("Sigle"), post("Titre"), post("NomProf"), $mySqli)) {
+                if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["Titre"]))) {
+                    if (post("Sigle") && post("Titre")) {
+                        if (GestionCours(post("action"), post("Sigle"), post("Titre"), $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
                             echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
@@ -201,12 +255,38 @@ switch (post("option2")) {
             }
             ?>
         </div>
+
+        <br/>
+        <div>
+            Cours enregistrés
+            <br/>
+            <table class='tableBordure'>
+                <tr class="sEntete">
+                    <td class='tableBordure'>
+                        Cours
+                    </td>
+                    <td class='tableBordure'>
+                        Description
+                    </td>
+                </tr>
+                <?php
+                $mySqli->selectionneEnregistrements("Cours");
+
+                for ($index=0; $index<$mySqli->nbEnregistrements; $index++){
+                    echo "<tr class='tableBordure'>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"Sigle") . "</td>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"Titre") . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </table>
+        </div>
         <?php
         break;
     case 3:
         ?>
         <div>
-            <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
+            <form id="GestionCoursSession" method="post" action="" style="font-family: Poppins-Regular;">
                 <table>
                     <?php if (post("action") == "modif" || post("action") == "retir") { ?>
                         <tr>
@@ -297,6 +377,33 @@ switch (post("option2")) {
                 echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
             }
         }
+        ?>
+        <br/>
+        <div>
+            Cours-sessions enregistrés
+            <br/>
+            <table class="tableBordure">
+                <tr class="sEntete ">
+                    <td class='tableBordure'>
+                        Cours-session
+                    </td>
+                    <td class='tableBordure'>
+                        Nom professeur
+                    </td>
+                </tr>
+                <?php
+                $mySqli->selectionneEnregistrements("CoursSession");
+
+                for ($index=0; $index<$mySqli->nbEnregistrements; $index++){
+                    echo "<tr class='tableBordure'>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"coursSession") . "</td>";
+                    echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"NomProf") . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </table>
+        </div>
+    <?php
         break;
     case 4:
         ?>
@@ -374,6 +481,28 @@ switch (post("option2")) {
             }
             ?>
         </div>
+        <br/>
+        <div>
+        Catégories enregistrées
+            <br/>
+        <table class="tableBordure">
+            <tr class="sEntete tableBordure">
+                <td class='tableBordure'>
+                    Catégorie
+                </td>
+            </tr>
+            <?php
+            $mySqli->selectionneEnregistrements("Categorie");
+
+            for ($index=0; $index<$mySqli->nbEnregistrements; $index++){
+                echo "<tr class='tableBordure'>";
+                echo "<td class='tableBordure'>" . $mySqli->contenuChamp($index,"Description") . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </table>
+    </div>
+
         <?php
         break;
     case 5:
@@ -508,7 +637,9 @@ switch (post("option2")) {
             break;
         }
 }
-
+?>
+</div>
+    <?php
 require_once("pied-page.php");
 $mySqli->deconnexion();
 ?>

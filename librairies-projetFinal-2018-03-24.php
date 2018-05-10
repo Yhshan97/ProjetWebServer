@@ -56,10 +56,10 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
     }
 }
 
-function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
+function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
     $booEverything = false;
     if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {
-        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5 && preg_match("/^\w{5,50}/", $strNomProf) == 1) {
+        if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5) {
             var_dump($booEverything);
             $booEverything = true;
         }
@@ -70,10 +70,10 @@ function GestionCours($mode, $strSigle, $strTitreCours, $strNomProf, $objSQL) {
     if ($booEverything) {
         switch ($mode) {
             case "ajout":
-                $objSQL->insereEnregistrement("Cours", $strSigle, $strTitreCours, $strNomProf);
+                $objSQL->insereEnregistrement("Cours", $strSigle, $strTitreCours);
                 break;
             case "modif": //a tester
-                $objSQL->metAJourEnregistrements("Cours", "Sigle='$strSigle', Titre='$strTitreCours' , NomProf='$strNomProf'");
+                $objSQL->metAJourEnregistrements("Cours", "Sigle='$strSigle', Titre='$strTitreCours'");
                 break;
             case "retir": //a tester
                 $objSQL->supprimeEnregistrements("Cours", "Sigle='$strSigle'");
