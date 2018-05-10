@@ -143,7 +143,7 @@ function creerSelectHTMLAvecRequete($strNomTable, $strNomColonne, $strCondition 
     while ($val = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $Tableau[] = $val["$strNomColonne"];
     }
-        
+
 
     return creerSelectHTML($strID, $strName, $strClass, $onchange, $Tableau);
 }
@@ -184,18 +184,19 @@ function gestionUtilisateur($mode, $strUtilSelect, $strNom, $strMotDePasse, $boo
         if (preg_match("/-{4,9}/", $strUtilSelect) != 1) {
             $objSQL->supprimeEnregistrements("utilisateur", "NomUtilisateur='$strUtilSelect'");
             return $objSQL->OK;
-        } else return false;
+        } else
+            return false;
     } else if ($mode == "modif") {
         if (preg_match("/\w{1,2}.\w{2,25}/", $strNom) && preg_match("/.{3,25}/", $strMotDePasse) &&
                 preg_match("/\D+, \D+/", $strNomComplet) && preg_match("/\w{10,50}/", $strCourriel)) {
             $objSQL->metAJourEnregistrements("utilisateur", "NomUtilisateur='$strNom', MotDePasse='$strMotDePasse', StatutAdmin='$booStatut', NomComplet='$strNomComplet', Courriel='$strCourriel'", "NomUtilisateur='$strUtilSelect'");
             return $objSQL->OK;
-        }
-        else return false;
+        } else
+            return false;
     }
 }
 
-function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "", $strID, $strName, $strClass,$strValue, $onchange, $mySqli, $numerique=false){
+function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "", $strID, $strName, $strClass, $strValue, $onchange, $mySqli, $numerique = false) {
     $mySqli->selectionneEnregistrements($strNomTable, $strCondition);
     $result = mysqli_query($mySqli->cBD, $mySqli->requete);
 
@@ -212,7 +213,7 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
         }
     } else {
         foreach ($Tableau as $val) {
-            $choisi = $strValue === $val ? "selected": "";
+            $choisi = $strValue === $val ? "selected" : "";
             $strSelectHTML .= "<option value=\"$val\" $choisi>" . $val;
         }
     }
@@ -221,24 +222,26 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
     return $strSelectHTML;
 }
 
-
-
-function valideNomUtilisateur($strNomUtilisateur){
-     return preg_match("/\w{1,2}.\w{2,25}/", $strNomUtilisateur);
+function valideNomUtilisateur($strNomUtilisateur) {
+    return preg_match("/\w{1,2}.\w{2,25}/", $strNomUtilisateur);
 }
 
-function valideMDP($strMDP){
+function valideMDP($strMDP) {
     return preg_match("/.{3,25}/", $strMDP);
 }
 
-function valideNomCOmplet($strNomComplet){
+function valideNomCOmplet($strNomComplet) {
     return preg_match("/\D+, \D+/", $strNomComplet);
 }
 
-function valideCourriel($strCourriel){
-    return preg_match("/\w{10,50}/", $strCourriel);
+function valideCourriel($strCourriel) {
+    if (filter_var($strCourriel, FILTER_VALIDATE_EMAIL)) {
+        return TRUE;
+    } else {
+        return filter_var($strCourriel, FILTER_VALIDATE_EMAIL);
+    }
 }
 
-function valideSigle($strSigle){
+function valideSigle($strSigle) {
     return preg_match("/-{4,9}/", $strSigle);
 }

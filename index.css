@@ -8,6 +8,8 @@ P { font-size: 20px; }
 .sTitreApplication { font-size:24px; line-height:26px; font-weight:bold; margin-top:0px; font-family: "Helvetica CE", sans-serif; }
 .sTitreSection { font-size:16px; line-height:20px; font-weight:bold; font-family: "Helvetica CE", sans-serif; }
 
+.sBgVert{ background-color:green; }
+.sBgRouge{ background-color:red; }
 .sBleu { color:blue; }
 .sDate { width:90px; }
 .sDroite { text-align:right; }

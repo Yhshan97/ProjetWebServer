@@ -130,65 +130,78 @@ $mySqli = new mysql("", $strInfosSensibles);
             </tr>
             <?php
             $tab = csv_to_array("televersements/Fichier.csv", ";");
-            
+            $booToutEstValidé = true;
             $verdict = "";
             $object = new mysql("pjf_immigrants", $strInfosSensibles);
             for ($index = 0; $index < count($tab); $index++) {
                 echo "<tr style=\"background-color: whitesmoke;\">";
                 $booNomUtilOK = FALSE;
-            $booMDPOK = FALSE;
-            $booNomCompletOK = FALSE;
-            $booCourrielOK = FALSE;
-            $booSigle1OK = FALSE;
-            $booSigle2OK = FALSE;
-            $booSigle3OK = FALSE;
-            $booSigle4OK = FALSE;
-            $booSigle5OK = FALSE;
+                $booMDPOK = FALSE;
+                $booNomCompletOK = FALSE;
+                $booCourrielOK = FALSE;
+                $booSigle1OK = FALSE;
+                $booSigle2OK = FALSE;
+                $booSigle3OK = FALSE;
+                $booSigle4OK = FALSE;
+                $booSigle5OK = FALSE;
+                $booAucunDoublonSigle1 = TRUE;
+                $booAucunDoublonSigle2 = TRUE;
+                $booAucunDoublonSigle3 = TRUE;
+                $booAucunDoublonSigle4 = TRUE;
+                $booAucunDoublonSigle5 = TRUE;
+
                 foreach ($tab[$index] as $key => $val) {
-                    echo "<th>" . $tab[$index][$key] . "</th>";
+
                     if ($key == "NomUtilisateur") {
+                        $strNomUtil = $tab[$index][$key];
                         if ($tab[$index][$key] != "") {
-                            $object->selectionneEnregistrements("utilisateur", "C=NomUtilisateur=" . $tab[$index][$key]);
-                            var_dump($object->listeEnregistrements);
-                            if ($object->nbEnregistrements == 0) {
-                                $booNomUtilOK = valideNomUtilisateur($tab[$index][$key]);
-                            }
+                            $booNomUtilOK = valideNomUtilisateur($tab[$index][$key]);
                         }
+                        echo $booNomUtilOK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "MotDePasse") {
+                        $strMDP = $tab[$index][$key];
                         if ($tab[$index][$key] != "") {
                             $booMDPOK = valideMDP($tab[$index][$key]);
                         }
+                        echo $booMDPOK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "NomComplet") {
+                        $strNomComplet = $tab[$index][$key];
                         if ($tab[$index][$key] != "") {
                             $booNomCompletOK = valideNomCOmplet($tab[$index][$key]);
                         }
+                        echo $booNomCompletOK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "Courriel") {
+                        $strCourriel = $tab[$index][$key];
                         if ($tab[$index][$key] == "") {
                             $booCourrielOK = TRUE;
                         } else {
                             $booCourrielOK = valideCourriel($tab[$index][$key]);
                         }
+                        echo $booCourrielOK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "Sigle1") {
+                        $strSigle1 = $tab[$index][$key];
                         if ($tab[$index][$key] == "") {
                             $booSigle1OK = true;
                         } else {
                             $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
-                            echo $object->requete;
                             if ($object->nbEnregistrements == 1) {
                                 $booSigle1OK = TRUE;
                             }
                         }
+                        echo $booSigle1OK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "Sigle2") {
+                        $strSigle2 = $tab[$index][$key];
                         if ($tab[$index][$key] == "") {
                             $booSigle2OK = true;
                         } else {
                             $object->selectionneEnregistrements("cours", "C=Sigle='" . $tab[$index][$key] . "'");
-                            echo $object->requete;
                             if ($object->nbEnregistrements == 1) {
                                 $booSigle2OK = TRUE;
                             }
                         }
+                        echo $booSigle2OK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "Sigle3") {
+                        $strSigle3 = $tab[$index][$key];
                         if ($tab[$index][$key] == "") {
                             $booSigle3OK = true;
                         } else {
@@ -197,7 +210,9 @@ $mySqli = new mysql("", $strInfosSensibles);
                                 $booSigle3OK = TRUE;
                             }
                         }
+                        echo $booSigle3OK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "Sigle4") {
+                        $strSigle4 = $tab[$index][$key];
                         if ($tab[$index][$key] == "") {
                             $booSigle4OK = true;
                         } else {
@@ -206,7 +221,9 @@ $mySqli = new mysql("", $strInfosSensibles);
                                 $booSigle4OK = TRUE;
                             }
                         }
+                        echo $booSigle4OK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     } else if ($key == "Sigle5") {
+                        $strSigle5 = $tab[$index][$key];
                         if ($tab[$index][$key] == "") {
                             $booSigle5OK = true;
                         } else {
@@ -215,24 +232,79 @@ $mySqli = new mysql("", $strInfosSensibles);
                                 $booSigle5OK = TRUE;
                             }
                         }
+                        echo $booSigle5OK ? "<th class=\"sBgVert\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>" : "<th class=\"sBgRouge sBlanc\">" . str_replace('�', '&eacute;', $tab[$index][$key]) . "</th>";
                     }
-                    $verdict = ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK && $booSigle1OK && $booSigle2OK && $booSigle3OK && $booSigle4OK && $booSigle5OK ? "OK" : "PAS OK");
                 }
+
+                $object->selectionneEnregistrements("utilisateur", "C=NomUtilisateur='" . $strNomUtil . "'");
+                if ($object->nbEnregistrements == 0) {
+                    if ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK) {
+                        $object->insereEnregistrement("utilisateur", "$strNomUtil", "$strMDP", "0", "$strNomComplet", "$strCourriel");
+                        echo ($object->OK ? "L'utilisateur $strNomUtil n'existe pas dans la base de données mais a été ajouté avec succès </br></br>" : "L'utilisateur $strNomUtil n'existe pas dans la base de données mais n'a pas pu être ajouté </br></br>");
+                    }
+                } else {
+                    echo "Mercééééééééééé</br></br>";
+                }
+
+
+                if ($strSigle1 != "") {
+                    if (trouveDansChaine($strSigle1, "$strSigle2,$strSigle3,$strSigle4,$strSigle5", $intPos)) {
+                        $booAucunDoublonSigle1 = FALSE;
+                    }
+                }
+                if ($strSigle2 != "") {
+                    if (trouveDansChaine($strSigle2, "$strSigle1,$strSigle3,$strSigle4,$strSigle5", $intPos)) {
+                        $booAucunDoublonSigle2 = FALSE;
+                    }
+                }
+                if ($strSigle3 != "") {
+                    if (trouveDansChaine($strSigle3, "$strSigle2,$strSigle1,$strSigle4,$strSigle5", $intPos)) {
+                        $booAucunDoublonSigle3 = FALSE;
+                    }
+                }
+                if ($strSigle4 != "") {
+                    if (trouveDansChaine($strSigle4, "$strSigle2,$strSigle3,$strSigle1,$strSigle5", $intPos)) {
+                        $booAucunDoublonSigle4 = FALSE;
+                    }
+                }
+                if ($strSigle5 != "") {
+                    if (trouveDansChaine($strSigle5, "$strSigle2,$strSigle3,$strSigle4,$strSigle1", $intPos)) {
+                        $booAucunDoublonSigle5 = FALSE;
+                    }
+                }
+                // echo ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK && $booSigle1OK && $booSigle2OK && $booSigle3OK && $booSigle4OK && $booSigle5OK && $booAucunDoublonSigle1 && $booAucunDoublonSigle2 && $booAucunDoublonSigle3 && $booAucunDoublonSigle4 && $booAucunDoublonSigle5 ? "<th id=$index class=\"sBgVert\">" : "<th id=$index class=\"sBgRouge\">");
+                $booOK = $booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK && $booSigle1OK && $booSigle2OK && $booSigle3OK && $booSigle4OK && $booSigle5OK && $booAucunDoublonSigle1 && $booAucunDoublonSigle2 && $booAucunDoublonSigle3 && $booAucunDoublonSigle4 && $booAucunDoublonSigle5;
+                $verdict = ($booOK ? "OK" : "PAS OK");
+                if ($verdict == "PAS OK") {
+                    $booToutEstValidé = false;
+                }
+               // $booToutEstValidé = $booToutEstValidé && $booOK ? TRUE : FALSE;
                 echo "<th>$verdict</th>";
-                echo "<th> NomUtil = $booNomUtilOK </th>";
-                echo "<th> MDP = $booMDPOK </th>";
-                echo "<th> NomComplet = $booNomCompletOK </th>";
-                echo "<th> Courriel = $booCourrielOK </th>";
-                echo "<th> Sigle1 = $booSigle1OK </th>";
-                echo "<th> Sigle2 = $booSigle2OK </th>";
-                echo "<th> Sigle3 = $booSigle3OK </th>";
-                echo "<th> SIgle4 = $booSigle4OK </th>";
-                echo "<th> Sigle5 = $booSigle5OK </th>";
+                /* echo "<th> NomUtil = $booNomUtilOK </th>";
+                  echo "<th> MDP = $booMDPOK </th>";
+                  echo "<th> NomComplet = $booNomCompletOK </th>";
+                  echo "<th> Courriel = $booCourrielOK </th>";
+                  echo "<th> Sigle1 = $booSigle1OK </th>";
+                  echo "<th> Sigle2 = $booSigle2OK </th>";
+                  echo "<th> Sigle3 = $booSigle3OK </th>";
+                  echo "<th> Sigle4 = $booSigle4OK </th>";
+                  echo "<th> Sigle5 = $booSigle5OK </th>"; */
                 echo "</tr>";
             }
             ?>
         </table>
         <?php
+        var_dump($booToutEstValidé);
+        if ($booToutEstValidé) {
+            echo creerSelectHTMLAvecRequete("session", "Description", "", "session", "session", "sList", "", $object);
+        }
+        else {
+            ?>
+        <script type="text/javascript">
+            alert("Certaines valeurs dans le fichier <?php echo $strNomFichier ?> ne sont pas correct.  Veuillez les corriger au risque de ne pas pouvoir avancer");
+        </script>
+                <?php
+        }
     }
     ?>
 </div>

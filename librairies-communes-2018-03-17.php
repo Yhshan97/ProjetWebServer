@@ -485,6 +485,17 @@ function csv_to_array($filename='', $delimiter=',')
     return $data;
 }
 
+   function trouveDansChaine($strSousChaine, $strChaine, &$intPos) {
+      if (func_num_args() == 3) {
+         $intPos = strpos($strChaine, $strSousChaine);
+      }
+      else {
+         $intDebut = func_get_arg(3);
+         $intPos = stripos($strChaine, $strSousChaine, $intDebut);
+      }
+      return !($intPos === false);
+   }
+
 
 
 ?>
