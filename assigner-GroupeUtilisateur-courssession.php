@@ -1,4 +1,5 @@
 <?php
+ ob_start();
 header("Access-Control-Allow-Origin: *");
 session_start();
 
@@ -378,49 +379,60 @@ $mySqli = new mysql("", $strInfosSensibles);
                         }
                         if ($booMerciCestBon) {
                             if (post("ButtonEnregistrer")) {
-                                    for ($index = 0; $index < count($tab); $index++) {
-                                        $Utilisateur = "";
-                                        foreach ($tab[$index] as $key => $val) {
-                                            $Sigle = "";
-                                            if ($key == "NomUtilisateur") {
-                                                $Utilisateur = $tab[$index][$key];
-                                            }
-                                            if (substr($key, 0, 5) == "Sigle" && $tab[$index][$key] != "") {
-                                                $Sigle = $tab[$index][$key];
-                                            }
-                                            $object->insereEnregistrement("privilege", "$Utilisateur-$Sigle ($strSessionChoisi)", "$Utilisateur", "$Sigle ($strSessionChoisi)");
-                                            ?>
-                                        <script type="text/javascript">
-                                            alert("Tout les privileges ont été ajouté avec succès");
-                                        </script>
-                                        <?php
+                                for ($index = 0; $index < count($tab); $index++) {
+                                    $Utilisateur = "";
+                                    foreach ($tab[$index] as $key => $val) {
+                                        $Sigle = "";
+                                        if ($key == "NomUtilisateur") {
+                                            $Utilisateur = $tab[$index][$key];
+                                        }
+                                        if (substr($key, 0, 5) == "Sigle" && $tab[$index][$key] != "") {
+                                            $Sigle = $tab[$index][$key];
+                                        }
+                                        $object->insereEnregistrement("privilege", "$Utilisateur-$Sigle ($strSessionChoisi)", "$Utilisateur", "$Sigle ($strSessionChoisi)");
                                     }
                                 }
+                                ?>
+                                <script type="text/javascript">
+                                    alert("Tout les privileges ont été ajouté avec succès");
+                                </script>
+                                <?php
+                               header("location: assigner-privileges-document.php");
+                                exit();
                             }
                             ?>
-                        
-                                        <th><input class="sButton" id="ButtonEnregistrer" type="submit" onclick="" value="Enregistrer"></th>
-                                <?php
-                                
+
+                            <input class="sButton" id="ButtonEnregistrer" type="submit" onclick="" value="Enregistrer" name="ButtonEnregistrer">
+
+                            <?php
+                        } else {
+                            ?>
+                            <script type="text/javascript">
+                                alert("Certaines sigle du fichier ne correspondent pas avec la session choisi veuillez soit modifier le fichier excel ou soit selectionner une bonne session");
+                            </script>
+                            <?php
                         }
                     }
                     echo "</table>";
                 } else {
                     ?>
                     <script type="text/javascript">
-                        alert("Certaines valeurs dans le fichier <?php echo $strNomFichier ?> ne sont pas correct.  Veuillez les corriger au risque de ne pas pouvoir avancer");
+                        alert("Certaines valeurs dans le fichier " + <?php echo $strNomFichier; ?> + " ne sont pas correct.  Veuillez les corriger au risque de ne pas pouvoir avancer");
                     </script>
                     <?php
+                    
                 }
             }
+            
             ?>
+                    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+           value="Retour">
     </form>
 </div>
 <?php if (post("session")) { ?>
     <script>
-
         document.getElementById('session').value = '<?php echo post("session") ?>';
 
     </script>
 
-<?php } ?>
+<?php }ob_end_flush(); ?>
