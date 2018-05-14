@@ -7,7 +7,7 @@ $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
 session_start();
-
+$_SESSION["nomFichierAjout"] = "";
 if(!isset($_SESSION["NomComplet"])) {
     header('location: gestion-documents-administrateur.php');
 }
@@ -49,16 +49,18 @@ if(isset($_POST["coursSession"])){
     }
 }
 if(isset($_POST["DocumentAction"])){
-    if(post("DocumentAction") == "Ajouter"){        // IL MANQUE && !empty(post("hyperLien"))
+    if(post("DocumentAction") == "Ajouter"){
         if(!empty(post("session")) && !empty(post("sigle")) && !empty(post("dateCours")) &&
             !empty(post("noSequence")) && !empty(post("dateAccessDebut")) && !empty(post("dateAccessFin")) &&
             !empty(post("titre")) && !empty(post("description")) && !empty(post("nbPages")) &&
-            !empty(post("categorie")) && !empty(post("noVersion")) && !empty(post("dateVersion")) &&
-            !empty(post("ajoutePar")))
+            !empty(post("categorie")) && !empty(post("noVersion")) && !empty(post("dateVersion")) && 
+            !empty(post("hyperLien")) && !empty(post("ajoutePar")))
         {
             $mySqli->insereEnregistrement("Document",post("session"),post("sigle"),post("dateCours"),post("noSequence"),post("dateAccessDebut"),
                 post("dateAccessFin"),post("titre"),post("description"),post("nbPages"),post("categorie"),post("noVersion"),post("dateVersion"),
                 post("hyperLien"),post("ajoutePar"));
+            
+            $_SESSION["nomFichierAjout"] = "";
 
             $msgResultatAction = $mySqli->OK ? "<span class='sVert sBlancFond'> La commande à été effectuée</span>" :
                 "<span class='sBlanc sRougeFond'> Ajout pas possible. Même titre de document existe!'</span>";
@@ -102,9 +104,9 @@ if(isset($_POST["DocumentAction"])){
                 ", NbPages="        . post("RnbPages") .
                 ", Categorie='"     . post("Rcategorie"). "'".
                 ", NoVersion="      . post("RnoVersion").
-                ",DateVersion='"    . post("RdateVersion")      . "'".
-                ",HyperLien="       . "''".
-                ",AjoutePar='"      . $_SESSION["NomComplet"]."'"
+                ", DateVersion='"   . post("RdateVersion") . "'".
+                ", HyperLien='"      . post("RhyperLien"). "'" .
+                ", AjoutePar='"     . $_SESSION["NomComplet"]."'"
                 ,
                 "Titre='" . post("titreAvantModif"). "' AND Sigle='" . $infosCoursSession["Sigle"] .
                 "' AND Session='".$infosCoursSession["Session"] . "'");
@@ -121,7 +123,7 @@ if(isset($_POST["DocumentAction"])){
 
 ?>
 
-<form id="ajoutDocument" method="post" action="">
+<form id="ajoutDocument" method="post" action="" enctype="multipart/form-data">
     <div <?php echo $binSelect ? "style='display: none'" : "" ?>>
     <br>
     <label id="lbl"> Il y a <?php $mySqli->selectionneEnregistrements("courssession"); echo $mySqli->nbEnregistrements; ?> 
@@ -258,7 +260,11 @@ if(isset($_POST["DocumentAction"])){
                 </th>
                 <!-- HyperLien  -->
                 <th>
-                    <a>MODULE DE TELEVERSEMENT</a>
+                    <button id="btnHyperLien" name="btnHyperLien" onclick="window.open('televersement.php','window','width=400,height=150')"> 
+                        Choisir un fichier</button>
+                    <input type="hidden" id='tbNomFichier' name='hyperLien' value='' />
+                    <br/>
+                        <span id='idNomFichier'></span>
                 </th>
                 <!-- AjoutePar  -->
                 <th>
@@ -284,7 +290,7 @@ if(isset($_POST["DocumentAction"])){
     </br>
     <input type="hidden" name="coursSession" value="<?php echo $infosCoursSession["coursSession"]; ?>">
     <?php if($binSelect) {?>
-    <div style="overflow:auto; width: 1280px;" >
+    <div style="overflow:auto; width: 1350px;" >
         <table>
             <td colspan="7" align="center" class="sGras" style="font-size: 32px;">
                 <?php
@@ -310,7 +316,8 @@ if(isset($_POST["DocumentAction"])){
             // Boucle pour le nombre de documents
         $mySqli->requete = "SELECT * FROM document WHERE Session='". $infosCoursSession["Session"] . "' AND Sigle='". $infosCoursSession["Sigle"]."'";
         $mySqli->listeEnregistrements = mysqli_query($mySqli->cBD, $mySqli->requete);
-
+        
+       
         if ($mySqli->listeEnregistrements)
             $mySqli->nbEnregistrements = mysqli_num_rows($mySqli->listeEnregistrements);
 
@@ -357,8 +364,8 @@ if(isset($_POST["DocumentAction"])){
                 echo "<th><input type='date' name='RdateVersion' value='". $mySqli->contenuChamp($i,"DateVersion") ."' ></th>";
 
                 /* hyper lien */
-                echo "<th><input type='text' name='RhyperLien' minlength='5' maxlength='255' value='". $mySqli->contenuChamp($i,"HyperLien") ."' ></th>";
-
+                echo "<th><input type=\"text\" name='RhyperLien' value=\"". $mySqli->contenuChamp($i,"HyperLien") ."\" disabled /></th>"; 
+                
                 /* ajoute Par */
                 echo "<th><input type='text' name='RajoutePar' value='". $mySqli->contenuChamp($i,"AjoutePar") ."' disabled></th>";
 
@@ -372,6 +379,7 @@ if(isset($_POST["DocumentAction"])){
             }
         ?>
         </table>
+        
     </div>
     <?php } ?>
     <br/>
@@ -382,16 +390,27 @@ if(isset($_POST["DocumentAction"])){
     <br/>
     <input type='submit' class='sButton' name='DocumentAction' value='Retirer'>
 </form>
-
+    
+<input class="sButton" id="btnRetour" type="button" onclick="window.location.href='mise-a-jour-liste-document'" value="Retour">
 <?php
 }
 ?>
 
+<<<<<<< HEAD
 <br/><br/>
 
+=======
+<br/>
+>>>>>>> origin/master
 <br/>
 <script>
     document.getElementById("selectCoursSession").value = "<?php echo post("coursSession"); ?>";
+    
+    function setNomFichier(name){
+        document.getElementById('idNomFichier').innerHTML = name;
+        document.getElementById('tbNomFichier').value = name;
+        
+    }
 </script>
 
 

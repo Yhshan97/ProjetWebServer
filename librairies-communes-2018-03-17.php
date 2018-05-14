@@ -461,4 +461,41 @@ function detecteServeur(&$strMonIP, &$strIPServeur, &$strNomServeur, &$strInfosS
 
 
 
+
+
+
+function csv_to_array($filename='', $delimiter=',')
+{
+    if(!file_exists($filename) || !is_readable($filename))
+        return FALSE;
+
+    $header = NULL;
+    $data = array();
+    if (($handle = fopen($filename, 'r')) !== FALSE)
+    {
+        while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+        {
+            if(!$header)
+                $header = $row;
+            else
+                $data[] = array_combine($header, $row);
+        }
+        fclose($handle);
+    }
+    return $data;
+}
+
+   function trouveDansChaine($strSousChaine, $strChaine, &$intPos) {
+      if (func_num_args() == 3) {
+         $intPos = strpos($strChaine, $strSousChaine);
+      }
+      else {
+         $intDebut = func_get_arg(3);
+         $intPos = stripos($strChaine, $strSousChaine, $intDebut);
+      }
+      return !($intPos === false);
+   }
+
+
+
 ?>

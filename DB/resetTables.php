@@ -1,6 +1,6 @@
 <?php
-require_once("librairies-communes-2018-03-17.php");
-require_once("classe-mysql-2018-03-17.php");
+require_once("../librairies-communes-2018-03-17.php");
+require_once("../classe-mysql-2018-03-17.php");
 function requeteExecutee($strMessage, $strRequeteExecutee, $strVerdict, $binLigne = false)
 {
     GLOBAL $sBleu, $sGras, $sRouge;
@@ -81,8 +81,7 @@ ecrit("Creation table 'Categorie' :" . ($objMySqli->OK ? " Succ&egraves" : " &Ea
 
 
 $objMySqli->creeTableGenerique("Cours", "V7,Sigle;" .
-                                        "V50,Titre;" .
-                                        "V30,NomProf", "Sigle");
+                                        "V50,Titre;", "Sigle");
 ecrit("Creation table 'Cours' :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 
@@ -130,7 +129,6 @@ ecrit("Creation table 'Privilege' :" . ($objMySqli->OK ? " Succ&egraves" : " &Ea
 
 
 
-
 $objMySqli->etablitRelation("Categorie", "Description", "Document", "Categorie","FK_Categorie_Document");
 ecrit("Etablit relation entre categorie et document :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
@@ -147,10 +145,10 @@ $objMySqli->etablitRelation("Cours", "Sigle", "courssession", "Sigle","FK_Cours_
 ecrit("Etablit relation entre courssession et Cours :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 $objMySqli->etablitRelation("CoursSession", "coursSession", "Privilege", "coursSession","FK_Privilege_CoursSession");
+
 ecrit("Etablit relation entre courssession et privilege :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
-$objMySqli->etablitRelation("utilisateur", "NomUtilisateur", "Privilege", "NomUtilisateur","FK_Privilege_nomUtilisateur");
-ecrit("Etablit relation entre utilisateur et privilege :" . ($objMySqli->OK ? " Succ&egraves" : " &Eacutechec"), 2);
 
 $objMySqli->deconnexion();
+
 ?>
