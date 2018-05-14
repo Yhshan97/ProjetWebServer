@@ -1,5 +1,5 @@
 <?php
- ob_start();
+ob_start();
 header("Access-Control-Allow-Origin: *");
 session_start();
 
@@ -265,11 +265,26 @@ $mySqli = new mysql("", $strInfosSensibles);
                     if ($object->nbEnregistrements == 0) {
                         if ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK) {
                             $object->insereEnregistrement("utilisateur", "$strNomUtil", "$strMDP", "0", "$strNomComplet", "$strCourriel");
-                            echo ($object->OK ? "L'utilisateur $strNomUtil n'existe pas dans la base de données mais a été ajouté avec succès </br></br>" : "L'utilisateur $strNomUtil n'existe pas dans la base de données mais n'a pas pu être ajouté </br></br>");
+                            if (($object->OK)) {
+                                ?>
+                                <script type="text/javascript">
+                                    alert("L'utilisateur " + <?php echo $strNomUtil; ?> + " n'existait pas dans la base de données mais a été ajouté avec succès </br></br>");
+                                </script>
+                                <?php
+                            } else {
+                                ?>
+                                <script type="text/javascript">
+                                alert("L'utilisateur " + <?php echo $strNomUtil; ?> + "n'existe pas dans la base de données mais n'a pas pu être ajouté </br></br>");
+                                </script>
+                                <?php
+                            }
                         }
-                    } else {
-                        echo "Mercééééééééééé</br></br>";
-                    }
+                    } /* else {
+                      echo "Mercééééééééééé</br></br>";
+                     * <script type="text/javascript">
+                      alert("Tout les privileges ont été ajouté avec succès");
+                      </script>
+                      } */
 
 
                     if ($strSigle1 != "") {
@@ -397,7 +412,7 @@ $mySqli = new mysql("", $strInfosSensibles);
                                     alert("Tout les privileges ont été ajouté avec succès");
                                 </script>
                                 <?php
-                               header("location: assigner-privileges-document.php");
+                                header("location: assigner-privileges-document.php");
                                 exit();
                             }
                             ?>
@@ -420,19 +435,17 @@ $mySqli = new mysql("", $strInfosSensibles);
                         alert("Certaines valeurs dans le fichier " + <?php echo $strNomFichier; ?> + " ne sont pas correct.  Veuillez les corriger au risque de ne pas pouvoir avancer");
                     </script>
                     <?php
-                    
                 }
             }
-            
             ?>
-                    <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
-           value="Retour">
-    </form>
-</div>
-<?php if (post("session")) { ?>
-    <script>
-        document.getElementById('session').value = '<?php echo post("session") ?>';
+            <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
+                   value="Retour">
+            </form>
+            </div>
+            <?php if (post("session")) { ?>
+                <script>
+                    document.getElementById('session').value = '<?php echo post("session") ?>';
 
-    </script>
+                </script>
 
-<?php }ob_end_flush(); ?>
+            <?php }ob_end_flush(); ?>
