@@ -448,7 +448,7 @@ class mysql {
         if (!empty($strListeConditions))
             $this->requete .= " WHERE $strListeConditions";
 
-        $this->OK = mysqli_query($this->cBD, $this->requete);
+       
         return $this->OK;
     }
 

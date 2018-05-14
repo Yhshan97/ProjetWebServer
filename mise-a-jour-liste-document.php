@@ -389,7 +389,6 @@ if(isset($_POST["DocumentAction"])){
 
 <br/><br/>
 
-<input class="sButton" id="btnRetour" type="button" onclick="window.location.href='mise-a-jour-liste-document'" value="Retour">
 <br/>
 <script>
     document.getElementById("selectCoursSession").value = "<?php echo post("coursSession"); ?>";
