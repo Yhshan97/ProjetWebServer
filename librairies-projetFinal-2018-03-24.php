@@ -60,7 +60,6 @@ function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
     $booEverything = false;
     if (preg_match("/^\d{3}-[[:alnum:]]{3}/", $strSigle)) {
         if (strlen($strTitreCours) <= 50 && strlen($strTitreCours) >= 5) {
-            var_dump($booEverything);
             $booEverything = true;
         }
         if ($mode == "retir") {
