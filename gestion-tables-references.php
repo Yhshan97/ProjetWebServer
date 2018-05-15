@@ -242,8 +242,7 @@ switch (post("option2")) {
                     }
                 } else if (post("action") == "retir") {
                     if (post("Sigle")) {
-
-                        if (GestionCours(post("action"), post("Sigle"), "", "", $mySqli)) {
+                        if (GestionCours(post("action"), post("Sigle"), "", $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
                             echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
@@ -368,6 +367,7 @@ switch (post("option2")) {
             }
         } else if (post("action") == "retir" && isset($_POST["coursSession"])) {
             if (post("coursSession")) {
+               
                 if (gestionCoursSession(post("action"), post("coursSession"), "", "", "", $mySqli)) {
                     echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                 } else {

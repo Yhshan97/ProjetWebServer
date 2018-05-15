@@ -1,6 +1,8 @@
 
 BODY {margin: 0; height: 100%; overflow: hidden}
 INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;}
+BODY { padding-left:15px; padding-top:15px; overflow: hidden }
+BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; overflow: hidden}
 TABLE { border-collapse: collapse; }
 TD { padding:5px; }
 P { font-size: 20px; }
@@ -185,9 +187,6 @@ P { font-size: 20px; }
     background: rgba(0,0,0,0.6); 
 }
 
-body, html{
-  height: 100%;
-}
 
 .container{
   display: block;
@@ -281,7 +280,7 @@ input[type=radio]:checked ~ label{
   color: #0DFF92;
 }
 
-BODY { padding:15px; height: 100%; overflow: -moz-scrollbars-vertical; }
+BODY { padding:15px;  overflow: -moz-scrollbars-vertical; }
 BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;  overflow: auto; }
 TABLE { border-collapse: collapse; overflow:auto; }
 TD { padding:10px; white-space: nowrap;}
@@ -465,10 +464,6 @@ P { font-size: 20px; }
 
 .sList:hover {
     background: rgba(0,0,0,0.6); 
-}
-
-body, html{
-  height: 100%;
 }
 
 .container{

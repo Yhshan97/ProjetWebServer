@@ -265,27 +265,9 @@ $mySqli = new mysql("", $strInfosSensibles);
                     if ($object->nbEnregistrements == 0) {
                         if ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK) {
                             $object->insereEnregistrement("utilisateur", "$strNomUtil", "$strMDP", "0", "$strNomComplet", "$strCourriel");
-                            if (($object->OK)) {
-                                ?>
-                                <script type="text/javascript">
-                                    alert("L'utilisateur " + <?php echo $strNomUtil; ?> + " n'existait pas dans la base de données mais a été ajouté avec succès </br></br>");
-                                </script>
-                                <?php
-                            } else {
-                                ?>
-                                <script type="text/javascript">
-                                alert("L'utilisateur " + <?php echo $strNomUtil; ?> + "n'existe pas dans la base de données mais n'a pas pu être ajouté </br></br>");
-                                </script>
-                                <?php
-                            }
+                            echo ($object->OK ? "<p>L'utilisateur $strNomUtil n'existait pas dans la base de données mais a été ajouté avec succès </p></br></br>" : "<p>L'utilisateur $strNomUtil n'existe pas dans la base de données mais n'a pas pu être ajouté</p> </br></br>");
                         }
-                    } /* else {
-                      echo "Mercééééééééééé</br></br>";
-                     * <script type="text/javascript">
-                      alert("Tout les privileges ont été ajouté avec succès");
-                      </script>
-                      } */
-
+                    }
 
                     if ($strSigle1 != "") {
                         if (trouveDansChaine($strSigle1, "$strSigle2,$strSigle3,$strSigle4,$strSigle5", $intPos)) {
@@ -312,23 +294,13 @@ $mySqli = new mysql("", $strInfosSensibles);
                             $booAucunDoublonSigle5 = FALSE;
                         }
                     }
-                    // echo ($booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK && $booSigle1OK && $booSigle2OK && $booSigle3OK && $booSigle4OK && $booSigle5OK && $booAucunDoublonSigle1 && $booAucunDoublonSigle2 && $booAucunDoublonSigle3 && $booAucunDoublonSigle4 && $booAucunDoublonSigle5 ? "<th id=$index class=\"sBgVert\">" : "<th id=$index class=\"sBgRouge\">");
                     $booOK = $booNomUtilOK && $booMDPOK && $booNomCompletOK && $booCourrielOK && $booSigle1OK && $booSigle2OK && $booSigle3OK && $booSigle4OK && $booSigle5OK && $booAucunDoublonSigle1 && $booAucunDoublonSigle2 && $booAucunDoublonSigle3 && $booAucunDoublonSigle4 && $booAucunDoublonSigle5;
                     $verdict = ($booOK ? "OK" : "PAS OK");
                     if ($verdict == "PAS OK") {
                         $booToutEstValidé = false;
                     }
-                    // $booToutEstValidé = $booToutEstValidé && $booOK ? TRUE : FALSE;
                     echo "<th>$verdict</th>";
-                    /* echo "<th> NomUtil = $booNomUtilOK </th>";
-                      echo "<th> MDP = $booMDPOK </th>";
-                      echo "<th> NomComplet = $booNomCompletOK </th>";
-                      echo "<th> Courriel = $booCourrielOK </th>";
-                      echo "<th> Sigle1 = $booSigle1OK </th>";
-                      echo "<th> Sigle2 = $booSigle2OK </th>";
-                      echo "<th> Sigle3 = $booSigle3OK </th>";
-                      echo "<th> Sigle4 = $booSigle4OK </th>";
-                      echo "<th> Sigle5 = $booSigle5OK </th>"; */
+
                     echo "</tr>";
                 }
                 ?>
@@ -392,7 +364,11 @@ $mySqli = new mysql("", $strInfosSensibles);
                             echo ($booSigleOK ? "<th>OK</th>" : "<th>PAS OK</th>" );
                             echo "</tr>";
                         }
+                        echo "</table>";
                         if ($booMerciCestBon) {
+                            ?>
+                            <input class="sButton" id="ButtonEnregistrer" type="submit" onclick="" value="Enregistrer" name="ButtonEnregistrer">
+                            <?php
                             if (post("ButtonEnregistrer")) {
                                 for ($index = 0; $index < count($tab); $index++) {
                                     $Utilisateur = "";
@@ -415,11 +391,6 @@ $mySqli = new mysql("", $strInfosSensibles);
                                 header("location: assigner-privileges-document.php");
                                 exit();
                             }
-                            ?>
-
-                            <input class="sButton" id="ButtonEnregistrer" type="submit" onclick="" value="Enregistrer" name="ButtonEnregistrer">
-
-                            <?php
                         } else {
                             ?>
                             <script type="text/javascript">
@@ -428,7 +399,6 @@ $mySqli = new mysql("", $strInfosSensibles);
                             <?php
                         }
                     }
-                    echo "</table>";
                 } else {
                     ?>
                     <script type="text/javascript">
