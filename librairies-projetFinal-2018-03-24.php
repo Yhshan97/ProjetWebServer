@@ -1,6 +1,6 @@
 <?php
 
-function connexion($strNomUtil, $strMotPasse, $objSQL) {
+function connexion($strNomUtil, $strMotPasse, $intAdmin, $objSQL) {
     $booTrouve = false;
     $resultat = mysqli_query($objSQL->cBD, "SELECT * FROM Utilisateur");
     if ($resultat->num_rows == 0) {
@@ -8,17 +8,20 @@ function connexion($strNomUtil, $strMotPasse, $objSQL) {
             $_SESSION["NomComplet"] = "";
             header("location: nouvel-utilisateur.php");
         } else {
-            
+
             ecrit("<label style='top:42%;left:70%;position: fixed' class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
         }
     } else {
         while ($ligne = $resultat->fetch_assoc()) {
-            if (strcasecmp($ligne["NomUtilisateur"], $strNomUtil) == 0)
+            if (strcasecmp($ligne["NomUtilisateur"], $strNomUtil) == 0) {
                 if ($ligne["MotDePasse"] == $strMotPasse) {
-                    $booTrouve = true;
-                    $_SESSION["NomComplet"] = $ligne["NomComplet"];
-                    $_SESSION["courriel"] = $ligne["Courriel"];
+                    if ($ligne["StatutAdmin"] == $intAdmin) {
+                        $booTrouve = true;
+                        $_SESSION["NomComplet"] = $ligne["NomComplet"];
+                        $_SESSION["courriel"] = $ligne["Courriel"];
+                    }
                 }
+            }
         }
         if (!$booTrouve)
             ecrit("<label style='top:42%;left:70%;position: fixed' class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
@@ -38,7 +41,7 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
             $booOK = true;
         }
     }
-
+    
     if ($booOK) {
         switch ($mode) {
             case "ajout":
@@ -46,6 +49,7 @@ function GestionSession($mode, $session, $dateDebut, $dateFin, $objSQL) {
                 break;
             case "modif":
                 $objSQL->metAJourEnregistrements("Session", "DateDebut='$dateDebut', DateFin='$dateFin'", "Description='$session'");
+                var_dump($objSQL->requete);
                 break;
             case "retir":
                 $objSQL->supprimeEnregistrements("Session", "Description='$session'");
@@ -67,13 +71,15 @@ function GestionCours($mode, $strSigle, $strTitreCours, $objSQL) {
             $booEverything = true;
         }
     }
+    $strTitreCours = str_replace("'","''",$strTitreCours);
     if ($booEverything) {
         switch ($mode) {
             case "ajout":
                 $objSQL->insereEnregistrement("Cours", $strSigle, $strTitreCours);
                 break;
             case "modif": //a tester
-                $objSQL->metAJourEnregistrements("Cours", "Sigle='$strSigle', Titre='$strTitreCours'");
+                $objSQL->metAJourEnregistrements("Cours", "Titre='$strTitreCours'","Sigle='$strSigle'");
+                var_dump($objSQL->requete);
                 break;
             case "retir": //a tester
                 $objSQL->supprimeEnregistrements("Cours", "Sigle='$strSigle'");
@@ -92,16 +98,16 @@ function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $s
         if (preg_match("/-{4,9}/", $strNomProf) != 1 && preg_match("/-{4,9}/", $strSession) != 1 && preg_match("/-{4,9}/", $strSigle) != 1)
             $booOK = true;
     }
-    else if ($mode == "modif") {
+    else if ($mode == "modif") {        
         if (preg_match("/-{4,9}/", $strCoursSession) != 1 && preg_match("/-{4,9}/", $strSession) != 1 &&
-                preg_match("/-{4,9}/", $strSigle) != 1 && preg_match("/-{4,9}/", $strNomProf))
+                preg_match("/-{4,9}/", $strSigle) != 1 && preg_match("/-{4,9}/", $strNomProf) != 1)
             $booOK = true;
     }
     if ($mode == "retir") {
         if (preg_match("/-{4,9}/", $strCoursSession) != 1)
             $booOK = true;
     }
-
+    var_dump($booOK);
     if ($booOK) {
         switch ($mode) {
             case "ajout":
@@ -109,6 +115,7 @@ function gestionCoursSession($mode, $strCoursSession, $strSession, $strSigle, $s
                 break;
             case "modif":
                 $objSQL->metAJourEnregistrements("coursSession", "Session='$strSession', Sigle='$strSigle', NomProf='$strNomProf'", "coursSession='$strCoursSession'");
+                var_dump($objSQL->requete);
                 break;
             case "retir":
                 $objSQL->supprimeEnregistrements("coursSession", "coursSession='$strCoursSession'");
@@ -187,9 +194,11 @@ function gestionUtilisateur($mode, $strUtilSelect, $strNom, $strMotDePasse, $boo
         } else
             return false;
     } else if ($mode == "modif") {
-        if (preg_match("/\w{1,2}.\w{2,25}/", $strNom) && preg_match("/.{3,25}/", $strMotDePasse) &&
-                preg_match("/\D+, \D+/", $strNomComplet) && preg_match("/\w{10,50}/", $strCourriel)) {
+        
+        if (preg_match("/\w{1,2}\.\w{2,25}/", $strNom) && preg_match("/.{3,25}/", $strMotDePasse) &&
+                preg_match("/\D+, \D+/", $strNomComplet) && valideCourriel($strCourriel)) {
             $objSQL->metAJourEnregistrements("utilisateur", "NomUtilisateur='$strNom', MotDePasse='$strMotDePasse', StatutAdmin='$booStatut', NomComplet='$strNomComplet', Courriel='$strCourriel'", "NomUtilisateur='$strUtilSelect'");
+            var_dump($objSQL->requete);
             return $objSQL->OK;
         } else
             return false;
@@ -201,10 +210,12 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
     $result = mysqli_query($mySqli->cBD, $mySqli->requete);
 
     $Tableau[0] = " -------- ";
+    $TableauVal[0] = "";
     while ($val = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $Tableau[] = $val["$strNomColonne"];
+        $TableauVal[] = $val["$strNomColonne"];
     }
-
+    
     $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\" onchange=\"$onchange\">";
 
     if ($numerique) {
@@ -212,11 +223,12 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
             $strSelectHTML .= "<option value=\"" . ($i) . "\">" . $Tableau[$i];
         }
     } else {
-        foreach ($Tableau as $val) {
-            $choisi = $strValue === $val ? "selected" : "";
-            $strSelectHTML .= "<option value=\"$val\" $choisi>" . $val;
+        for ($index = 0; $index < count($Tableau); $index++) {
+            $choisi = $strValue === $Tableau[$index] ? "selected" : "";
+            $strSelectHTML .= "<option value=\"$TableauVal[$index]\" $choisi>" . $Tableau[$index];
         }
     }
+
 
     $strSelectHTML .= "</select>";
     return $strSelectHTML;

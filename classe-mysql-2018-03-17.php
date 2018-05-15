@@ -165,7 +165,7 @@ class mysql {
         $this->requete = "INSERT INTO $strNomTable VALUES (";
         for ($i = 1; $i < func_num_args(); $i++) {
             if (is_string(func_get_arg($i)))
-                $this->requete .= "'" . str_replace("'", "\\'", func_get_arg($i)) . "'";
+                $this->requete .= "'" . str_replace("'", "''", func_get_arg($i)) . "'";
             else if (func_get_arg($i) == null)
                 $this->requete .= "null";
             else
@@ -448,7 +448,8 @@ class mysql {
         if (!empty($strListeConditions))
             $this->requete .= " WHERE $strListeConditions";
 
-       
+                        
+        $this->OK = mysqli_query($this->cBD, $this->requete);
         return $this->OK;
     }
 
