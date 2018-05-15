@@ -15,7 +15,7 @@ require_once("background.php");
 require_once("en-tete.php");
 session_start();
 
-var_dump($_SESSION);
+//var_dump($_SESSION);
 
 
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
@@ -23,12 +23,13 @@ detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
 $mySqli = new mysql("", $strInfosSensibles);
 $myRequete = new mysql("", $strInfosSensibles);
 $strAction = post("btnAction");
-var_dump($strAction);
+//var_dump($strAction);
 $tabDocumentSupp = array();
 $intNombreDocuments = 0;
 $intNombreDocuments = $mySqli->selectionneEnregistrements("document");
 $strFlux1 = "";
 $strFlux2 = "";
+$booRapport = false;
 //$_SESSION["Rapport"] = "";
 ?>
 
@@ -100,6 +101,7 @@ $strFlux2 = "";
                 echo "<td class=\"sBorder\">" . "<input type=checkbox name=Document$i />" . "</td>";
             }
         } else if ($strAction == "Supprimer") {
+            $booRapport = true;
             ?>
             <tr class="sEntete sBorder">
                 <td class="sBorder">   
@@ -177,21 +179,25 @@ $strFlux2 = "";
                         $strFlux2 .= "<tr style=\"background-color: whitesmoke\"><td class='sBorder'>$intCompteur</td><td class='sBorder'> $fichier</td><td class='sBorder'></td></tr>";
                     }
                 }
-                echo "bob";
             }
             $strFlux2 .= "</table>";
             $_SESSION["Rapport"] = $strFlux1 . $strFlux2;
             // echo  $_SESSION["Rapport"];
         } else if ($strAction == "Rapport") {
             echo $_SESSION["Rapport"];
-            echo "bob";
         }
         ?>
     </table>
     <td>
         <br>
         <input class="sButton" id="btnSupprimer" name="btnAction" type="submit" value="Supprimer">
+        <?php if ($booRapport){
+            ?>
         <input class="sButton" id="btnRapport" name="btnAction" type="submit" value="Rapport">
+        <?php
+        }
+        ?>
+                
         <br> <br>
         <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
                value="Retour">
