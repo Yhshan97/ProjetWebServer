@@ -51,19 +51,18 @@ if(isset($_POST["option"])){
     <div id="divSaisie" <?php echo session("connectee") == false ? "" : "style=\"display:none\"" ?>>
         <span class="login100-form-logo"></span>
         <table class="sTableau sMilieu" style="top: 25%; text-align: center;">
-            <td class="sBlanc" style="left:870"> Identifiant </td>
-            <tr>  
-                <td style="position: fixed;left:880">
+            <td class="sBlanc" style="left:910; position: fixed;top:26.5%"> Identifiant </td>
+                <td style="position: fixed;left:880;top: 30%">
                     <?php input("nomUtilisateur", "sButton sCentrer", "text", 15, post("nomUtilisateur"), true); ?>
                 </td>
-                <td>
+        </table>
+                <label style="top:50%;left:47%;position: fixed">
                     <?php
                     if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
-                        echo "<span class=\"sErreur sUtilisateur\"> Entrez un nom d'utilisateur! </span>"
+                        echo "<span class=\"sRouge\"> Entrez un nom d'utilisateur! </span>"
                         ?>
-                </td>
-            </tr>
-        </table>
+                </label>
+
         <table class="sTableau sMilieu" style="top: 37%; left:1095">
             <td class="sBlanc" style="position:fixed;top: 36.5%; left:900"> Mot de passe </td>
             <tr>
@@ -73,12 +72,12 @@ if(isset($_POST["option"])){
                 <td  style="position:fixed; left:880; top:46%; font-size: 14px">
                     <input type="checkbox" class="sButton" onchange="document.getElementById('motDePasse').type = this.checked ? 'text' : 'password'" style="height:10px; width:10px;">Montrer le mot de passe
                 </td>
-                <td>
+                <label style="top:52%;left:47%;position: fixed">
                     <?php
                     if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
-                        echo "<div class=\"sErreur sMotDePasse\"> Entrez un mot de passe! </div>"
+                        echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"
                         ?>
-                </td>
+                </label>
             </tr>
         </table>
         <table class="sTableau sMilieu" style="top: 330; left:1300;">
