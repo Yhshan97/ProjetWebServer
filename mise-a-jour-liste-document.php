@@ -60,8 +60,9 @@ if(isset($_POST["DocumentAction"])){
             var_dump($mySqli->contenuChamp(0, "DateDebut"));
             
                 $paymentDate = date('Y-m-d');
-                $paymentDate=date('Y-m-d', strtotime($paymentDate));;
+                $paymentDate = date('Y-m-d', strtotime($paymentDate));;
                 //echo $paymentDate; // echos today! 
+                
                 $contractDateBegin = date('Y-m-d', strtotime("01/01/2001"));
                 $contractDateEnd = date('Y-m-d', strtotime("01/01/2012"));
 
@@ -91,7 +92,9 @@ if(isset($_POST["DocumentAction"])){
         foreach($_POST as $item => $value){
             if(preg_match("/cbDocument.*/", $item) == 1){
                 $mySqli->supprimeEnregistrements("document","Sigle='" . $infosCoursSession["Sigle"] .
-                    "' AND Session='".$infosCoursSession["Session"] . "' AND Titre='". $_POST["$item"] ."'");
+                    "' AND Session='".$infosCoursSession["Session"] . "' AND Titre='". str_replace("'", "''", $_POST["$item"]) ."'");
+                
+                var_dump($mySqli->requete);
                 $intRetir ++;
             }
         }
@@ -105,7 +108,7 @@ if(isset($_POST["DocumentAction"])){
     if(post("DocumentAction") == "Modifier"){
         if(!empty(post("RdateCours")) && !empty(post("RnoSequence")) && !empty(post("RdateDebut")) &&
             !empty(post("RdateFin")) && !empty(post("Rtitre")) && !empty(post("Rdescription")) &&
-            !empty(post("RnbPages")) && post("Rcategorie") != " -------- " && !empty(post("RnoVersion")) && !empty(post("RdateVersion")))
+            !empty(post("RnbPages")) && post("Rcategorie") != "" && !empty(post("RnoVersion")) && !empty(post("RdateVersion")))
         {
             $mySqli->metAJourEnregistrements("document",
                 "Session='"         . $infosCoursSession["Session"] . "'".
@@ -114,10 +117,10 @@ if(isset($_POST["DocumentAction"])){
                 ", NoSequence='"    . post("RnoSequence") ."'".
                 ", DateAccesDebut='". post("RdateDebut") ."'".
                 ", DateAccesFin='"  . post("RdateFin") ."'".
-                ", Titre='"         . post("Rtitre") . "'".
-                ", Description='"   . post("Rdescription")."'".
+                ", Titre='"         . str_replace("'","''",post("Rtitre")) . "'".
+                ", Description='"   . str_replace("'","''",post("Rdescription")) ."'".
                 ", NbPages="        . post("RnbPages") .
-                ", Categorie='"     . post("Rcategorie"). "'".
+                ", Categorie='"     . str_replace("'","''",post("Rcategorie")). "'".
                 ", NoVersion="      . post("RnoVersion").
                 ", DateVersion='"   . post("RdateVersion") . "'".
                 ", HyperLien='"      . post("RhyperLien"). "'" .
@@ -125,10 +128,11 @@ if(isset($_POST["DocumentAction"])){
                 ,
                 "Titre='" . post("titreAvantModif"). "' AND Sigle='" . $infosCoursSession["Sigle"] .
                 "' AND Session='".$infosCoursSession["Session"] . "'");
+            var_dump($_POST);
 
 
             $msgResultatAction2 = $mySqli->OK ? "<span class='sVert sBlancFond'> La commande à été effectuée</span>" :
-                "<span class='sBlanc sRougeFond'> Modification pas possible. Même titre de document existe!'</span>";
+                "<span class='sBlanc sRougeFond'> Modification pas possible. Erreur dans les données.'</span>";
         }
         else {
             $msgResultatAction2 = "<span class='sBlanc sRougeFond'> Modification pas possible. Données manquantes !</span>";
@@ -340,8 +344,8 @@ if(isset($_POST["DocumentAction"])){
                 echo "<tr>";
                 echo "<form id=\"retraitDocument\" method=\"post\">";
                 /* Check box */
-                echo "<th>". "<input type='checkbox' id='cbDocument$i' name='cbDocument$i' value='".$mySqli->contenuChamp($i,"Titre") .
-                    "' form='formRetrait'>" ."</th>";
+                echo "<th>". "<input type='checkbox' id='cbDocument$i' name='cbDocument$i' value=\"".$mySqli->contenuChamp($i,"Titre") .
+                    "\" form='formRetrait'>" ."</th>";
                 ?>
 
                 <!-- coursSession HIDDEN -->
@@ -361,10 +365,10 @@ if(isset($_POST["DocumentAction"])){
                 echo "<th><input type='date' name='RdateFin' value='". $mySqli->contenuChamp($i,"DateAccesFin") ."' ></th>";
 
                 /* titre */
-                echo "<th><input type='text' name='Rtitre' minlength='5' maxlength='100' value='". $mySqli->contenuChamp($i,"Titre") ."' ></th>";
+                echo "<th><input type='text' name='Rtitre' minlength='5' maxlength='100' value=\"". $mySqli->contenuChamp($i,"Titre") ."\" ></th>";
 
                 /* description */
-                echo "<th><input type='text' name='Rdescription' minlength='5' maxlength='255' value='". $mySqli->contenuChamp($i,"Description") ."' ></th>";
+                echo "<th><input type='text' name='Rdescription' minlength='5' maxlength='255' value=\"". $mySqli->contenuChamp($i,"Description") ."\" ></th>";
 
                 /* nb pages */
                 echo "<th><input type='number' name='RnbPages' min='1' max='999' value='". $mySqli->contenuChamp($i,"NbPages") ."' ></th>";
@@ -379,10 +383,11 @@ if(isset($_POST["DocumentAction"])){
                 echo "<th><input type='date' name='RdateVersion' value='". $mySqli->contenuChamp($i,"DateVersion") ."' ></th>";
 
                 /* hyper lien */
-                echo "<th><input type=\"text\" name='RhyperLien' value=\"". $mySqli->contenuChamp($i,"HyperLien") ."\" disabled /></th>"; 
+                echo "<th><input type=\"text\" name='RhyperLien' value=\"". $mySqli->contenuChamp($i,"HyperLien") ."\" disabled />"; 
+                echo "<input type=\"hidden\" name=\"RhyperLien\" value=\"".$mySqli->contenuChamp($i,"HyperLien") ."\" /></th>";
                 
                 /* ajoute Par */
-                echo "<th><input type='text' name='RajoutePar' value='". $mySqli->contenuChamp($i,"AjoutePar") ."' disabled></th>";
+                echo "<th><input type='text' name='RajoutePar' value=\"". $mySqli->contenuChamp($i,"AjoutePar") ."\" disabled></th>";
 
                 /* bouton enregistrer modifications */
                 echo "<td><input type='submit' class='sButton' name='DocumentAction' value='Modifier'></td>";

@@ -11,7 +11,7 @@ session_start();
 if(!isset($_SESSION["NomComplet"])) {
     header('location: gestion-documents-administrateur.php');
 }
-
+var_dump($_POST);
 /* Liste des fichiers d'inclusion */
 require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");
@@ -81,6 +81,7 @@ $mySqli = new mysql("", $strInfosSensibles);
 
 <div style="margin-left: 50px;">
 <?php
+if(isset($_POST["action"])){
 switch (post("option2")) {
     case 1:
         ?>
@@ -636,6 +637,7 @@ switch (post("option2")) {
             }
             break;
         }
+}
 }
 ?>
 </div>

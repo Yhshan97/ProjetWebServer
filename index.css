@@ -26,6 +26,7 @@ P { font-size: 20px; }
 .sLogin { font-family: "Helvetica CE", sans-serif; }
 .sLogo { font-size: 10px; font-style: italic}
 .sBlanc { color:white; font-weight: lighter}
+.sBlancFond { background-color: white; font-weight: lighter}
 .tableBordure { border:1px solid black; }
 .sMilieu { 
     width:450px;

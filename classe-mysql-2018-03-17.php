@@ -165,7 +165,7 @@ class mysql {
         $this->requete = "INSERT INTO $strNomTable VALUES (";
         for ($i = 1; $i < func_num_args(); $i++) {
             if (is_string(func_get_arg($i)))
-                $this->requete .= "'" . str_replace("'", "\\'", func_get_arg($i)) . "'";
+                $this->requete .= "'" . str_replace("'", "''", func_get_arg($i)) . "'";
             else if (func_get_arg($i) == null)
                 $this->requete .= "null";
             else
@@ -173,6 +173,7 @@ class mysql {
 
             $this->requete .= $i == func_num_args() - 1 ? ")" : ",";
         }
+        var_dump($this->requete);
         $this->OK = mysqli_query($this->cBD, $this->requete);
         return $this->OK;
     }

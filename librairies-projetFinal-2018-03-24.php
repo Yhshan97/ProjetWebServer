@@ -200,10 +200,12 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
     $result = mysqli_query($mySqli->cBD, $mySqli->requete);
 
     $Tableau[0] = " -------- ";
+    $TableauVal[0] = "";
     while ($val = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $Tableau[] = $val["$strNomColonne"];
+        $TableauVal[] = $val["$strNomColonne"];
     }
-
+    
     $strSelectHTML = "<select id=\"$strID\" name=\"$strName\" class=\"$strClass\" onchange=\"$onchange\">";
 
     if ($numerique) {
@@ -211,11 +213,12 @@ function creerSelectAvecValeur($strNomTable, $strNomColonne, $strCondition = "",
             $strSelectHTML .= "<option value=\"" . ($i) . "\">" . $Tableau[$i];
         }
     } else {
-        foreach ($Tableau as $val) {
-            $choisi = $strValue === $val ? "selected" : "";
-            $strSelectHTML .= "<option value=\"$val\" $choisi>" . $val;
+        for ($index = 0; $index < count($Tableau); $index++) {
+            $choisi = $strValue === $Tableau[$index] ? "selected" : "";
+            $strSelectHTML .= "<option value=\"$TableauVal[$index]\" $choisi>" . $Tableau[$index];
         }
     }
+
 
     $strSelectHTML .= "</select>";
     return $strSelectHTML;
