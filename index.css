@@ -55,8 +55,8 @@ P { font-size: 20px; }
 }
 
 .sUtilisateur {
-    top:330;
-    left:960;
+    top:50%;
+    left:50%;
 }
 
 .sButton {
@@ -67,10 +67,6 @@ P { font-size: 20px; }
   width: 150px;
   height: 42px; 
   cursor: pointer;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   overflow: hidden;
   border: none;
   -webkit-border-radius: 21px;
