@@ -93,7 +93,7 @@ if(isset($_POST["option"])){
 </form>
 
 <div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
-    <label for="Jour">Bienvenu(e) cher(e) utilisateur(e), vous désirez ...</label>
+    <label for="Jour">Bonjour <b><?php echo $_SESSION["NomComplet"] ?></b>, vous désirez ...</label>
     <br/>
     <span id="spanDescription" class="sGras"></span>
     <br/><br/>
