@@ -20,14 +20,18 @@ session_start();
 $mySqli = new mysql("", $strInfosSensibles);
 
 if (post("nomUtilisateur") && post("motDePasse")) {
-    if (connexion(post("nomUtilisateur"), post("motDePasse"), $mySqli)) {
+    $booAdminEstConnecte = connexion(post("nomUtilisateur"), post("motDePasse"), 1, $mySqli);
+    $booUtilEstConnecte = connexion(post("nomUtilisateur"), post("motDePasse"), 0, $mySqli);
+    if ($booAdminEstConnecte || $booUtilEstConnecte) {
         $booConnexion = true;
         $_SESSION["connectee"] = true;
         $_SESSION["nomUtilisateur"] = post("nomUtilisateur");
     }
 }
-if(isset($_POST["option"])){
-    switch(post("option")){
+var_dump($booAdminEstConnecte);
+var_dump($booUtilEstConnecte);
+if (isset($_POST["option"])) {
+    switch (post("option")) {
         case "1": header("location: mise-a-jour-liste-document");
             break;
         case "2": header("location: gestion-tables-references.php");
@@ -42,26 +46,25 @@ if(isset($_POST["option"])){
             session_unset();
             header("location: gestion-documents-administrateur.php");
             break;
-
     }
 }
 ?>
 <form id="frmSaisie" method="POST" action="" style="font-family: Poppins-Regular;">
-    
+
     <div id="divSaisie" <?php echo session("connectee") == false ? "" : "style=\"display:none\"" ?>>
         <span class="login100-form-logo"></span>
         <table class="sTableau sMilieu" style="top: 25%; text-align: center;">
             <td class="sBlanc" style="left:910; position: fixed;top:26.5%"> Identifiant </td>
-                <td style="position: fixed;left:880;top: 30%">
-                    <?php input("nomUtilisateur", "sButton sCentrer", "text", 15, post("nomUtilisateur"), true); ?>
-                </td>
+            <td style="position: fixed;left:880;top: 30%">
+                <?php input("nomUtilisateur", "sButton sCentrer", "text", 15, post("nomUtilisateur"), true); ?>
+            </td>
         </table>
-                <label style="top:50%;left:47%;position: fixed">
-                    <?php
-                    if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
-                        echo "<span class=\"sRouge\"> Entrez un nom d'utilisateur! </span>"
-                        ?>
-                </label>
+        <label style="top:50%;left:47%;position: fixed">
+            <?php
+            if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
+                echo "<span class=\"sRouge\"> Entrez un nom d'utilisateur! </span>"
+                ?>
+        </label>
 
         <table class="sTableau sMilieu" style="top: 37%; left:1095">
             <td class="sBlanc" style="position:fixed;top: 36.5%; left:900"> Mot de passe </td>
@@ -72,12 +75,12 @@ if(isset($_POST["option"])){
                 <td  style="position:fixed; left:880; top:46%; font-size: 14px">
                     <input type="checkbox" class="sButton" onchange="document.getElementById('motDePasse').type = this.checked ? 'text' : 'password'" style="height:10px; width:10px;">Montrer le mot de passe
                 </td>
-                <label style="top:52%;left:47%;position: fixed">
-                    <?php
-                    if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
-                        echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"
-                        ?>
-                </label>
+            <label style="top:52%;left:47%;position: fixed">
+                <?php
+                if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
+                    echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"
+                    ?>
+            </label>
             </tr>
         </table>
         <table class="sTableau sMilieu" style="top: 330; left:1300;">
@@ -90,27 +93,36 @@ if(isset($_POST["option"])){
         </table>
     </div>
 </form>
+<?php if ($booAdminEstConnecte) { ?>
+    <div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
+        <label for="Jour">Bonjour <b><?php echo $_SESSION["NomComplet"] ?></b>, vous désirez ...</label>
+        <br/>
+        <span id="spanDescription" class="sGras"></span>
+        <br/><br/>
+        <form id="saisieChoix" name="choix" method="POST" action="">
 
-<div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
-    <label for="Jour">Bonjour <b><?php echo $_SESSION["NomComplet"] ?></b>, vous désirez ...</label>
-    <br/>
-    <span id="spanDescription" class="sGras"></span>
-    <br/><br/>
-    <form id="saisieChoix" name="choix" method="POST" action="">
-
-        <select name="option" id="option" class="sList" onchange="description(this)">
-            <option value="0"></option>
-            <option value="1">1. Mettre à jour la liste des documents</option>
-            <option value="2">2. Mettre à jour les tables de référence </option>
-            <option value="3">3. Assigner les privilèges d'accès aux documents </option>
-            <option value="4">4. Assigner un groupe d'utilisateurs à un cours-session </option>
-            <option value="5">5. Reconstruire l'arborescence des documents </option>
-            <option value="6">6. Terminer l'application </option>
-        </select>
-        <br><br>
-        <input type="submit" value="Valider le choix" class="sButton">
-    </form>
-</div>
+            <select name="option" id="option" class="sList" onchange="description(this)">
+                <option value="0"></option>
+                <option value="1">1. Mettre à jour la liste des documents</option>
+                <option value="2">2. Mettre à jour les tables de référence </option>
+                <option value="3">3. Assigner les privilèges d'accès aux documents </option>
+                <option value="4">4. Assigner un groupe d'utilisateurs à un cours-session </option>
+                <option value="5">5. Reconstruire l'arborescence des documents </option>
+                <option value="6">6. Terminer l'application </option>
+            </select>
+            <br><br>
+            <input type="submit" value="Valider le choix" class="sButton">
+        </form>
+    </div>
+    <?php
+} else {
+    ?>
+    <div>
+        <p>Bonjour cher utilisateur</p>
+    </div>
+    <?php
+}
+?>
 <?php
 $mySqli->deconnexion();
 ?>
@@ -123,14 +135,14 @@ $mySqli->deconnexion();
             x.type = "password";
         }
     }
-    function description(obj){
-        switch(obj.value){
+    function description(obj) {
+        switch (obj.value) {
             case '0':
                 document.getElementById('spanDescription').innerHTML = '';
-            break;
+                break;
             case '1':
                 document.getElementById('spanDescription').innerHTML = ' ajouter/modifier/retirer un ou plusieurs documents.';
-            break;
+                break;
             case '2':
                 document.getElementById('spanDescription').innerHTML = ' ajouter/modifier/retirer une ou plusieurs sessions, </br>cours, catégories de documents et/ou utilisateurs.';
                 break;

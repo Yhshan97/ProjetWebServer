@@ -1,6 +1,6 @@
 <?php
 
-function connexion($strNomUtil, $strMotPasse, $objSQL) {
+function connexion($strNomUtil, $strMotPasse, $intAdmin, $objSQL) {
     $booTrouve = false;
     $resultat = mysqli_query($objSQL->cBD, "SELECT * FROM Utilisateur");
     if ($resultat->num_rows == 0) {
@@ -8,17 +8,20 @@ function connexion($strNomUtil, $strMotPasse, $objSQL) {
             $_SESSION["NomComplet"] = "";
             header("location: nouvel-utilisateur.php");
         } else {
-            
+
             ecrit("<label style='top:42%;left:70%;position: fixed' class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
         }
     } else {
         while ($ligne = $resultat->fetch_assoc()) {
-            if (strcasecmp($ligne["NomUtilisateur"], $strNomUtil) == 0)
+            if (strcasecmp($ligne["NomUtilisateur"], $strNomUtil) == 0) {
                 if ($ligne["MotDePasse"] == $strMotPasse) {
-                    $booTrouve = true;
-                    $_SESSION["NomComplet"] = $ligne["NomComplet"];
-                    $_SESSION["courriel"] = $ligne["Courriel"];
+                    if ($ligne["StatutAdmin"] == $intAdmin) {
+                        $booTrouve = true;
+                        $_SESSION["NomComplet"] = $ligne["NomComplet"];
+                        $_SESSION["courriel"] = $ligne["Courriel"];
+                    }
                 }
+            }
         }
         if (!$booTrouve)
             ecrit("<label style='top:42%;left:70%;position: fixed' class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
