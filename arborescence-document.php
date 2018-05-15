@@ -13,17 +13,23 @@ require_once("librairies-communes-2018-03-17.php");
 require_once("librairies-projetFinal-2018-03-24.php");
 require_once("background.php");
 require_once("en-tete.php");
+session_start();
 
-var_dump($_POST);
+var_dump($_SESSION);
 
 
 detecteServeur($strMonIP, $strIPServeur, $strNomServeur, $strInfosSensibles);
-session_start();
+
 $mySqli = new mysql("", $strInfosSensibles);
 $myRequete = new mysql("", $strInfosSensibles);
-$strAction = post("btnSupprimer");
+$strAction = post("btnAction");
+var_dump($strAction);
 $tabDocumentSupp = array();
+$intNombreDocuments = 0;
 $intNombreDocuments = $mySqli->selectionneEnregistrements("document");
+$strFlux1 = "";
+$strFlux2 = "";
+//$_SESSION["Rapport"] = "";
 ?>
 
 
@@ -79,7 +85,7 @@ $intNombreDocuments = $mySqli->selectionneEnregistrements("document");
             if (post("sort") == '3') {
                 $myRequete->requete .= "ORDER BY d.Titre ASC";
             }
-            
+
             $myRequete->listeEnregistrements = mysqli_query($myRequete->cBD, $myRequete->requete);
 
 
@@ -93,7 +99,7 @@ $intNombreDocuments = $mySqli->selectionneEnregistrements("document");
                 echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($i, "d.Titre") . "</td>";
                 echo "<td class=\"sBorder\">" . "<input type=checkbox name=Document$i />" . "</td>";
             }
-        } else {
+        } else if ($strAction == "Supprimer") {
             ?>
             <tr class="sEntete sBorder">
                 <td class="sBorder">   
@@ -125,47 +131,67 @@ $intNombreDocuments = $mySqli->selectionneEnregistrements("document");
             for ($j = 0; $j < $intNombreDocuments; $j++) {
                 echo "<tr style=\"background-color: whitesmoke\">";
                 echo "<td class=\"sBorder\">" . ($j + 1) . "</td>";
-                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "Session") . "</td>";
-                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "Sigle") . "</td>";
-                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "NomProf") . "</td>";
-                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "DateCours") . "</td>";
-                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "Titre") . "</td>";
+                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "d.Session") . "</td>";
+                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "d.Sigle") . "</td>";
+                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "cs.NomProf") . "</td>";
+                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "d.DateCours") . "</td>";
+                echo "<td class=\"sBorder\">" . $myRequete->contenuChamp($j, "d.Titre") . "</td>";
                 if (post('Document' . $j) != "") {
                     echo "<td class=\"sBorder\">" . "Supprimé" . "</td>";
-                    $mySqli->supprimeEnregistrements("document", "Sigle='" . $myRequete->contenuChamp($j, "Sigle") . "' AND Session='" . $myRequete->contenuChamp($j, "Session") . "' AND Titre='" . str_replace("'", "\'", $myRequete->contenuChamp($j, "Titre")) . "'");
-                    echo $mySqli->requete;
+                    $mySqli->supprimeEnregistrements("document", "Sigle='" . $myRequete->contenuChamp($j, "d.Sigle") . "' AND Session='" . $myRequete->contenuChamp($j, "Session") . "' AND Titre='" . str_replace("'", "\'", $myRequete->contenuChamp($j, "Titre")) . "'");
                 } else {
                     echo "<td class=\"sBorder\">" . "</td>";
                 }
             }
 
             $repertoire = opendir("PDF"); // On définit le répertoire dans lequel on souhaite travailler.
-            
+            $intCompteur = 0;
             $myRequete->nbEnregistrements = $mySqli->selectionneEnregistrements("document");
+            $strFlux1 = "<table>";
+            $strFlux1 .= "<tr class='sEntete sBorder'>
+                <td class='sBorder'>   
+                    #
+                </td>
+                <td class='sBorder'>   
+                    Nom du fichier
+                </td>
+                <td class='sBorder'>
+                    Verdict 
+                </td>
+            </tr>";
             while (false !== ($fichier = readdir($repertoire))) {
                 // On lit chaque fichier du répertoire dans la boucle.
                 $booEfface = true;
-                for ($k = 0; $k < $myRequete->nbEnregistrements && $booEfface; $k++) { 
-                    echo $fichier;
-                    echo "=";
-                    echo $mySqli->contenuChamp($k, "HyperLien");
-                    echo "<br />";
-                    if ($fichier == $myRequete->contenuChamp($k, "HyperLien") || $fichier == "." || $fichier == "..") {
-                        $booEfface = false;  
-                        echo "bob";
+                for ($k = 0; $k < $myRequete->nbEnregistrements && $booEfface; $k++) {
+                    if ($fichier == $mySqli->contenuChamp($k, "HyperLien") || $fichier == "." || $fichier == "..") {
+                        $booEfface = false;
                     }
                 }
-                if($booEfface && $fichier != "." && $fichier != ".."){
+                if ($booEfface && $fichier != "." && $fichier != "..") {
+                    $intCompteur++;
+                    $strFlux1 .= "<tr style=\"background-color: whitesmoke\"><td class='sBorder'>$intCompteur</td><td  class='sBorder'>$fichier</td><td  class='sBorder'>Supprimé</td></tr>";
                     unlink("PDF/$fichier"); // On efface.
-                    
+                } else {
+                    if ($fichier != "." && $fichier != "..") {
+                        $intCompteur++;
+                        $strFlux2 .= "<tr style=\"background-color: whitesmoke\"><td class='sBorder'>$intCompteur</td><td class='sBorder'> $fichier</td><td class='sBorder'></td></tr>";
+                    }
                 }
+                echo "bob";
             }
+            $strFlux2 .= "</table>";
+            $_SESSION["Rapport"] = $strFlux1 . $strFlux2;
+            // echo  $_SESSION["Rapport"];
+        } else if ($strAction == "Rapport") {
+            echo $_SESSION["Rapport"];
+            echo "bob";
         }
         ?>
     </table>
     <td>
         <br>
-        <input class="sButton" id="btnSupprimer" name="btnSupprimer" type="submit" value="Supprimer">
+        <input class="sButton" id="btnSupprimer" name="btnAction" type="submit" value="Supprimer">
+        <input class="sButton" id="btnRapport" name="btnAction" type="submit" value="Rapport">
         <br> <br>
         <input class="sButton" id="btnRetour" type="button" onclick="window.location.href = 'gestion-documents-administrateur.php'"
                value="Retour">
