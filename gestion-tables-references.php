@@ -137,20 +137,20 @@ $mySqli = new mysql("", $strInfosSensibles);
                             if (GestionSession(post("action"), post("Session"), post("dateDebut"), post("dateFin"), $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     } else if (post("action") == "retir") {
                         if (post("Session")) {
                             if (GestionSession(post("action"), post("Session"), "", "", $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     }
                 }
@@ -236,20 +236,20 @@ $mySqli = new mysql("", $strInfosSensibles);
                             if (GestionCours(post("action"), post("Sigle"), post("Titre"), $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee car un champ est vide</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     } else if (post("action") == "retir") {
                         if (post("Sigle")) {
                             if (GestionCours(post("action"), post("Sigle"), "", $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     }
                 }
@@ -351,20 +351,20 @@ $mySqli = new mysql("", $strInfosSensibles);
                     if (gestionCoursSession(post("action"), "", post("session"), post("cours"), post("prof"), $mySqli)) {
                         echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                     } else {
-                        echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                        echo "<div class='sRouge sGras'>La commande a echou&eacutee donn&eacutees non valides</div>";
                     }
                 } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                 }
             } else if (post("action") == "modif") {
                 if (isset($_POST["coursSession"]) && isset($_POST["session"]) && post("cours") && post("prof")) {
                     if (gestionCoursSession(post("action"), post("coursSession"), post("session"), post("cours"), post("prof"), $mySqli)) {
                         echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                     } else {
-                        echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                        echo "<div class='sRouge sGras'>La commande a echou&eacutee donn&eacutees non valides</div>";
                     }
                 } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                 }
             } else if (post("action") == "retir" && isset($_POST["coursSession"])) {
                 if (post("coursSession")) {
@@ -372,10 +372,10 @@ $mySqli = new mysql("", $strInfosSensibles);
                     if (gestionCoursSession(post("action"), post("coursSession"), "", "", "", $mySqli)) {
                         echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                     } else {
-                        echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                        echo "<div class='sRouge sGras'>La commande a echou&eacutee donn&eacutees non valides</div>";
                     }
                 } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                 }
             }
             ?>
@@ -453,20 +453,20 @@ $mySqli = new mysql("", $strInfosSensibles);
                             if (GestionCategorieDocument(post("action"), post("DescriptionModif"), $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     } else if (post("action") == "modif") {
                         if (post("Description") && post("DescriptionModif")) {
                             if (GestionCategorieDocument(post("action"), post("Description"), $mySqli, post("DescriptionModif"))) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee car un champ est vide</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     } else if (post("action") == "retir") {
                         if (post("Description")) {
@@ -474,10 +474,10 @@ $mySqli = new mysql("", $strInfosSensibles);
                             if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                                echo "<div class='sRouge sGras'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
                             }
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sRouge sGras'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     }
                 }
@@ -591,10 +591,10 @@ $mySqli = new mysql("", $strInfosSensibles);
                         if (gestionUtilisateur(post("action"), post("selectNomUtil"), post("nomUtil"), post("motDePasse"), post("StatutAdmin"), post("NomComplet"), post("Courriel"), $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
-                            echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                            echo "<div class='sRouge sGras'>La commande a echou&eacutee donn&eacutees non valides</div>";
                         }
                     } else {
-                        echo "<div class='sErreur'>Les donn&eacutees ne sont pas compl&egravestes</div>";
+                        echo "<div class='sRouge sGras'>Les donn&eacutees ne sont pas compl&egravestes</div>";
                     }
                 }
             } else if (post("action") == "retir") {
@@ -631,10 +631,10 @@ $mySqli = new mysql("", $strInfosSensibles);
                         if (gestionUtilisateur(post("action"), post("selectNomUtil"), "", "", "", "", "", $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
-                            echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
+                            echo "<div class='sRouge sGras'>La commande a echou&eacutee donn&eacutees non valides</div>";
                         }
                     } else {
-                        echo "<div class='sErreur'>Il doit avoir au moins 1 administrateur</div>";
+                        echo "<div class='sRouge sGras'>Il doit avoir au moins 1 administrateur</div>";
                     }
                 }
                 break;
