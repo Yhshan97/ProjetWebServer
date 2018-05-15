@@ -173,7 +173,6 @@ class mysql {
 
             $this->requete .= $i == func_num_args() - 1 ? ")" : ",";
         }
-        var_dump($this->requete);
         $this->OK = mysqli_query($this->cBD, $this->requete);
         return $this->OK;
     }
@@ -449,7 +448,8 @@ class mysql {
         if (!empty($strListeConditions))
             $this->requete .= " WHERE $strListeConditions";
 
-       
+                        
+        $this->OK = mysqli_query($this->cBD, $this->requete);
         return $this->OK;
     }
 

@@ -416,12 +416,7 @@ if(isset($_POST["DocumentAction"])){
 }
 ?>
 
-<<<<<<< HEAD
-<br/><br/>
-
-=======
 <br/>
->>>>>>> origin/master
 <br/>
 <script>
     document.getElementById("selectCoursSession").value = "<?php echo post("coursSession"); ?>";
