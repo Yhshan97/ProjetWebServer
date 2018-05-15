@@ -56,6 +56,17 @@ if(isset($_POST["DocumentAction"])){
             !empty(post("categorie")) && !empty(post("noVersion")) && !empty(post("dateVersion")) && 
             !empty(post("hyperLien")) && !empty(post("ajoutePar")))
         {
+            $mySqli->selectionneEnregistrements("Session","Session=". post("session"));
+            var_dump($mySqli->contenuChamp(0, "DateDebut"));
+            
+                $paymentDate = date('Y-m-d');
+                $paymentDate=date('Y-m-d', strtotime($paymentDate));;
+                //echo $paymentDate; // echos today! 
+                $contractDateBegin = date('Y-m-d', strtotime("01/01/2001"));
+                $contractDateEnd = date('Y-m-d', strtotime("01/01/2012"));
+
+            
+            if(1 == 2){
             $mySqli->insereEnregistrement("Document",post("session"),post("sigle"),post("dateCours"),post("noSequence"),post("dateAccessDebut"),
                 post("dateAccessFin"),post("titre"),post("description"),post("nbPages"),post("categorie"),post("noVersion"),post("dateVersion"),
                 post("hyperLien"),post("ajoutePar"));
@@ -64,6 +75,10 @@ if(isset($_POST["DocumentAction"])){
 
             $msgResultatAction = $mySqli->OK ? "<span class='sVert sBlancFond'> La commande à été effectuée</span>" :
                 "<span class='sBlanc sRougeFond'> Ajout pas possible. Même titre de document existe!'</span>";
+            }
+            else {
+                $msgResultatAction = "<span class='sBlanc sRougeFond'> Ajout pas possible. Dates non valides !</span>";
+            }
         }
         else {
             $msgResultatAction = "<span class='sBlanc sRougeFond'> Ajout pas possible. Données manquantes !</span>";
@@ -396,7 +411,12 @@ if(isset($_POST["DocumentAction"])){
 }
 ?>
 
+<<<<<<< HEAD
+<br/><br/>
+
+=======
 <br/>
+>>>>>>> origin/master
 <br/>
 <script>
     document.getElementById("selectCoursSession").value = "<?php echo post("coursSession"); ?>";

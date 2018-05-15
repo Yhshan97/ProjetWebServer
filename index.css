@@ -1,5 +1,7 @@
 
-BODY { padding-left:15px; padding-top:15px; height: 100%; overflow: hidden }
+BODY {margin: 0; height: 100%; overflow: hidden}
+INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;}
+BODY { padding-left:15px; padding-top:15px; overflow: hidden }
 BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; overflow: hidden}
 TABLE { border-collapse: collapse; }
 TD { padding:5px; }
@@ -53,8 +55,8 @@ P { font-size: 20px; }
 }
 
 .sUtilisateur {
-    top:330;
-    left:960;
+    top:50%;
+    left:50%;
 }
 
 .sButton {
@@ -65,10 +67,6 @@ P { font-size: 20px; }
   width: 150px;
   height: 42px; 
   cursor: pointer;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   overflow: hidden;
   border: none;
   -webkit-border-radius: 21px;
@@ -185,9 +183,6 @@ P { font-size: 20px; }
     background: rgba(0,0,0,0.6); 
 }
 
-body, html{
-  height: 100%;
-}
 
 .container{
   display: block;
@@ -281,7 +276,7 @@ input[type=radio]:checked ~ label{
   color: #0DFF92;
 }
 
-BODY { padding:15px; height: 100%; overflow: -moz-scrollbars-vertical; }
+BODY { padding:15px;  overflow: -moz-scrollbars-vertical; }
 BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;  overflow: auto; }
 TABLE { border-collapse: collapse; overflow:auto; }
 TD { padding:10px; white-space: nowrap;}
@@ -465,10 +460,6 @@ P { font-size: 20px; }
 
 .sList:hover {
     background: rgba(0,0,0,0.6); 
-}
-
-body, html{
-  height: 100%;
 }
 
 .container{

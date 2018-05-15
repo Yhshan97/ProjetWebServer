@@ -34,7 +34,7 @@ require_once("en-tete.php");
         <td>
             <?php
             if (empty(post("nomUtilisateur")) && isset($_POST["nomUtilisateur"]))
-                echo "<div class=\"sErreur\"> Entrez un nom d'utilisateur! </div>"
+                echo "<div class=\"sRouge\"> Entrez un nom d'utilisateur! </div>"
                 ?>
         </td>
     </tr>
