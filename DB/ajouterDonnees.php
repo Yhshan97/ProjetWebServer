@@ -74,10 +74,11 @@ for ($index = 0; $index < count($arrayUtilisateur); $index++) {
         $objMySqli->insereEnregistrement("utilisateur",
                 $arrayUtilisateur[$index]["NoUtilisateur"],
                 $arrayUtilisateur[$index]["MotDePasse"],
-                ($arrayUtilisateur[$index]["Statut"] == "U" ? 0:1),
+                ($arrayUtilisateur[$index]["Statut"] == "U" ? '0' : '1'),
                 $arrayUtilisateur[$index]["NomComplet"],
                 $arrayUtilisateur[$index]["Courriel"]);
 }
+
 
 //Cours-Sessions
 echo "ajout cours-sessions<br />";

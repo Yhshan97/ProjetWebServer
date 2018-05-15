@@ -11,7 +11,7 @@ session_start();
 if (!isset($_SESSION["NomComplet"])) {
     header('location: gestion-documents-administrateur.php');
 }
-
+var_dump($_POST);
 /* Liste des fichiers d'inclusion */
 require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");
@@ -80,82 +80,82 @@ $mySqli = new mysql("", $strInfosSensibles);
 </form>
 
 <div style="margin-left: 50px;">
-    <?php
-    switch (post("option2")) {
-        case 1:
-            ?>
-            <div>
-                <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular;">
-                    <table>
+<?php
+if(isset($_POST["action"])){
+switch (post("option2")) {
+    case 1:
+        ?>
+        <div>
+            <form id="GestionSession" method="post" action="" style="font-family: Poppins-Regular;">
+                <table>
+                    <tr>
+                        <td>
+                            Session d'étude :
+                        </td>
+                        <td>
+                            <?php
+                            if (post("action") == "ajout") {
+                                input("Session", "", "text", 6, "", true);
+                            } else {
+                                echo creerSelectHTMLAvecRequete("Session", "Description", "", "selectSession", "Session", "", "", $mySqli);
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php if (post("action") != "retir") { ?>
                         <tr>
                             <td>
-                                Session d'étude :
+                                Date de début de la session :
                             </td>
                             <td>
-                                <?php
-                                if (post("action") == "ajout") {
-                                    input("Session", "", "text", 6, "", true);
-                                } else {
-                                    echo creerSelectHTMLAvecRequete("Session", "Description", "", "selectSession", "Session", "", "", $mySqli);
-                                }
-                                ?>
+                                <?php input("dateDebut", "", "date", 10, "", true); ?>
                             </td>
                         </tr>
-                        <?php if (post("action") != "retir") { ?>
-                            <tr>
-                                <td>
-                                    Date de début de la session :
-                                </td>
-                                <td>
-                                    <?php input("dateDebut", "", "date", 10, "", true); ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Date de fin de la session :
-                                </td>
-                                <td>
-                                    <?php input("dateFin", "", "date", 10, "", true); ?>
-                                </td>
-                            </tr>
-                        <?php } ?>
                         <tr>
-                            <td></td>
-                            <td align="right">
-                                <input type="hidden" name="action" value="<?php echo post("action") ?>">
-                                <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
-                                <input id="btnSoumettre" type="submit" class="sButton" value="Confirmer"/>
+                            <td>
+                                Date de fin de la session :
+                            </td>
+                            <td>
+                                <?php input("dateFin", "", "date", 10, "", true); ?>
                             </td>
                         </tr>
-                    </table>
-                </form>
+                    <?php } ?>
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                            <input type="hidden" name="action" value="<?php echo post("action") ?>">
+                            <input type="hidden" name="option2" value="<?php echo post("option2") ?>">
+                            <input id="btnSoumettre" type="submit" class="sButton" value="Confirmer"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
 
-                <?php
-                if (isset($_POST["action"]) && isset($_POST["Session"])) {
-                    if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["dateDebut"]) && isset($_POST["dateFin"]))) {
-                        if (post("Session") && post("dateDebut") && post("dateFin")) {
-                            if (GestionSession(post("action"), post("Session"), post("dateDebut"), post("dateFin"), $mySqli)) {
-                                echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
-                            } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee</div>";
-                            }
+            <?php
+            if (isset($_POST["action"]) && isset($_POST["Session"])) {
+                if (post("action") == "ajout" || post("action") == "modif" && (isset($_POST["dateDebut"]) && isset($_POST["dateFin"]))) {
+                    if (post("Session") && post("dateDebut") && post("dateFin")) {
+                        if (GestionSession(post("action"), post("Session"), post("dateDebut"), post("dateFin"), $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sErreur'>La commande a echou&eacutee</div>";
                         }
-                    } else if (post("action") == "retir") {
-                        if (post("Session")) {
-                            if (GestionSession(post("action"), post("Session"), "", "", $mySqli)) {
-                                echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
-                            } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee</div>";
-                            }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    }
+                } else if (post("action") == "retir") {
+                    if (post("Session")) {
+                        if (GestionSession(post("action"), post("Session"), "", "", $mySqli)) {
+                            echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
-                            echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                            echo "<div class='sErreur'>La commande a echou&eacutee</div>";
                         }
+                    } else {
+                        echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                     }
                 }
-                ?>
-            </div>
+            }
+            ?>
 
             <br/>
 
@@ -354,17 +354,17 @@ $mySqli = new mysql("", $strInfosSensibles);
                         echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                     }
                 } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
+                    echo "<div class='sErreur'> Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                 }
             } else if (post("action") == "modif") {
-                if (isset($_POST["coursSession"]) && isset($_POST["session"]) && post("cours") && post("prof")) {
+                if ((isset($_POST["coursSession"]) && isset($_POST["session"]) && 
+                        isset($_POST["cours"]) && isset($_POST["prof"])) 
+                        && post("cours") && post("prof")) {
                     if (gestionCoursSession(post("action"), post("coursSession"), post("session"), post("cours"), post("prof"), $mySqli)) {
                         echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                     } else {
                         echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
                     }
-                } else {
-                    echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                 }
             } else if (post("action") == "retir" && isset($_POST["coursSession"])) {
                 if (post("coursSession")) {
@@ -410,7 +410,7 @@ $mySqli = new mysql("", $strInfosSensibles);
         case 4:
             ?>
             <div>
-                <form id="GestionCategorie" method="post" action="" style="font-family: Poppins-Regular; position:fixed; top:280px; left:100px">
+                <form id="GestionCategorie" method="post" action="" style="font-family: Poppins-Regular; ">
                     <table>
                         <tr>
                             <?php
@@ -463,18 +463,18 @@ $mySqli = new mysql("", $strInfosSensibles);
                             if (GestionCategorieDocument(post("action"), post("Description"), $mySqli, post("DescriptionModif"))) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee car un champ est vide</div>";
+                                echo "<div class='sErreur'>La commande a echou&eacutee, données non valides.</div>";
                             }
                         } else {
                             echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
                         }
                     } else if (post("action") == "retir") {
-                        if (post("Description")) {
+                        if (post("Description") != " -------- ") {
 
                             if (GestionCategorieDocument(post("action"), post("Description"), $mySqli)) {
                                 echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                             } else {
-                                echo "<div class='sErreur'>La commande a echou&eacutee car les valeurs rentrées ne respecte pas les regles admises</div>";
+                                echo "<div class='sErreur'>La commande a echou&eacutee.</div>";
                             }
                         } else {
                             echo "<div class='sErreur'>Impossible d'effectuer la commande, donn&eacutees manquantes</div>";
@@ -588,7 +588,8 @@ $mySqli = new mysql("", $strInfosSensibles);
                 if (isset($_POST["selectNomUtil"]) && isset($_POST["nomUtil"]) && isset($_POST["motDePasse"]) &&
                         isset($_POST["NomComplet"]) && isset($_POST["Courriel"])) {
                     if (post("selectNomUtil") && post("nomUtil") && post("motDePasse") && post("NomComplet") && post("Courriel")) {
-                        if (gestionUtilisateur(post("action"), post("selectNomUtil"), post("nomUtil"), post("motDePasse"), post("StatutAdmin"), post("NomComplet"), post("Courriel"), $mySqli)) {
+                        if (gestionUtilisateur(post("action"), post("selectNomUtil"), post("nomUtil"),
+                                post("motDePasse"), post("StatutAdmin"), post("NomComplet"), post("Courriel"), $mySqli)) {
                             echo "<div class='sVert'>La commande a &eacutet&eacute effectu&eacutee</div>";
                         } else {
                             echo "<div class='sErreur'>La commande a echou&eacutee donn&eacutees non valides</div>";
@@ -640,6 +641,7 @@ $mySqli = new mysql("", $strInfosSensibles);
                 break;
             }
     }
+}
     ?>
 </div>
 <?php
