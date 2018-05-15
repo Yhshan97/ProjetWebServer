@@ -1,6 +1,6 @@
 
-BODY { padding-left:15px; padding-top:15px; height: 100%; overflow: hidden }
-BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; overflow: hidden}
+BODY {margin: 0; height: 100%; overflow: hidden}
+INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;}
 TABLE { border-collapse: collapse; }
 TD { padding:5px; }
 P { font-size: 20px; }

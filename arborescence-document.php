@@ -30,6 +30,8 @@ $intNombreDocuments = $mySqli->selectionneEnregistrements("document");
 $strFlux1 = "";
 $strFlux2 = "";
 $booRapport = false;
+$compteurSup = 0;
+$compteurPasSup = 0;
 //$_SESSION["Rapport"] = "";
 ?>
 
@@ -173,18 +175,30 @@ $booRapport = false;
                     $intCompteur++;
                     $strFlux1 .= "<tr style=\"background-color: whitesmoke\"><td class='sBorder'>$intCompteur</td><td  class='sBorder'>$fichier</td><td  class='sBorder'>Supprimé</td></tr>";
                     unlink("PDF/$fichier"); // On efface.
+                    $compteurSup++;
                 } else {
                     if ($fichier != "." && $fichier != "..") {
                         $intCompteur++;
                         $strFlux2 .= "<tr style=\"background-color: whitesmoke\"><td class='sBorder'>$intCompteur</td><td class='sBorder'> $fichier</td><td class='sBorder'></td></tr>";
+                        $compteurPasSup++;
                     }
                 }
             }
             $strFlux2 .= "</table>";
             $_SESSION["Rapport"] = $strFlux1 . $strFlux2;
+            $_SESSION["CompteurSupp"] = $compteurSup;
+            $_SESSION["CompteurPasSup"] = $compteurPasSup;
             // echo  $_SESSION["Rapport"];
         } else if ($strAction == "Rapport") {
             echo $_SESSION["Rapport"];
+            echo "<br />";
+            echo "<span class=sBlanc style='font-family: Poppins-Regular;'>";
+            echo $_SESSION["CompteurSupp"];
+            echo " fichiers supprimés, ";
+            echo $_SESSION["CompteurPasSup"];
+            echo " fichiers conservés";
+            echo "</span>";
+            echo "<br />";
         }
         ?>
     </table>
