@@ -79,7 +79,7 @@ $objetPrivilege = new mysql("",$strInfosSensibles);
 
     // Deroulement ligne par ligne donc for basé sur le nombre d'utilisateurs
     for ($i = 0; $i < $intNombreUtilisateur; $i++) {
-        echo "<tr style='background-color: whitesmoke;'>\n<td class='sBorder'>" . $objetUtil->contenuChamp($i, "NomUtilisateur"). "</td>\n";
+        echo "<tr style='background-color: whitesmoke;'>\n<th class='sBorder'>" . $objetUtil->contenuChamp($i, "NomUtilisateur"). "</th>\n";
 
         // Deuxieme for pour afficher les checkbox dépendant du nombre de cours-sessions
         for ($j2 = 0; $j2 < $intNombreCoursSession; $j2++) {
@@ -89,7 +89,7 @@ $objetPrivilege = new mysql("",$strInfosSensibles);
             $objetPrivilege->selectionneEnregistrements("privilege","C=IDPrivilege='$nom'");
             $StrChecked = $objetPrivilege->nbEnregistrements == 1 ? "checked" : "";
 
-            echo "<td align='center' class='sBorder'> <input type=\"checkbox\" name=\"$nom\" value=\"$nom\" $StrChecked /> </td>\n" ;
+            echo "<td align='center' class='tableBordure'> <input type=\"checkbox\" name=\"$nom\" value=\"$nom\" $StrChecked /> </td>\n" ;
         }
         echo "</tr>\n";
     }

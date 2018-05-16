@@ -11,7 +11,6 @@ session_start();
 if (!isset($_SESSION["NomComplet"])) {
     header('location: gestion-documents-administrateur.php');
 }
-var_dump($_POST);
 /* Liste des fichiers d'inclusion */
 require_once("classe-fichier-2018-03-16.php");
 require_once("classe-mysql-2018-03-17.php");

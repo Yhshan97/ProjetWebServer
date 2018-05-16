@@ -30,8 +30,8 @@ if (post("nomUtilisateur") && post("motDePasse")) {
 ?>
 <form id="frmSaisie" method="POST" action="" style="font-family: Poppins-Regular;">
 
-    <div id="divSaisie" <?php echo session("connecteeUtil") == false ? "style=\"height: 500px;\"" : "style=\"display:none\"" ?>>
-        <span class="login100-form-logo"></span>
+    <div id="divSaisie" <?php echo session("connecteeUtil") == false ? "style=\"height: 300px;\"" : "style=\"display:none\"" ?>>
+        <span class="login100-form-logo" ></span>
         <table class="sTableau sMilieu" style="top: 25%; text-align: center;">
             <td class="sBlanc" style="left:910; position: fixed;top:26.5%"> Identifiant </td>
             <td style="position: fixed;left:880;top: 30%">
@@ -143,6 +143,8 @@ if (post("nomUtilisateur") && post("motDePasse")) {
                 }
 
                 echo "</table>";
+
+                $mySqli2->deconnexion();
             }
         }else {
             echo "<label class='sBlanc'> Aucun document visible dans le cours $strCoursSelectionne </label>";
@@ -156,7 +158,6 @@ if (post("nomUtilisateur") && post("motDePasse")) {
 
 <?php
 $mySqli->deconnexion();
-$mySqli2->deconnexion();
 require_once("pied-page.php");
 ?>
 <script type="text/javascript">

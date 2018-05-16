@@ -8,8 +8,7 @@ function connexion($strNomUtil, $strMotPasse, $intAdmin, $objSQL) {
             $_SESSION["NomComplet"] = "";
             header("location: nouvel-utilisateur.php");
         } else {
-
-            ecrit("<label class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
+            ecrit("<label class='sErreur' style='margin-left: 0px;top: 400px; left: 1120px; position: fixed; '> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
         }
     } else {
         while ($ligne = $resultat->fetch_assoc()) {
@@ -24,7 +23,7 @@ function connexion($strNomUtil, $strMotPasse, $intAdmin, $objSQL) {
             }
         }
         if (!$booTrouve)
-            ecrit("<label style='top:42%;left:70%;position: fixed' class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
+            ecrit("<label class='sErreur' style='margin-left: 0px;top: 400px; left: 1120px; position: fixed;'> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
     }
     return $booTrouve;
 }

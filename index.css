@@ -1,9 +1,10 @@
 
-BODY {margin: 0; overflow: hidden}
+BODY {margin: 0; overflow: auto}
 INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px;}
-BODY { padding-left:15px; padding-top:15px; overflow: hidden }
-BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; overflow: hidden}
+BODY { padding-left:15px; padding-top:15px; overflow: auto }
+BODY, INPUT, SELECT { font-family: "Helvetica CE", sans-serif; font-size:16px; overflow: auto}
 TABLE { border-collapse: collapse; }
+TH {border:1px solid black; padding: 10px;}
 TD { padding:5px; }
 P { font-size: 20px; }
 
@@ -133,8 +134,8 @@ P { font-size: 20px; }
   background-image: url("i.jpg");
   background-color: #cccccc;
   background-size: cover;
-  margin-left: 680;
-  margin-top: 215;
+  margin-left: 680px;
+  margin-top: 180px;
   border: 2px solid white;
 }
 

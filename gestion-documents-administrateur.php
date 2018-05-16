@@ -46,7 +46,7 @@ if(isset($_POST["option"])){
     }
 }
 ?>
-<form id="frmSaisie" method="POST" action="" style="font-family: Poppins-Regular;">
+<form id="frmSaisie" method="POST" action="" style="font-family: Poppins-Regular; height: 350px;">
     
     <div id="divSaisie" <?php echo session("connectee") == false ? "" : "style=\"display:none\"" ?>>
         <span class="login100-form-logo"></span>
