@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 
 /* Variables nécessaires pour les fichiers d'inclusion */
-$strTitreApplication = "Gestion des documents (Administrateur)";
+$strTitreApplication = "Gestion des documents";
 $strNomFichierCSS = "index.css";
 $strNomAuteur = "Yao Hua Shan, C&eacutedric Kouma, Alex Gariepy";
 
@@ -23,7 +23,7 @@ $booEnregistrements = false;
 if (post("nomUtilisateur") && post("motDePasse")) {
     if (connexion(post("nomUtilisateur"), post("motDePasse"), 0, $mySqli)) {
         $booConnexion = true;
-        $_SESSION["connectee"] = true;
+        $_SESSION["connecteeUtil"] = true;
         $_SESSION["nomUtilisateur"] = post("nomUtilisateur");
     }
 }
@@ -58,7 +58,7 @@ if (post("nomUtilisateur") && post("motDePasse")) {
                 <?php
                 if (empty(post("motDePasse")) && isset($_POST["motDePasse"]))
                     echo "<div class=\"sRouge\"> Entrez un mot de passe! </div>"
-                    ?>
+                ?>
             </label>
             </tr>
         </table>
@@ -118,7 +118,7 @@ if (post("nomUtilisateur") && post("motDePasse")) {
     if (!$booEnregistrements) {
         ?>
 
-    <div <?php echo session("connectee") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
+    <div <?php echo session("connecteeUtil") != true ? "style=\"display:none\"" : "" ?> style="font-family: Poppins-Regular; position:fixed; top:300; left:700px">
         <label for="Jour">Bonjour <b><?php echo $_SESSION["NomComplet"] ?></b>, vous désirez ...</label>
         <br/>
         <span id="spanDescription" class="sGras"></span>
@@ -136,6 +136,7 @@ if (post("nomUtilisateur") && post("motDePasse")) {
 ?>
 <?php
 $mySqli->deconnexion();
+require_once("pied-page.php");
 ?>
 <script type="text/javascript">
     function password() {
