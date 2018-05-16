@@ -77,7 +77,7 @@ if (post("nomUtilisateur") && post("motDePasse")) {
     <div>
         <?php
         $strCoursSelectionne = post("cours");
-        $mySqli->selectionneEnregistrements("document", "C=Sigle='" . $strCoursSelectionne . "'T=DateCours, Categorie, Titre");
+        $mySqli->selectionneEnregistrements("document", "C=Sigle='" . $strCoursSelectionne . "'", "T=DateCours, Categorie, Titre");
         echo $mySqli->requete;
         if ($mySqli->nbEnregistrements > 0) {
             $booEnregistrements = true;
