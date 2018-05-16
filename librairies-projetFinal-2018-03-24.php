@@ -9,7 +9,7 @@ function connexion($strNomUtil, $strMotPasse, $intAdmin, $objSQL) {
             header("location: nouvel-utilisateur.php");
         } else {
 
-            ecrit("<label style='top:42%;left:70%;position: fixed' class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
+            ecrit("<label class=\"sErreur\"> Mauvaise combination de nom d'utilisateur/mot de passe </label>");
         }
     } else {
         while ($ligne = $resultat->fetch_assoc()) {

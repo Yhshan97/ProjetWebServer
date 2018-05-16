@@ -4,8 +4,8 @@
     </br>
     </br>
     <?php
-    if (isset($_SESSION["connectee"])) {
-        if ($_SESSION["connectee"]) {
+    if (isset($_SESSION["connectee"]) || isset($_SESSION["connecteeUtil"])) {
+        if (session("connectee") || session("connecteeUtil")) {
             ?>
             <div>
                 <button class="sButton" style="position: relative;font-family: Poppins-Regular;" onclick="deconnecter()">Deconnexion</button>

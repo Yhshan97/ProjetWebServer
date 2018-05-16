@@ -116,6 +116,7 @@ $objetPrivilege = new mysql("",$strInfosSensibles);
             }
         }
     }
+    document.body.style.overflow = "auto";
 </script>
 
 <?php

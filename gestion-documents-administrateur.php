@@ -113,6 +113,7 @@ if(isset($_POST["option"])){
 </div>
 <?php
 $mySqli->deconnexion();
+require_once ("pied-page.php");
 ?>
 <script type="text/javascript">
     function password() {
